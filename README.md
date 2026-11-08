@@ -16,10 +16,13 @@ npm install
 npm run dev
 ```
 
-Vite prints two URLs. Open the **Network** one (it looks like `http://192.168.x.x:5173`) on a phone that's on the same Wi-Fi.
+That starts both the game server (yellow lines) and the web app (cyan lines). The web app prints two URLs; open the **Network** one (it looks like `http://192.168.x.x:5173`) on every phone that's on the same Wi-Fi. One device taps *Start a room*; the others type the four-letter code.
+
+The first time, Wrangler (Cloudflare's local server) may ask whether it can collect anonymous usage data. Either answer is fine.
 
 ## Other commands
 
 - `npm test` – run the rules-engine tests
 - `npm run build` – production build of the web app
-- `npm run server` – run the game server locally (needs Cloudflare's Wrangler; Beat 3)
+- `npm run server` – run only the game server
+- `npm run web` – run only the web app

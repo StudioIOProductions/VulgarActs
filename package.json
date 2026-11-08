@@ -2,12 +2,21 @@
   "name": "vulgar-acts",
   "private": true,
   "version": "0.1.0",
-  "workspaces": ["apps/*", "packages/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "npm run dev --workspace apps/web",
+    "dev": "concurrently -k -n server,web -c yellow,cyan \"npm run dev --workspace apps/server\" \"npm run dev --workspace apps/web\"",
     "build": "npm run build --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
-    "server": "npm run dev --workspace apps/server"
+    "server": "npm run dev --workspace apps/server",
+    "web": "npm run dev --workspace apps/web"
   },
-  "engines": { "node": ">=20" }
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
 }
