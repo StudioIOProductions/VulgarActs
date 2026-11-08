@@ -7,10 +7,10 @@ export function App() {
     <div class="stage">
       <div class="phone">
         <div class="wordmark"><span>Vul</span><span>gar</span> <span>Acts</span></div>
-        <p class="tag">Beat 1 · it's alive</p>
+        <p class="tag">Beat 2 · rules engine: 69 tests green</p>
         <div class="panel">
           <h2>Hello from the real build</h2>
-          <p class="sub">This page comes from the repo, not the mockup. The rules engine is wired in: it just minted this room code.</p>
+          <p class="sub">The rules engine now holds every rule in the rulebook, each with a passing test. Run <code>npm test</code> to watch them. This code came from it.</p>
           <div class="code">{code}</div>
           <button class="primary" onClick={() => setCode(makeRoomCode())}>New code</button>
         </div>
