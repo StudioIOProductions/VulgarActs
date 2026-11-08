@@ -14,7 +14,6 @@ export interface Settings {
   decks: string[];
   skipsPerTurn: number;
   buzzPenalty: BuzzPenalty;
-  carryoverSeconds: boolean; // Monikers rule; default false (seconds vanish)
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -25,7 +24,6 @@ export const DEFAULT_SETTINGS: Settings = {
   decks: ["starter"],
   skipsPerTurn: 3,
   buzzPenalty: "card",
-  carryoverSeconds: false,
 };
 
 export interface Player {
@@ -108,7 +106,6 @@ export interface GameState {
   pts: Record<string, number>; // ffa points
   given: Record<string, number>; // cards got through per giver, all modes
   turn: Turn | null;
-  carry: number; // leftover seconds carried to next round when carryoverSeconds
 }
 
 export interface Ctx {

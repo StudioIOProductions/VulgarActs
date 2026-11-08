@@ -83,7 +83,6 @@ export function createGame(code: string, hostId: string, settings: Partial<Setti
     pts: {},
     given: {},
     turn: null,
-    carry: 0,
   };
 }
 
@@ -364,10 +363,9 @@ export function startTurn(s: GameState, pid: string, ctx: Ctx): GameState {
   if (t.status !== "ready") throw new RuleError("turn_already_live");
   if (!s.pool.length) throw new RuleError("bowl_empty");
   const next = clone(s);
-  const seconds = s.settings.timerSec + (s.settings.carryoverSeconds ? s.carry : 0);
-  next.carry = 0;
+  // Every turn is exactly timerSec long. Leftover seconds are never banked.
   next.turn!.status = "live";
-  next.turn!.endsAt = ctx.now + seconds * 1000;
+  next.turn!.endsAt = ctx.now + s.settings.timerSec * 1000;
   next.turn!.cur = next.pool[0];
   next.turn!.seen = [next.pool[0]];
   return next;
@@ -510,10 +508,7 @@ export function endTurn(s: GameState, why: Turn["why"], ctx: Ctx): GameState {
   const t = next.turn!;
   t.status = "done";
   t.why = why;
-  // Leftover seconds: vanish by default; carry when the house rule is on and the bowl emptied.
-  if (why === "empty" && s.settings.carryoverSeconds && t.endsAt) {
-    next.carry = Math.max(0, Math.ceil((t.endsAt - ctx.now) / 1000));
-  }
+  // Leftover seconds vanish: when the bowl empties mid-turn, the turn simply ends.
   t.endsAt = 0;
   t.cur = null;
   if (s.settings.mode === "ffa") {
@@ -588,7 +583,7 @@ export function playAgain(s: GameState): GameState {
   }
   next.cards = []; next.spare = []; next.bowl = []; next.pool = []; next.round = 0;
   next.teams = null; next.turn = null; next.pts = {}; next.given = {}; next.order = []; next.orderIdx = 0;
-  next.turnsGiven = [0, 0]; next.carry = 0;
+  next.turnsGiven = [0, 0];
   return next;
 }
 

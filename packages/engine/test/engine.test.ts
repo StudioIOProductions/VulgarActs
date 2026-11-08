@@ -371,22 +371,15 @@ describe("the clock", () => {
     s = E.resume(s, "p1", ctx(1_000_000 + 100_000));
     expect(s.turn!.endsAt).toBe(1_000_000 + 150_000);
   });
-  it("leftover seconds vanish when the bowl empties mid-turn", () => {
+  it("leftover seconds vanish when the bowl empties mid-turn; the next turn is a full 60 again", () => {
     let s = live(4, { cardsPerPlayer: 3 });
     const g = s.turn!.giver;
     while (s.phase === "turn") s = E.gotIt(s, g, ctx(1_000_000 + 5_000));
     expect(s.turn!.why).toBe("empty");
-    expect(s.carry).toBe(0);
-  });
-  it("carries leftover seconds when the Monikers house rule is on", () => {
-    let s = live(4, { carryoverSeconds: true });
-    const g = s.turn!.giver;
-    while (s.phase === "turn") s = E.gotIt(s, g, ctx(1_000_000 + 5_000));
-    expect(s.carry).toBe(55);
     s = E.continueGame(s, ctx());
     s = E.announceTurn(s);
     s = E.startTurn(s, s.turn!.giver, ctx(2_000_000));
-    expect(s.turn!.endsAt).toBe(2_000_000 + 115_000);
+    expect(s.turn!.endsAt).toBe(2_000_000 + 60_000);
   });
 });
 
