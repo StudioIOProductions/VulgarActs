@@ -63,27 +63,19 @@ export function Lobby({ view, conn }: { view: PlayerView; conn: Connection }) {
   );
 }
 
-/** While everyone picks cards: the host sees teams and lock-in progress. Beat 5 adds the hand itself. */
+/** Host controls during the pick phase: teams and the start buttons. The hand itself is in Pick.tsx. */
 export function PickPhase({ view, conn }: { view: PlayerView; conn: Connection }) {
   const locked = view.players.filter((p) => p.locked).length;
   return (
     <>
-      <div class="alert">
-        <p class="tag ink">Building the bowl</p>
-        <h1>{locked} of {view.players.length} locked in</h1>
-        <p class="sub">Everyone picks {view.settings.cardsPerPlayer} cards on their phone.</p>
-      </div>
       {view.teams && <TeamsPanel view={view} conn={conn} />}
-      <Panel title="Who's ready"><PlayerChips view={view} showLock /></Panel>
-      <Panel title="Your hand"><p class="sub">You've got {view.myHand.length} cards. The pick screen arrives in Beat 5.</p></Panel>
-      {view.isHost && (
-        <>
-          <button class="primary" disabled={locked < view.players.length} onClick={() => conn.action("start")}>Start the game</button>
-          {locked < view.players.length && locked >= minFor(view.settings.mode) && (
-            <button onClick={() => conn.action("start", { force: true })}>Start with who's ready</button>
-          )}
-        </>
-      )}
+      <Panel title="Host controls">
+        <p class="sub">{locked} of {view.players.length} locked in.</p>
+        <button class="primary" disabled={locked < view.players.length} onClick={() => conn.action("start")}>Start the game</button>
+        {locked < view.players.length && locked >= minFor(view.settings.mode) && (
+          <button onClick={() => conn.action("start", { force: true })}>Start with who's ready</button>
+        )}
+      </Panel>
     </>
   );
 }

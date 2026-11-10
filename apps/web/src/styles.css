@@ -68,3 +68,20 @@ button.tiny{padding:2px 8px;font-size:16px;box-shadow:2px 2px 0 var(--ink);backg
 .cols{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .col{display:flex;flex-direction:column;gap:14px;min-width:0}
 @media (max-width:760px){.cols{grid-template-columns:1fr}}
+/* Beat 5: the hand */
+.hand{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{position:relative;background:#fff;color:var(--ink);border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);padding:14px 10px 26px;min-height:104px;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:700;font-size:16px;line-height:1.15;cursor:pointer;transform:rotate(-1.2deg);user-select:none;word-break:break-word;font-family:var(--body)}
+.card:nth-child(even){transform:rotate(1.1deg)}
+.card:active{transform:translate(2px,2px) rotate(-1.2deg)}
+.card.on{background:var(--yellow);outline:4px solid var(--ink);outline-offset:-7px}
+.card.dark{background:#1a1a1a;color:var(--paper);border-color:var(--red);box-shadow:3px 3px 0 var(--red)}
+.card.dark.on{background:var(--red);color:#fff}
+.card.custom{border-style:dashed}
+.card.new{font-weight:500;color:var(--mute);background:var(--paper)}
+.cmark{position:absolute;bottom:5px;right:8px;font:400 10px var(--display);text-transform:uppercase;letter-spacing:1px;background:var(--ink);color:#fff;padding:1px 5px;transform:rotate(-3deg)}
+.card.dark .cmark{background:var(--red)}
+.cmark.by{font:700 9px var(--body);background:none;color:var(--mute);transform:none;letter-spacing:.08em;left:8px;right:auto}
+.card.on .cmark.by{color:var(--ink)}
+.writer{display:flex;flex-direction:column;gap:6px;background:var(--yellow);border:3px solid var(--ink);padding:10px}
+.writer .row>input{flex:1 1 160px}.writer .row>button{flex:0 0 auto}
+.small.ink{color:var(--mute);text-shadow:none}

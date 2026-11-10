@@ -4,6 +4,7 @@ import type { PlayerView } from "../../server/src/protocol";
 import { Wordmark, Avatar, Seg, Toggle, Panel } from "./ui";
 import { HostScreen } from "./HostScreen";
 import { Lobby, PickPhase } from "./Lobby";
+import { PickScreen, LockedScreen } from "./Pick";
 
 /** Routes: ""  home · "#KXRT" play on this phone · "#KXRT/screen" host screen (TV/laptop) */
 function route() {
@@ -112,7 +113,8 @@ function Live({ code, name, avatar }: { code: string; name: string; avatar: numb
     <>
       <div class="row between"><Wordmark small /><span class={"pill" + (status === "open" ? "" : " warn")}>{status === "open" ? `Room ${code}` : "Reconnecting…"}</span></div>
       {view.phase === "lobby" && <Lobby view={view} conn={conn} />}
-      {view.phase === "pick" && <PickPhase view={view} conn={conn} />}
+      {view.phase === "pick" && (view.myLocked ? <LockedScreen view={view} /> : <PickScreen view={view} conn={conn} />)}
+      {view.phase === "pick" && view.isHost && <PickPhase view={view} conn={conn} />}
       {view.phase !== "lobby" && view.phase !== "pick" && <Panel title={`Phase: ${view.phase}`}><p class="sub">Beat 5 and 6 build the card and turn screens.</p></Panel>}
       {err && <div class="panel error" onClick={() => setErr("")}>{err}</div>}
     </>
