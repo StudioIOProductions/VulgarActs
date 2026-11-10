@@ -29,6 +29,7 @@ export const DEFAULT_SETTINGS: Settings = {
 export interface Player {
   id: string;
   name: string;
+  avatar: number; // 0..11, index into the avatar set
   joined: number;
   connected: boolean;
   /** Indexes into the deck card list dealt to this player. */

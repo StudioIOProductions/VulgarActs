@@ -52,6 +52,12 @@ describe("joining", () => {
     const s = E.join(E.createGame("KXRT", "p1"), "p1", "  Jordan Burbank-Longname  ", ctx());
     expect(s.players.p1.name).toBe("Jordan Burbank");
   });
+  it("stores a chosen avatar and falls back to 0 for a bad one", () => {
+    let s = E.join(E.createGame("KXRT", "p1"), "p1", "Jordan", ctx(), 7);
+    expect(s.players.p1.avatar).toBe(7);
+    s = E.join(s, "p2", "Sam", ctx(), 99);
+    expect(s.players.p2.avatar).toBe(0);
+  });
   it("rejects empty names", () => {
     expect(() => E.join(E.createGame("KXRT", "p1"), "p1", "   ", ctx())).toThrow("empty_name");
   });
@@ -115,6 +121,17 @@ describe("dealing", () => {
     const [a, b] = s.teams!;
     expect(Math.abs(a.members.length - b.members.length)).toBeLessThanOrEqual(1);
     expect(a.members.length + b.members.length).toBe(5);
+  });
+  it("lets the host reshuffle and move players between teams while picking", () => {
+    let s = E.deal(lobby(6), CARDS, GROUPS, ctx());
+    s = E.shuffleTeams(s, ctx(0, 9));
+    expect(s.teams![0].members.length + s.teams![1].members.length).toBe(6);
+    const who = s.teams![0].members[0];
+    s = E.movePlayerToTeam(s, who, 1);
+    expect(s.teams![1].members).toContain(who);
+    expect(s.teams![0].members).not.toContain(who);
+    s = E.renameTeam(s, 1, "The Degenerates");
+    expect(s.teams![1].name).toBe("The Degenerates");
   });
   it("sets a random giver order in Free-for-All", () => {
     const s = E.deal(lobby(4, { mode: "ffa" }), CARDS, GROUPS, ctx());

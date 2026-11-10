@@ -98,10 +98,16 @@ export class Room {
 
     if (msg.t === "join") {
       try {
-        this.game = E.join(this.game, msg.pid, msg.name, this.ctxNow());
+        this.game = E.join(this.game, msg.pid, msg.name, this.ctxNow(), msg.avatar ?? 0);
       } catch (e) { return this.sendErr(ws, e); }
       ws.serializeAttachment({ pid: msg.pid } satisfies Attachment);
       await this.commit();
+      return;
+    }
+
+    if (msg.t === "watch") {
+      ws.serializeAttachment({ pid: msg.pid } satisfies Attachment);
+      this.send(ws, { t: "view", view: E.viewFor(this.game, msg.pid), now: Date.now() });
       return;
     }
 
@@ -169,6 +175,7 @@ export class Room {
       case "remove": host(); return E.removePlayer(g, a.pid);
       case "renameTeam": host(); return E.renameTeam(g, a.team, a.name);
       case "moveTeam": host(); return E.movePlayerToTeam(g, a.pid, a.team);
+      case "shuffleTeams": host(); return E.shuffleTeams(g, c);
       case "leave": return E.removePlayer(g, pid);
       default: throw new E.RuleError("unknown_action", String(name));
     }

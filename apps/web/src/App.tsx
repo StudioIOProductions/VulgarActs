@@ -1,25 +1,29 @@
 import { useEffect, useState } from "preact/hooks";
-import { Connection, createRoom, roomExists, myPid, savedName, saveName } from "./net";
+import { Connection, createRoom, roomExists, myPid, savedName, saveName, savedAvatar, saveAvatar } from "./net";
 import type { PlayerView } from "../../server/src/protocol";
+import { Wordmark, Avatar, Seg, Toggle, Panel } from "./ui";
+import { HostScreen } from "./HostScreen";
+import { Lobby, PickPhase } from "./Lobby";
 
-const Wordmark = () => <div class="wordmark"><span>Vul</span><span>gar</span> <span>Acts</span></div>;
-
-function codeFromHash() {
-  const h = location.hash.replace("#", "").toUpperCase();
-  return /^[A-Z]{4}$/.test(h) ? h : null;
+/** Routes: ""  home · "#KXRT" play on this phone · "#KXRT/screen" host screen (TV/laptop) */
+function route() {
+  const m = location.hash.replace("#", "").toUpperCase().match(/^([A-Z]{4})(\/SCREEN)?$/);
+  return m ? { code: m[1], screen: !!m[2] } : null;
 }
 
 export function App() {
-  const [code, setCode] = useState<string | null>(codeFromHash());
+  const [r, setR] = useState(route());
   useEffect(() => {
-    const f = () => setCode(codeFromHash());
+    const f = () => setR(route());
     addEventListener("hashchange", f);
     return () => removeEventListener("hashchange", f);
   }, []);
-  return <div class="stage"><div class="phone">{code ? <Room code={code} /> : <Home />}</div></div>;
+  if (!r) return <div class="stage"><div class="phone"><Home /></div></div>;
+  if (r.screen) return <HostScreen code={r.code} />;
+  return <div class="stage"><div class="phone"><Room code={r.code} /></div></div>;
 }
 
-/* ---------- home: join or host ---------- */
+/* ---------- home ---------- */
 
 function Home() {
   const [join, setJoin] = useState("");
@@ -32,103 +36,97 @@ function Home() {
     if (await roomExists(c)) location.hash = c; else setErr(`No room ${c}. Check the code with your host.`);
     setBusy(false);
   };
-  const host = async () => {
+  const host = async (screen: boolean) => {
     setBusy(true);
-    try { location.hash = await createRoom(myPid()); } catch { setErr("Couldn't reach the server. Is it running?"); }
+    try { const c = await createRoom(myPid()); location.hash = screen ? `${c}/screen` : c; }
+    catch { setErr("Couldn't reach the server. Is it running?"); }
     setBusy(false);
   };
   return (
     <>
       <Wordmark />
-      <p class="tag">Beat 3 · rooms are live</p>
-      <div class="panel">
-        <h2>Join a room</h2>
+      <p class="tag">Charades with a filthy mouth</p>
+      <Panel title="Join a room">
         <input class="code" id="join-code" value={join} maxLength={4} autocapitalize="characters" autocomplete="off" placeholder="ABCD"
           onInput={(e) => { setJoin((e.target as HTMLInputElement).value.toUpperCase()); setErr(""); }}
           onKeyDown={(e) => e.key === "Enter" && go()} />
         <button class="primary" onClick={go} disabled={busy}>Join</button>
-      </div>
-      <div class="panel">
-        <h2>Host a room</h2>
-        <p class="sub">Put this device where everyone can see it, or host from your phone. Players join from theirs.</p>
-        <button class="yellow" onClick={host} disabled={busy}>Start a room on this screen</button>
-      </div>
+      </Panel>
+      <Panel title="Host a room">
+        <p class="sub">Hosting on a TV or laptop? Use the host screen: it shows the code, the timer and the scores, and you join from your phone like everyone else.</p>
+        <button class="yellow" onClick={() => host(true)} disabled={busy}>Host screen on this device</button>
+        <p class="sub">No big screen? Host from your phone. You play too.</p>
+        <button onClick={() => host(false)} disabled={busy}>Host from this phone</button>
+      </Panel>
       {err && <div class="panel error">{err}</div>}
     </>
   );
 }
 
-/* ---------- a room: name prompt, then live lobby ---------- */
+/* ---------- a player's phone ---------- */
 
 function Room({ code }: { code: string }) {
   const [name, setName] = useState(savedName());
-  const [joined, setJoined] = useState(!!savedName());
+  const [avatar, setAvatar] = useState(savedAvatar());
+  const [joined, setJoined] = useState(false);
+  const submit = () => { if (!name.trim()) return; saveName(name.trim()); saveAvatar(avatar); setJoined(true); };
   if (!joined) {
     return (
       <>
         <Wordmark />
-        <div class="panel">
+        <Panel>
           <h2>Room {code}</h2>
-          <label>Your name</label>
+          <label for="name">Your name</label>
           <input id="name" value={name} maxLength={14} autocomplete="off" placeholder="Name"
-            onInput={(e) => setName((e.target as HTMLInputElement).value)}
-            onKeyDown={(e) => e.key === "Enter" && name.trim() && (saveName(name.trim()), setJoined(true))} />
-          <button class="primary" disabled={!name.trim()} onClick={() => { saveName(name.trim()); setJoined(true); }}>Join</button>
-        </div>
+            onInput={(e) => setName((e.target as HTMLInputElement).value)} onKeyDown={(e) => e.key === "Enter" && submit()} />
+          <label>Pick a face</label>
+          <div class="avatars">
+            {Array.from({ length: 12 }, (_, i) => (
+              <button key={i} type="button" class="avbtn" aria-pressed={i === avatar} onClick={() => setAvatar(i)}><Avatar n={i} size={44} selected={i === avatar} /></button>
+            ))}
+          </div>
+          <button class="primary" disabled={!name.trim()} onClick={submit}>Join</button>
+        </Panel>
+        <p class="small"><a href="#" onClick={(e) => { e.preventDefault(); location.hash = ""; }}>← Different room</a></p>
       </>
     );
   }
-  return <Live code={code} name={name.trim()} />;
+  return <Live code={code} name={name.trim()} avatar={avatar} />;
 }
 
-function Live({ code, name }: { code: string; name: string }) {
-  const [conn] = useState(() => new Connection(code, myPid(), name));
+function Live({ code, name, avatar }: { code: string; name: string; avatar: number }) {
+  const [conn] = useState(() => new Connection(code, myPid(), name, avatar));
   const [view, setView] = useState<PlayerView | null>(null);
   const [status, setStatus] = useState(conn.status);
   const [err, setErr] = useState("");
   useEffect(() => {
     const off = conn.on((m) => {
       if (m.t === "view") { setView(m.view); setStatus("open"); setErr(""); }
-      if (m.t === "error") { if (m.code === "reconnecting") setStatus("reconnecting"); else setErr(m.code); }
+      if (m.t === "error") { if (m.code === "reconnecting") setStatus("reconnecting"); else setErr(friendly(m.code)); }
     });
     return () => { off(); conn.close(); };
   }, [conn]);
 
-  if (!view) return <><Wordmark /><div class="panel"><p>{status === "reconnecting" ? "Reconnecting…" : `Joining room ${code}…`}</p>{err && <p class="sub">{err}</p>}</div></>;
+  if (!view) return <><Wordmark /><Panel><p>{status === "reconnecting" ? "Reconnecting…" : `Joining room ${code}…`}</p>{err && <p class="sub">{err}</p>}</Panel></>;
   return (
     <>
-      <div class="row between"><Wordmark /><span class="pill">{status === "open" ? `Room ${code}` : "Reconnecting…"}</span></div>
-      <Lobby view={view} conn={conn} />
-      {err && <div class="panel error">{err}</div>}
+      <div class="row between"><Wordmark small /><span class={"pill" + (status === "open" ? "" : " warn")}>{status === "open" ? `Room ${code}` : "Reconnecting…"}</span></div>
+      {view.phase === "lobby" && <Lobby view={view} conn={conn} />}
+      {view.phase === "pick" && <PickPhase view={view} conn={conn} />}
+      {view.phase !== "lobby" && view.phase !== "pick" && <Panel title={`Phase: ${view.phase}`}><p class="sub">Beat 5 and 6 build the card and turn screens.</p></Panel>}
+      {err && <div class="panel error" onClick={() => setErr("")}>{err}</div>}
     </>
   );
 }
 
-function Lobby({ view, conn }: { view: PlayerView; conn: Connection }) {
-  const me = view.players.find((p) => p.id === view.me);
-  return (
-    <>
-      <div class="alert">
-        <p class="tag ink">You're in, {me?.name}</p>
-        <h1>{view.phase === "lobby" ? "Waiting for the host" : `Phase: ${view.phase}`}</h1>
-        <p class="sub">{view.players.length} in the room{view.isHost ? " · you are the host" : ""}</p>
-      </div>
-      <div class="panel">
-        <h2>Who's here</h2>
-        <div class="chips">
-          {view.players.map((p) => (
-            <span key={p.id} class={"chip" + (p.connected ? "" : " off")}>{p.name}{p.id === view.me ? " (you)" : ""}{p.connected ? "" : " · away"}</span>
-          ))}
-        </div>
-      </div>
-      {view.isHost && (
-        <div class="panel">
-          <h2>Host controls</h2>
-          <p class="sub">Beat 4 adds settings and teams here. For now, share the code and watch names appear.</p>
-          <div class="code">{view.code}</div>
-        </div>
-      )}
-      <p class="small">Server clock offset: {conn.skew} ms</p>
-    </>
-  );
+export function friendly(code: string): string {
+  const m: Record<string, string> = {
+    too_few_players: "Not enough players yet. Teams need 4, Free-for-All needs 3.",
+    not_all_locked: "Someone hasn't locked in their cards yet.",
+    host_only: "Only the host can do that.",
+    room_full: "This room is full (16 players).",
+    deck_too_small: "Not enough cards in the selected decks for this many players.",
+    join_first: "Join the room first.",
+  };
+  return m[code] ?? code.replace(/_/g, " ");
 }

@@ -6,7 +6,9 @@
 import type { PlayerView, Settings, Pick } from "@vulgar-acts/engine";
 
 export type ClientMsg =
-  | { t: "join"; pid: string; name: string }
+  | { t: "join"; pid: string; name: string; avatar?: number }
+  /** A host screen (TV, laptop): watches the room without taking a seat. Has host powers if it created the room. */
+  | { t: "watch"; pid: string }
   | { t: "action"; name: ActionName; args?: Record<string, unknown> }
   | { t: "ping" };
 
@@ -30,6 +32,7 @@ export type ActionName =
   | "remove"        // host: { pid }
   | "renameTeam"    // host: { team: 0|1, name }
   | "moveTeam"      // host: { pid, team: 0|1 }
+  | "shuffleTeams"  // host
   | "leave";
 
 export type ServerMsg =

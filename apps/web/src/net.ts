@@ -17,6 +17,8 @@ export function myPid(): string {
 }
 export const savedName = () => ls.get("va_name") ?? "";
 export const saveName = (n: string) => ls.set("va_name", n);
+export const savedAvatar = () => Number(ls.get("va_avatar") ?? 0) || 0;
+export const saveAvatar = (a: number) => ls.set("va_avatar", String(a));
 
 const base = () => {
   const env = (import.meta as any).env?.VITE_SERVER_URL as string | undefined;
@@ -53,13 +55,13 @@ export class Connection {
   skew = 0;
   status: "connecting" | "open" | "reconnecting" | "closed" = "connecting";
 
-  constructor(public code: string, public pid: string, public name: string) { this.open(); }
+  constructor(public code: string, public pid: string, public name: string, public avatar = 0, public watch = false) { this.open(); }
 
   private open() {
     this.ws = new WebSocket(`${wsBase()}/ws/${this.code}`);
     this.ws.onopen = () => {
       this.status = "open"; this.retry = 0;
-      this.raw({ t: "join", pid: this.pid, name: this.name });
+      if (this.watch) this.raw({ t: "watch", pid: this.pid }); else this.raw({ t: "join", pid: this.pid, name: this.name, avatar: this.avatar });
       this.raw({ t: "ping" });
     };
     this.ws.onmessage = (ev) => {

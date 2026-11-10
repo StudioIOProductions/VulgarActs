@@ -94,19 +94,23 @@ export function updateSettings(s: GameState, patch: Partial<Settings>): GameStat
   return next;
 }
 
-export function join(s: GameState, pid: string, name: string, ctx: Ctx): GameState {
+export const AVATAR_COUNT = 12;
+
+export function join(s: GameState, pid: string, name: string, ctx: Ctx, avatar = 0): GameState {
   const trimmed = name.trim().slice(0, 14);
   if (!trimmed) throw new RuleError("empty_name");
+  const av = Number.isInteger(avatar) && avatar >= 0 && avatar < AVATAR_COUNT ? avatar : 0;
   const next = clone(s);
   if (next.players[pid]) {
     next.players[pid].name = trimmed;
+    next.players[pid].avatar = av;
     next.players[pid].connected = true;
     return next;
   }
   if (Object.keys(next.players).length >= MAX_PLAYERS) throw new RuleError("room_full");
   const late = s.phase !== "lobby";
   next.players[pid] = {
-    id: pid, name: trimmed, joined: ctx.now, connected: true, hand: [], redrawn: false,
+    id: pid, name: trimmed, avatar: av, joined: ctx.now, connected: true, hand: [], redrawn: false,
     locked: false, picks: [], lateJoiner: late,
   };
   if (late && next.teams) {
@@ -206,6 +210,17 @@ export function renameTeam(s: GameState, team: 0 | 1, name: string): GameState {
   if (!s.teams) throw new RuleError("no_teams");
   const next = clone(s);
   next.teams![team].name = name.trim().slice(0, 20) || TEAM_NAMES[team];
+  return next;
+}
+
+/** Host reshuffles the teams while everyone is still picking cards. */
+export function shuffleTeams(s: GameState, ctx: Ctx): GameState {
+  requirePhase(s, "pick");
+  if (!s.teams) throw new RuleError("no_teams");
+  const next = clone(s);
+  const ids = shuffle(playerList(s).map((p) => p.id), ctx.random);
+  next.teams![0].members = ids.filter((_, i) => i % 2 === 0);
+  next.teams![1].members = ids.filter((_, i) => i % 2 === 1);
   return next;
 }
 
@@ -599,7 +614,8 @@ export interface PlayerView {
   me: string;
   isHost: boolean;
   settings: Settings;
-  players: { id: string; name: string; connected: boolean; locked: boolean; team: 0 | 1 | null; lateJoiner: boolean }[];
+  players: { id: string; name: string; avatar: number; connected: boolean; locked: boolean; team: 0 | 1 | null; lateJoiner: boolean }[];
+  hostName: string;
   myHand: { text: string; deck: string }[];
   myRedrawn: boolean;
   myLocked: boolean;
@@ -640,8 +656,9 @@ export function viewFor(s: GameState, pid: string): PlayerView {
     phase: s.phase,
     me: pid,
     isHost: pid === s.host,
+    hostName: s.players[s.host]?.name ?? "",
     settings: s.settings,
-    players: playerList(s).map((p) => ({ id: p.id, name: p.name, connected: p.connected, locked: p.locked, team: teamOf(s, p.id), lateJoiner: p.lateJoiner })),
+    players: playerList(s).map((p) => ({ id: p.id, name: p.name, avatar: p.avatar, connected: p.connected, locked: p.locked, team: teamOf(s, p.id), lateJoiner: p.lateJoiner })),
     myHand: me && s.phase === "pick" ? me.hand.map((i) => ({ text: s.cards[i].text, deck: s.cards[i].deck })) : [],
     myRedrawn: me?.redrawn ?? false,
     myLocked: me?.locked ?? false,

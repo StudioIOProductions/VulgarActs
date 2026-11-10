@@ -36,3 +36,35 @@ input:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
 .panel.error{background:var(--red);color:#fff;font-weight:700}
 .small{font-size:12px;color:var(--paper);text-shadow:1px 1px 0 var(--ink);font-weight:700}
 button[disabled]{opacity:.45;cursor:not-allowed;box-shadow:none}
+/* Beat 4 */
+.wordmark.small{font-size:26px;padding:6px 10px 4px}
+.pill.warn{background:var(--yellow)}
+.seg{display:flex;border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);background:#fff}
+.seg button{flex:1;border:0;box-shadow:none;border-right:3px solid var(--ink);padding:10px 6px;font-size:14px;background:#fff}
+.seg button:last-child{border-right:0}.seg button[aria-pressed=true]{background:var(--yellow)}
+.seg button:active{transform:none}
+.avatars{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.avbtn{padding:4px;box-shadow:none;border-color:transparent;background:transparent}
+.avbtn[aria-pressed=true]{border-color:var(--ink);background:var(--yellow);box-shadow:3px 3px 0 var(--ink)}
+.avatar{display:inline-flex;align-items:center;justify-content:center;border:2px solid var(--ink);border-radius:50%;line-height:1;flex:0 0 auto}
+.chip.av{display:inline-flex;align-items:center;gap:8px}
+.chip.ok{background:var(--yellow)}
+.chips.big .chip{font-size:18px;padding:8px 14px}
+.code.big{font-size:clamp(64px,10vw,120px);letter-spacing:.14em}
+.teams{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.team{border:3px solid var(--ink);padding:10px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.team.t0{background:var(--red);color:#fff}.team.t1{background:var(--cyan)}
+.team h3{font-family:var(--display);font-weight:400;margin:0;font-size:22px;text-transform:uppercase}
+.teamname{font-family:var(--display);font-size:20px;text-transform:uppercase;padding:6px 8px;background:#fff;color:var(--ink)}
+.member{display:flex;align-items:center;gap:8px;min-width:0}
+.mname{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700}
+button.tiny{padding:2px 8px;font-size:16px;box-shadow:2px 2px 0 var(--ink);background:#fff;color:var(--ink)}
+.linkbox{font-family:monospace;font-size:14px;background:#fff;border:2px solid var(--ink);padding:8px;overflow-wrap:anywhere}
+.center{text-align:center}
+.small a{color:inherit}
+/* host screen */
+.stage.tv{align-items:stretch}
+.wide{width:100%;max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.col{display:flex;flex-direction:column;gap:14px;min-width:0}
+@media (max-width:760px){.cols{grid-template-columns:1fr}}
