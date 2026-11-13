@@ -10,7 +10,7 @@ export function Landing() {
           <Wordmark />
           <p class="kicker">A party game for adults who should know better</p>
           <h1 class="hero-h">Charades, minus the dignity.</h1>
-          <p class="hero-p">Everyone joins from their own phone. One bowl of cards, three rounds, and your friends’ secrets on the cards. No download, no sign-up, no ads.</p>
+          <p class="hero-p"><b>Everyone joins from their own phone. One bowl of cards, three rounds, and your friends’ secrets on the cards. No download, no sign-up, no ads.</b></p>
           <div class="row">
             <a class="btn primary" href="#play" onClick={play}>Play now</a>
             <a class="btn" href="#how">How to play</a>
