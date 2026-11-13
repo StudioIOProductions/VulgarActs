@@ -13,7 +13,7 @@ export function Landing() {
           <p class="hero-p">Everyone joins from their own phone. One bowl of cards, three rounds, and your friends’ secrets on the cards. No download, no sign-up, no ads.</p>
           <div class="row">
             <a class="btn primary" href="#play" onClick={play}>Play now</a>
-            <a class="btn" href="#how">How it plays</a>
+            <a class="btn" href="#how">How to play</a>
           </div>
           <p class="fine">Rated 17+ · 4 to 16 players · 35 to 50 minutes</p>
         </div>
@@ -22,7 +22,7 @@ export function Landing() {
 
       <section id="how" class="band cream">
         <div class="inner">
-          <p class="eyebrow">How it plays</p>
+          <p class="eyebrow">How to play</p>
           <h2 class="h2">Three rounds. Zero dignity.</h2>
           <p class="lead">Everyone puts three cards in the bowl, or writes their own. Then you take turns giving clues against the clock. The same cards come back every round, and the rules get stricter each time.</p>
           <div class="rounds">
@@ -53,7 +53,8 @@ export function Landing() {
 
       <section class="band cyan">
         <div class="inner center">
-          <h2 class="h2">Got four people and a phone each?</h2>
+          <h2 class="h2">Got four friends with phones?</h2>
+          <p class="joke">(If not, that might be a <b>you</b> problem…)</p>
           <a class="btn primary big" href="#play" onClick={play}>Start a room</a>
           <p class="fine ink">Host it on a TV or laptop for the full show, or straight from your phone.</p>
         </div>

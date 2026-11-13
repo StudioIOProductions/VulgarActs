@@ -176,3 +176,4 @@ button.tiny{padding:2px 8px;font-size:16px;box-shadow:2px 2px 0 var(--ink);backg
 .deck-box{width:100%;max-width:380px;height:auto;justify-self:center;transform:rotate(-2deg);filter:drop-shadow(12px 12px 0 var(--red))}
 .foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:20px max(16px,env(safe-area-inset-left,0px)) calc(24px + env(safe-area-inset-bottom,0px));font-size:13px;font-weight:700;color:var(--paper);text-shadow:1px 1px 0 var(--ink);border-top:4px solid var(--ink)}
 @media (max-width:760px){.hero,.decks{grid-template-columns:1fr}.hero-box{max-width:320px;order:-1}.rounds{grid-template-columns:1fr}.deck-box{max-width:240px}}
+.joke{font-size:14px;font-style:italic;font-weight:500;color:var(--ink);margin-top:-8px}
