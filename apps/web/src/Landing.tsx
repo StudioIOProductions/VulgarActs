@@ -63,8 +63,14 @@ export function Landing() {
       </section>
 
       <footer class="foot">
-        <span>© {new Date().getFullYear()} Vulgar Acts · vulgaracts.com</span>
-        <span>For adults. Custom cards never leave your room.</span>
+        <div class="foot-brand">
+          <img src="/img/studio-io.png" alt="Studio IO: The Impossible Objects" width="160" height="90" />
+          <div>
+            <p>A Studio IO production.</p>
+            <p>© {new Date().getFullYear()} Studio IO. Vulgar Acts and the Vulgar Acts box art are trademarks of Studio IO. All rights reserved.</p>
+          </div>
+        </div>
+        <span>vulgaracts.com · For adults. Custom cards never leave your room.</span>
       </footer>
     </div>
   );
