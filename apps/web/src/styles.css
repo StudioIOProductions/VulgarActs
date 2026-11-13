@@ -47,7 +47,7 @@ button[disabled]{opacity:.45;cursor:not-allowed;box-shadow:none}
 .avbtn{padding:4px;box-shadow:none;border-color:transparent;background:transparent}
 .avbtn[aria-pressed=true]{border-color:var(--ink);background:var(--yellow);box-shadow:3px 3px 0 var(--ink)}
 .avatar{display:inline-flex;align-items:center;justify-content:center;line-height:1;flex:0 0 auto}
-.avatar svg{display:block;width:100%;height:100%}
+.avatar img{display:block;width:100%;height:100%;object-fit:contain}
 .chip.av{display:inline-flex;align-items:center;gap:8px}
 .chip.ok{background:var(--yellow)}
 .chips.big .chip{font-size:18px;padding:8px 14px}
