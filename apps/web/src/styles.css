@@ -85,3 +85,33 @@ button.tiny{padding:2px 8px;font-size:16px;box-shadow:2px 2px 0 var(--ink);backg
 .writer{display:flex;flex-direction:column;gap:6px;background:var(--yellow);border:3px solid var(--ink);padding:10px}
 .writer .row>input{flex:1 1 160px}.writer .row>button{flex:0 0 auto}
 .small.ink{color:var(--mute);text-shadow:none}
+/* Beat 6: the turn */
+.strip{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--yellow);border:3px solid var(--ink);padding:8px 12px;font-weight:700;font-variant-numeric:tabular-nums;flex-wrap:wrap}
+.strip.white{background:#fff}
+.strip>span:first-child{display:inline-flex;align-items:center;gap:6px}
+.timer{font-family:var(--display);font-size:40px;line-height:1;min-width:70px;text-align:center}
+.timer.hot{color:var(--red);animation:pulse .6s infinite alternate}
+.tvtimer{font-size:clamp(96px,16vw,180px);margin:8px 0}
+@keyframes pulse{from{transform:scale(1)}to{transform:scale(1.12)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+.shake{animation:shake .25s 3}
+@media (prefers-reduced-motion:reduce){.timer.hot,.shake{animation:none}}
+.pips{display:inline-flex;gap:4px;vertical-align:middle}.pips i{width:10px;height:10px;border:2px solid var(--ink);background:var(--ink)}.pips i.used{background:transparent}
+.bigcard{position:relative;background:#fff;border:4px solid var(--ink);box-shadow:6px 6px 0 var(--ink);padding:28px 18px 56px;min-height:230px;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:700;font-size:clamp(26px,7.5vw,36px);line-height:1.1;transform:rotate(-1.5deg);word-break:break-word}
+.bigcard::after{content:"Vulgar Acts";position:absolute;bottom:10px;right:14px;font:400 18px var(--display);text-transform:uppercase;letter-spacing:1px;background:var(--ink);color:#fff;padding:2px 8px;transform:rotate(-3deg)}
+.bigcard.dark{background:#1a1a1a;color:var(--paper);border-color:var(--red);box-shadow:6px 6px 0 var(--red)}
+.bigcard.dark::after{content:"After Dark";background:var(--red)}
+.bigcard.custom{border-style:dashed}
+.bigcard.custom::before{content:"by " attr(data-by);position:absolute;bottom:12px;left:14px;font:700 11px var(--body);color:var(--mute);text-transform:uppercase;letter-spacing:.08em}
+.bigcard.paused{background:var(--yellow);font-family:var(--display);font-weight:400;text-transform:uppercase}
+.buzz{background:var(--red);color:#fff;font-family:var(--display);font-weight:400;font-size:40px;padding:34px;width:100%;text-transform:uppercase;letter-spacing:.04em}
+.score{display:flex;gap:10px}
+.score>div{flex:1;border:3px solid var(--ink);padding:10px;text-align:center;background:#fff;font-weight:700}
+.score .n{font-family:var(--display);font-size:34px;line-height:1}
+.score .t0{background:var(--red);color:#fff}.score .t1{background:var(--cyan)}
+.list{display:flex;flex-direction:column;gap:6px}
+.list>div{display:flex;justify-content:space-between;border-bottom:2px dotted var(--ink);padding:4px 0;gap:8px}
+.list>div span:first-child{min-width:0;overflow-wrap:anywhere;display:inline-flex;align-items:center;gap:6px}
+.tvalert h1.huge{font-size:clamp(48px,7vw,88px);display:flex;align-items:center;justify-content:center;gap:16px}
+.tvalert .rule{font-weight:700;font-size:22px;margin-top:8px}
+.tv .score .n{font-size:64px}

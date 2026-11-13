@@ -8,6 +8,7 @@ import { Connection, myPid } from "./net";
 import type { PlayerView } from "../../server/src/protocol";
 import { Wordmark, Avatar, Panel } from "./ui";
 import { SettingsPanel, TeamsPanel } from "./Lobby";
+import { Scoreboard, useSecondsLeft, useBuzzShake, ROUND_NAMES } from "./Turn";
 
 export function HostScreen({ code }: { code: string }) {
   const [conn] = useState(() => new Connection(code, myPid(), "", 0, true));
@@ -76,10 +77,80 @@ export function HostScreen({ code }: { code: string }) {
           </div>
         )}
 
-        {view.phase !== "lobby" && view.phase !== "pick" && (
-          <Panel title={`Phase: ${view.phase}`}><p class="sub">Beat 6 and 8 build the turn and scoreboard views here.</p></Panel>
+        {view.phase === "round" && <RoundIntroTV view={view} conn={conn} />}
+        {view.phase === "turn" && <TurnTV view={view} conn={conn} />}
+        {view.phase === "turnend" && <TurnEndTV view={view} conn={conn} />}
+        {view.phase === "final" && <Panel title="Game over"><p class="sub">Beat 7 builds the awards screen.</p></Panel>}
+      </div>
+    </div>
+  );
+}
+
+const RULES = ["Say anything you like. Not a word that's on the card.", "Say exactly one word. Then act it out.", "No sound at all. Mime it."];
+
+function RoundIntroTV({ view, conn }: { view: PlayerView; conn: Connection }) {
+  return (
+    <div class="cols">
+      <div class="col">
+        <div class="alert tvalert">
+          <p class="tag ink">Round {view.round + 1} of {view.settings.rounds}</p>
+          <h1 class="huge">{ROUND_NAMES[view.round]}</h1>
+          <p class="rule">{RULES[view.round]}</p>
+          <p class="sub">{view.poolSize} cards in the bowl</p>
+        </div>
+        {view.isHost && <button class="primary" onClick={() => conn.action("announce")}>Who's up?</button>}
+      </div>
+      <div class="col"><Scoreboard view={view} /></div>
+    </div>
+  );
+}
+
+function TurnTV({ view, conn }: { view: PlayerView; conn: Connection }) {
+  const t = view.turn!;
+  const giver = view.players.find((p) => p.id === t.giver);
+  const secs = useSecondsLeft(view, conn);
+  useBuzzShake(conn, ".tvbox");
+  const who = t.team !== null && view.teams ? `${view.teams[t.team].name} guesses` : "Everyone guesses";
+  return (
+    <div class="cols">
+      <div class="col">
+        <div class="alert tvalert tvbox">
+          <p class="tag ink">{t.status === "ready" ? "Up next" : t.status === "paused" ? "Paused" : "Giving clues"}</p>
+          <h1 class="huge"><Avatar n={giver?.avatar ?? 0} size={56} /> {giver?.name}</h1>
+          <p class="rule">{who} · Round {view.round + 1}: {ROUND_NAMES[view.round]}</p>
+          {t.status === "ready"
+            ? <p class="sub">Waiting for {giver?.name} to tap Ready…</p>
+            : <div class={"timer tvtimer" + (secs <= 10 && t.status === "live" ? " hot" : "")}>{secs}</div>}
+          {t.status !== "ready" && <p class="sub">{view.poolSize} left in the bowl · got {t.gotCount} · skips used {t.skips}</p>}
+        </div>
+        {view.isHost && t.status === "ready" && <button onClick={() => conn.action("skipGiver")}>{giver?.name} isn't here, skip to next giver</button>}
+        {view.isHost && t.status !== "ready" && (
+          <div class="row">
+            {t.status === "paused" ? <button onClick={() => conn.action("resume")}>Resume</button> : <button onClick={() => conn.action("pause")}>Pause</button>}
+            <button onClick={() => conn.action("endTurn")}>End this turn now</button>
+          </div>
         )}
       </div>
+      <div class="col"><Scoreboard view={view} /></div>
+    </div>
+  );
+}
+
+function TurnEndTV({ view, conn }: { view: PlayerView; conn: Connection }) {
+  const t = view.turn!;
+  const giver = view.players.find((p) => p.id === t.giver);
+  const over = view.poolSize === 0;
+  return (
+    <div class="cols">
+      <div class="col">
+        <Panel>
+          <h2>{t.why === "empty" ? "Bowl empty!" : t.why === "buzzed" ? "Buzzed out!" : "Time!"}</h2>
+          <p>{giver?.name} got <b>{t.gotCount}</b> through{t.bonus ? ` and earns a ${t.bonus}-point giver bonus` : ""}. {t.skips} skip{t.skips === 1 ? "" : "s"} used.</p>
+          <div class="list">{t.got.map((c, i) => <div key={i}><span>{c.text}</span><span>✓</span></div>)}{t.got.length === 0 && <p class="sub">Nothing this time. Brutal.</p>}</div>
+        </Panel>
+        {view.isHost && <button class="primary" onClick={() => conn.action("continue")}>{over ? (view.round + 1 < view.settings.rounds ? "Next round" : "Final scores") : "Next giver"}</button>}
+      </div>
+      <div class="col"><Scoreboard view={view} /></div>
     </div>
   );
 }

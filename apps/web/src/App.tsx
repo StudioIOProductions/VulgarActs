@@ -5,6 +5,7 @@ import { Wordmark, Avatar, Seg, Toggle, Panel } from "./ui";
 import { HostScreen } from "./HostScreen";
 import { Lobby, PickPhase } from "./Lobby";
 import { PickScreen, LockedScreen } from "./Pick";
+import { TurnPhone, TurnEndPhone, RoundIntroPhone } from "./Turn";
 
 /** Routes: ""  home · "#KXRT" play on this phone · "#KXRT/screen" host screen (TV/laptop) */
 function route() {
@@ -115,7 +116,10 @@ function Live({ code, name, avatar }: { code: string; name: string; avatar: numb
       {view.phase === "lobby" && <Lobby view={view} conn={conn} />}
       {view.phase === "pick" && (view.myLocked ? <LockedScreen view={view} /> : <PickScreen view={view} conn={conn} />)}
       {view.phase === "pick" && view.isHost && <PickPhase view={view} conn={conn} />}
-      {view.phase !== "lobby" && view.phase !== "pick" && <Panel title={`Phase: ${view.phase}`}><p class="sub">Beat 5 and 6 build the card and turn screens.</p></Panel>}
+      {view.phase === "round" && <RoundIntroPhone view={view} conn={conn} />}
+      {view.phase === "turn" && <TurnPhone view={view} conn={conn} />}
+      {view.phase === "turnend" && <TurnEndPhone view={view} conn={conn} />}
+      {view.phase === "final" && <Panel title="Game over"><p class="sub">Beat 7 builds the awards screen.</p></Panel>}
       {err && <div class="panel error" onClick={() => setErr("")}>{err}</div>}
     </>
   );
