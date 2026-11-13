@@ -24,7 +24,7 @@ export function Landing() {
         <div class="inner">
           <p class="eyebrow">How to play</p>
           <h2 class="h2">Three rounds. Zero dignity.</h2>
-          <p class="lead">Everyone puts three cards in the bowl, or writes their own. Then you take turns giving clues against the clock. The same cards come back every round, and the rules get stricter each time.</p>
+          <p class="lead"><b>Everyone puts three cards in the bowl, or writes their own. Then you take turns giving clues against the clock. The same cards come back every round, and the rules get stricter each time.</b></p>
           <div class="rounds">
             <div class="rcard"><span class="rn">1</span><h3>Say anything</h3><p>Describe it, act it, scream it. Just not the words on the card.</p></div>
             <div class="rcard"><span class="rn">2</span><h3>One word</h3><p>Everyone’s heard every card once. Now you get a single word, then you act.</p></div>
