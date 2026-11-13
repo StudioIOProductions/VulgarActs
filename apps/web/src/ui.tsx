@@ -5,13 +5,13 @@ export const Wordmark = ({ small = false }: { small?: boolean }) => (
   <div class={"wordmark" + (small ? " small" : "")}><span>Vul</span><span>gar</span> <span>Acts</span></div>
 );
 
-import { AvatarArt, AVATAR_NAMES } from "./avatars";
-/** Twelve goofy characters; a tinted circle behind each so they read at chip size. */
-const AV_BG = ["#F7E020", "#FFFDF5", "#1BA3D6", "#F7E020", "#1BA3D6", "#FFFDF5", "#1BA3D6", "#F7E020", "#FFFDF5", "#1BA3D6", "#F7E020", "#FFFDF5"];
+import { AvatarArt, AVATAR_NAMES, AVATAR_COUNT } from "./avatars";
+/** Sixteen goofy characters; bare artwork, no backing circle. */
+export { AVATAR_COUNT };
 export function Avatar({ n, size = 36, selected = false }: { n: number; size?: number; selected?: boolean }) {
-  const i = ((n % 12) + 12) % 12;
+  const i = ((n % AVATAR_COUNT) + AVATAR_COUNT) % AVATAR_COUNT;
   return (
-    <span class={"avatar" + (selected ? " on" : "")} style={{ width: size, height: size, background: AV_BG[i] }} role="img" aria-label={AVATAR_NAMES[i]}>
+    <span class={"avatar" + (selected ? " on" : "")} style={{ width: size, height: size }} role="img" aria-label={AVATAR_NAMES[i]}>
       <AvatarArt n={i} />
     </span>
   );

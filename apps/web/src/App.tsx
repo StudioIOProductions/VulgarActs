@@ -1,7 +1,7 @@
 import { useEffect, useState } from "preact/hooks";
 import { Connection, createRoom, roomExists, roomInfo, myPid, savedName, saveName, savedAvatar, saveAvatar } from "./net";
 import type { PlayerView } from "../../server/src/protocol";
-import { Wordmark, Avatar, Seg, Toggle, Panel } from "./ui";
+import { Wordmark, Avatar, Panel, AVATAR_COUNT } from "./ui";
 import { HostScreen } from "./HostScreen";
 import { Lobby, PickPhase } from "./Lobby";
 import { PickScreen, LockedScreen } from "./Pick";
@@ -102,7 +102,7 @@ function Room({ code }: { code: string }) {
             onInput={(e) => setName((e.target as HTMLInputElement).value)} onKeyDown={(e) => e.key === "Enter" && submit()} />
           <label>Pick a face</label>
           <div class="avatars">
-            {Array.from({ length: 12 }, (_, i) => (
+            {Array.from({ length: AVATAR_COUNT }, (_, i) => (
               <button key={i} type="button" class="avbtn" aria-pressed={i === avatar} onClick={() => setAvatar(i)}><Avatar n={i} size={64} selected={i === avatar} /></button>
             ))}
           </div>

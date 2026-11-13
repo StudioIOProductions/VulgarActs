@@ -95,7 +95,7 @@ export function updateSettings(s: GameState, patch: Partial<Settings>): GameStat
   return next;
 }
 
-export const AVATAR_COUNT = 12;
+export const AVATAR_COUNT = 16;
 
 export function join(s: GameState, pid: string, name: string, ctx: Ctx, avatar = 0): GameState {
   const trimmed = name.trim().slice(0, 14);
