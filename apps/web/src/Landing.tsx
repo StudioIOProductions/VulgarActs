@@ -31,10 +31,10 @@ export function Landing() {
             <div class="rcard dark"><span class="rn">3</span><h3>Act only</h3><p>No sound at all. Mime “Puppets with human teeth” to someone you love.</p></div>
           </div>
           <ul class="facts">
-            <li>Two teams, or free-for-all with points for the giver</li>
-            <li>60-second turns, three skips, and a Buzz button for when the giver cheats</li>
-            <li>A host screen on the TV shows the code, the clock and the scores; phones are the controllers</li>
-            <li>Write your own cards: inside jokes, last weekend, the person sitting next to you</li>
+            <li><b>Two teams,</b> or free-for-all with points for the giver</li>
+            <li><b>60-second turns,</b> three skips, and a Buzz button for when the giver cheats</li>
+            <li><b>A host screen on the TV</b> shows the code, the clock and the scores; phones are the controllers</li>
+            <li><b>Write your own cards:</b> inside jokes, last weekend, the person sitting next to you</li>
           </ul>
         </div>
       </section>
