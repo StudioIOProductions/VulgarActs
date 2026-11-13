@@ -11,7 +11,7 @@
 import * as E from "@vulgar-acts/engine";
 import type { GameState } from "@vulgar-acts/engine";
 import type { ClientMsg, ServerMsg, ActionName } from "./protocol";
-import { PLACEHOLDER_CARDS, PLACEHOLDER_GROUPS } from "./placeholder-deck";
+import { ALL_CARDS, ALL_GROUPS, DECK_SUMMARIES } from "@vulgar-acts/decks";
 
 export interface Env { ROOMS: DurableObjectNamespace }
 
@@ -23,6 +23,7 @@ export default {
     const url = new URL(req.url);
     if (req.method === "OPTIONS") return new Response(null, { headers: { "access-control-allow-origin": "*", "access-control-allow-methods": "GET,POST", "access-control-allow-headers": "content-type" } });
     if (url.pathname === "/health") return json({ ok: true });
+    if (url.pathname === "/api/decks") return json(DECK_SUMMARIES);
 
     if (url.pathname === "/api/rooms" && req.method === "POST") {
       const body = (await req.json().catch(() => ({}))) as { host?: string };
@@ -157,7 +158,7 @@ export class Room {
     const host = () => { if (pid !== g.host) throw new E.RuleError("host_only"); };
     switch (name) {
       case "settings": host(); return E.updateSettings(g, a.patch ?? {});
-      case "deal": host(); return E.deal(g, PLACEHOLDER_CARDS, PLACEHOLDER_GROUPS, c);
+      case "deal": host(); return E.deal(g, ALL_CARDS, ALL_GROUPS, c);
       case "redraw": return E.redrawHand(g, pid, c);
       case "lock": return E.lockPicks(g, pid, a.picks ?? []);
       case "start": host(); if (!a.force && !E.allLocked(g)) throw new E.RuleError("not_all_locked"); return E.startGame(g, c);

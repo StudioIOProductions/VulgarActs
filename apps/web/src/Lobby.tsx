@@ -1,8 +1,10 @@
 import type { PlayerView, Settings } from "../../server/src/protocol";
 import type { Connection } from "./net";
 import { Avatar, Seg, Toggle, Panel } from "./ui";
+import { DECK_SUMMARIES } from "@vulgar-acts/decks";
+import { useState } from "preact/hooks";
 
-const DECKS = [{ v: "starter", label: "Starter" }, { v: "afterdark", label: "After Dark 18+" }];
+const DECKS = DECK_SUMMARIES.map((d) => ({ v: d.id, label: `${d.title} · ${d.count}${d.rating === "18+" ? " · 18+" : ""}` }));
 const minFor = (mode: Settings["mode"]) => (mode === "ffa" ? 3 : 4);
 
 export function PlayerChips({ view, showLock = false, conn }: { view: PlayerView; showLock?: boolean; conn?: Connection }) {
@@ -23,8 +25,21 @@ export function PlayerChips({ view, showLock = false, conn }: { view: PlayerView
 export function SettingsPanel({ view, conn }: { view: PlayerView; conn: Connection }) {
   const st = view.settings;
   const set = (patch: Partial<Settings>) => conn.action("settings", { patch });
+  const [gate, setGate] = useState<string[] | null>(null);
+  const setDecks = (v: string[]) => {
+    const adding = v.filter((id) => !st.decks.includes(id));
+    const adult = adding.filter((id) => DECK_SUMMARIES.find((d) => d.id === id)?.rating === "18+");
+    if (adult.length) setGate(v); else set({ decks: v });
+  };
   return (
     <Panel title="Settings">
+      {gate && (
+        <div class="gate18">
+          <h3>After Dark is 18+</h3>
+          <p>Every card in it is explicit. Confirm everyone in the room is an adult and that nobody will be ambushed.</p>
+          <div class="row"><button onClick={() => setGate(null)}>Not tonight</button><button class="primary" onClick={() => { set({ decks: gate }); setGate(null); }}>Everyone's 18+</button></div>
+        </div>
+      )}
       <label>Mode</label>
       <Seg id="mode" value={st.mode} options={[{ v: "teams", label: "Two teams" }, { v: "ffa", label: "Free-for-all" }]} onChange={(v) => set({ mode: v })} />
       <label>Rounds</label>
@@ -34,7 +49,8 @@ export function SettingsPanel({ view, conn }: { view: PlayerView; conn: Connecti
       <label>Cards each puts in the bowl</label>
       <Seg id="per" value={st.cardsPerPlayer} options={[3, 4, 5].map((v) => ({ v, label: String(v) }))} onChange={(v) => set({ cardsPerPlayer: v })} />
       <label>Decks in play</label>
-      <Toggle id="decks" values={st.decks} options={DECKS} onChange={(v) => set({ decks: v })} />
+      <Toggle id="decks" values={st.decks} options={DECKS} onChange={setDecks} />
+      {st.decks.includes("afterdark") && <p class="small ink">After Dark is in play: every phone will show the 18+ mark before cards are dealt.</p>}
       <label>When someone buzzes a card word</label>
       <Seg id="buzz" value={st.buzzPenalty} options={[{ v: "card", label: "Lose the card" }, { v: "point", label: "Lose a point" }, { v: "none", label: "Nothing" }]} onChange={(v) => set({ buzzPenalty: v })} />
     </Panel>

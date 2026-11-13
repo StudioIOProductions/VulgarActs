@@ -11,7 +11,8 @@
   "dependencies": {
     "@vulgar-acts/engine": "*",
     "preact": "^10.24.3",
-    "qrcode": "^1.5.4"
+    "qrcode": "^1.5.4",
+    "@vulgar-acts/decks": "*"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.9.1",

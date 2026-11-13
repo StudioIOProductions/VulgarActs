@@ -1,0 +1,1135 @@
+{
+ "id": "starter",
+ "title": "Starter",
+ "description": "Sex, shit, and grandma. The deck every room starts with.",
+ "rating": "17+",
+ "price": 0,
+ "language": "en",
+ "version": 1,
+ "cards": [
+  {
+   "id": "starter:grammar-nazi-memorabilia",
+   "text": "Grammar Nazi Memorabilia"
+  },
+  {
+   "id": "starter:2-000-year-old-mummy-shit",
+   "text": "2,000-year-old mummy shit"
+  },
+  {
+   "id": "starter:50-shades-of-grey-pubes",
+   "text": "50 shades of grey pubes"
+  },
+  {
+   "id": "starter:a-baby-with-roid-rage",
+   "text": "A baby with roid rage"
+  },
+  {
+   "id": "starter:a-bear-shitting-in-the-woods",
+   "text": "A bear shitting in the woods"
+  },
+  {
+   "id": "starter:a-bird-nail-salon",
+   "text": "A bird nail salon"
+  },
+  {
+   "id": "starter:a-chode-for-the-road",
+   "text": "A chode for the road"
+  },
+  {
+   "id": "starter:a-foreskin-purse",
+   "text": "A foreskin purse"
+  },
+  {
+   "id": "starter:hot-shit-in-the-ball-pit",
+   "text": "Hot shit in the ball pit"
+  },
+  {
+   "id": "starter:a-ninja-with-the-hiccups",
+   "text": "A ninja with the hiccups"
+  },
+  {
+   "id": "starter:a-pirate-s-dick-barnacles",
+   "text": "A pirate's dick barnacles"
+  },
+  {
+   "id": "starter:accidental-vasectomy",
+   "text": "Accidental vasectomy"
+  },
+  {
+   "id": "starter:anal-dentures",
+   "text": "Anal dentures"
+  },
+  {
+   "id": "starter:anal-gland-candle",
+   "text": "Anal gland candle"
+  },
+  {
+   "id": "starter:anal-hiccups",
+   "text": "Anal hiccups"
+  },
+  {
+   "id": "starter:anal-slip-up",
+   "text": "Anal slip up"
+  },
+  {
+   "id": "starter:are-you-ducking-serious",
+   "text": "Are you ducking serious?"
+  },
+  {
+   "id": "starter:arm-wrestling-a-t-rex",
+   "text": "Arm wrestling a T-Rex"
+  },
+  {
+   "id": "starter:ass-crack-rat-tail",
+   "text": "Ass crack rat tail"
+  },
+  {
+   "id": "starter:aunt-flow-doesn-t-visit-anymore",
+   "text": "Aunt Flow doesn't visit anymore"
+  },
+  {
+   "id": "starter:babies-with-rabies",
+   "text": "Babies with rabies"
+  },
+  {
+   "id": "starter:baby-boxing-match",
+   "text": "Baby boxing match"
+  },
+  {
+   "id": "starter:bad-merkin-perm",
+   "text": "Bad merkin perm"
+  },
+  {
+   "id": "starter:banana-peel-slipping-on-a-person",
+   "text": "Banana peel slipping on a person"
+  },
+  {
+   "id": "starter:band-aid-lasagna",
+   "text": "Band-Aid lasagna"
+  },
+  {
+   "id": "starter:barking-vaginas",
+   "text": "Barking vaginas"
+  },
+  {
+   "id": "starter:bear-on-a-human-skin-rug",
+   "text": "Bear on a human skin rug"
+  },
+  {
+   "id": "starter:beatbox-wedding-vows",
+   "text": "Beatbox wedding vows"
+  },
+  {
+   "id": "starter:beaver-dental-dams",
+   "text": "Beaver dental dams"
+  },
+  {
+   "id": "starter:birds-are-nature-s-airplanes",
+   "text": "Birds are nature's airplanes"
+  },
+  {
+   "id": "starter:biting-into-an-adam-s-apple",
+   "text": "Biting into an Adam's apple"
+  },
+  {
+   "id": "starter:bleaching-my-dog-s-asshole",
+   "text": "Bleaching my dog's asshole"
+  },
+  {
+   "id": "starter:blind-bat-bifocals",
+   "text": "Blind bat bifocals"
+  },
+  {
+   "id": "starter:bloody-poops",
+   "text": "Bloody poops"
+  },
+  {
+   "id": "starter:blowing-on-a-geyser-to-cool-it-down",
+   "text": "Blowing on a geyser to cool it down"
+  },
+  {
+   "id": "starter:boob-sweat-soup",
+   "text": "Boob sweat soup"
+  },
+  {
+   "id": "starter:boobonic-plague",
+   "text": "Boobonic plague"
+  },
+  {
+   "id": "starter:booger-on-brioche-toast",
+   "text": "Booger on brioche toast"
+  },
+  {
+   "id": "starter:branding-your-initials-on-strangers",
+   "text": "Branding your initials on strangers"
+  },
+  {
+   "id": "starter:bum-bum-bubblegum",
+   "text": "Bum bum bubblegum"
+  },
+  {
+   "id": "starter:burning-tender-loins",
+   "text": "Burning, tender loins"
+  },
+  {
+   "id": "starter:butt-full-of-drug-balloons",
+   "text": "Butt full of drug balloons"
+  },
+  {
+   "id": "starter:butt-hair-threading",
+   "text": "Butt hair threading"
+  },
+  {
+   "id": "starter:c3po-s-brass-knuckles",
+   "text": "C3PO's brass knuckles"
+  },
+  {
+   "id": "starter:cannibal-lunchables",
+   "text": "Cannibal Lunchables"
+  },
+  {
+   "id": "starter:canning-your-farts",
+   "text": "Canning your farts"
+  },
+  {
+   "id": "starter:carried-away-by-a-giant-bird",
+   "text": "Carried away by a giant bird"
+  },
+  {
+   "id": "starter:chatroulette-wedding",
+   "text": "Chatroulette wedding"
+  },
+  {
+   "id": "starter:chicken-bartenders",
+   "text": "Chicken bartenders"
+  },
+  {
+   "id": "starter:childhood-poops-in-a-jar",
+   "text": "Childhood poops in a jar"
+  },
+  {
+   "id": "starter:choking-on-a-gummy-worm",
+   "text": "Choking on a gummy worm"
+  },
+  {
+   "id": "starter:choosing-which-roommate-to-sell",
+   "text": "Choosing which roommate to sell"
+  },
+  {
+   "id": "starter:christmas-caroling-at-the-morgue",
+   "text": "Christmas caroling at the morgue"
+  },
+  {
+   "id": "starter:chub-rub-club",
+   "text": "Chub rub club"
+  },
+  {
+   "id": "starter:churning-butter-with-a-fake-leg",
+   "text": "Churning butter with a fake leg"
+  },
+  {
+   "id": "starter:churning-butter-with-my-vagina",
+   "text": "Churning butter with my vagina"
+  },
+  {
+   "id": "starter:closing-the-door-on-your-weiner",
+   "text": "Closing the door on your weiner"
+  },
+  {
+   "id": "starter:clown-stripper",
+   "text": "Clown stripper"
+  },
+  {
+   "id": "starter:coconut-jock-strap",
+   "text": "Coconut jock strap"
+  },
+  {
+   "id": "starter:condoms-for-ghosts",
+   "text": "Condoms for ghosts"
+  },
+  {
+   "id": "starter:condoms-for-giraffes",
+   "text": "Condoms for giraffes"
+  },
+  {
+   "id": "starter:coring-a-person",
+   "text": "Coring a person"
+  },
+  {
+   "id": "starter:corkscrew-duck-dick",
+   "text": "Corkscrew duck dick"
+  },
+  {
+   "id": "starter:crock-pot-of-tears",
+   "text": "Crock pot of tears"
+  },
+  {
+   "id": "starter:cropdusting-ballerinas",
+   "text": "Cropdusting ballerinas"
+  },
+  {
+   "id": "starter:dead-body-surfboard",
+   "text": "Dead body surfboard"
+  },
+  {
+   "id": "starter:death-by-jazz-hands",
+   "text": "Death by jazz hands"
+  },
+  {
+   "id": "starter:death-by-pull-n-peel",
+   "text": "Death by Pull 'n' Peel"
+  },
+  {
+   "id": "starter:delayed-puberty",
+   "text": "Delayed puberty"
+  },
+  {
+   "id": "starter:dentists-are-just-mouth-maids",
+   "text": "Dentists are just mouth maids"
+  },
+  {
+   "id": "starter:dickcheese-and-crackers",
+   "text": "Dickcheese and crackers"
+  },
+  {
+   "id": "starter:diluting-a-beer-with-pee",
+   "text": "Diluting a beer with pee"
+  },
+  {
+   "id": "starter:dingleberry-jam",
+   "text": "Dingleberry jam"
+  },
+  {
+   "id": "starter:disconnected-psychic-hotline",
+   "text": "Disconnected psychic hotline"
+  },
+  {
+   "id": "starter:don-t-touch-grandma-s-chew-toys",
+   "text": "Don't touch grandma's chew toys"
+  },
+  {
+   "id": "starter:draino-shots",
+   "text": "Draino Shots!"
+  },
+  {
+   "id": "starter:dungeons-and-drag-queens",
+   "text": "Dungeons and Drag Queens"
+  },
+  {
+   "id": "starter:early-sleepers-get-stitched-peepers",
+   "text": "Early sleepers get stitched peepers"
+  },
+  {
+   "id": "starter:eating-cereal-in-a-hollowed-out-skull",
+   "text": "Eating cereal in a hollowed-out skull"
+  },
+  {
+   "id": "starter:eating-money-because-you-can",
+   "text": "Eating money because you can"
+  },
+  {
+   "id": "starter:existential-crisis-in-a-bouncy-house",
+   "text": "Existential crisis in a bouncy house"
+  },
+  {
+   "id": "starter:fart-powered-jetpack",
+   "text": "Fart-powered jetpack"
+  },
+  {
+   "id": "starter:farting-in-your-sleep",
+   "text": "Farting in your sleep"
+  },
+  {
+   "id": "starter:farting-into-tupperware",
+   "text": "Farting into Tupperware"
+  },
+  {
+   "id": "starter:farty-party",
+   "text": "Farty party"
+  },
+  {
+   "id": "starter:fecal-transplants",
+   "text": "Fecal transplants"
+  },
+  {
+   "id": "starter:finding-eyes-on-the-back-of-your-head",
+   "text": "Finding eyes on the back of your head"
+  },
+  {
+   "id": "starter:flesh-eating-babies",
+   "text": "Flesh-eating babies"
+  },
+  {
+   "id": "starter:free-range-bachelor-meat",
+   "text": "Free-range bachelor meat"
+  },
+  {
+   "id": "starter:frosted-mini-teats",
+   "text": "Frosted mini teats"
+  },
+  {
+   "id": "starter:frosted-urinal-cakes",
+   "text": "Frosted urinal cakes"
+  },
+  {
+   "id": "starter:garden-of-weeden",
+   "text": "Garden of weeden"
+  },
+  {
+   "id": "starter:giving-birth-in-an-uber",
+   "text": "Giving birth in an Uber"
+  },
+  {
+   "id": "starter:gluing-your-coworkers-together",
+   "text": "Gluing your coworkers together"
+  },
+  {
+   "id": "starter:gorilla-breastfeeding-tarzan",
+   "text": "Gorilla breastfeeding Tarzan"
+  },
+  {
+   "id": "starter:gotta-have-my-smack",
+   "text": "Gotta have my Smack"
+  },
+  {
+   "id": "starter:grabbing-a-butt-with-your-toes",
+   "text": "Grabbing a butt with your toes"
+  },
+  {
+   "id": "starter:grandma-s-stripping-recital",
+   "text": "Grandma's stripping recital"
+  },
+  {
+   "id": "starter:grating-dandruff-on-your-enemy-s-pasta",
+   "text": "Grating dandruff on your enemy's pasta"
+  },
+  {
+   "id": "starter:grating-human-skin",
+   "text": "Grating human skin"
+  },
+  {
+   "id": "starter:greeting-your-guests-naked",
+   "text": "Greeting your guests naked"
+  },
+  {
+   "id": "starter:gum-for-your-butt",
+   "text": "Gum for your butt"
+  },
+  {
+   "id": "starter:hardest-nipples-contest",
+   "text": "Hardest nipples contest"
+  },
+  {
+   "id": "starter:herpes-from-a-facebook-poke",
+   "text": "Herpes from a Facebook poke"
+  },
+  {
+   "id": "starter:horses-playing-horseshoes",
+   "text": "Horses playing horseshoes"
+  },
+  {
+   "id": "starter:hot-guys-with-glass-eyes",
+   "text": "Hot guys with glass eyes"
+  },
+  {
+   "id": "starter:hot-lava-yoga",
+   "text": "Hot lava yoga"
+  },
+  {
+   "id": "starter:hot-tub-pregnancy",
+   "text": "Hot tub pregnancy"
+  },
+  {
+   "id": "starter:human-origami",
+   "text": "Human origami"
+  },
+  {
+   "id": "starter:human-pyramid-scheme",
+   "text": "Human pyramid scheme"
+  },
+  {
+   "id": "starter:mother-of-drag-queens",
+   "text": "Mother of Drag Queens"
+  },
+  {
+   "id": "starter:i-broke-up-with-my-landlord",
+   "text": "I broke up with my landlord?"
+  },
+  {
+   "id": "starter:i-had-a-big-boy-dream",
+   "text": "I had a big boy dream!"
+  },
+  {
+   "id": "starter:i-married-my-imaginary-friend",
+   "text": "I married my imaginary friend"
+  },
+  {
+   "id": "starter:i-sharted-and-i-can-t-get-up",
+   "text": "I sharted and I can't get up"
+  },
+  {
+   "id": "starter:i-subscribed-to-my-parents-onlyfans",
+   "text": "I subscribed to my parents' OnlyFans"
+  },
+  {
+   "id": "starter:ingrown-hairpiece",
+   "text": "Ingrown hairpiece"
+  },
+  {
+   "id": "starter:interpretive-dance-eulogy",
+   "text": "Interpretive dance eulogy"
+  },
+  {
+   "id": "starter:intestine-scarf",
+   "text": "Intestine scarf"
+  },
+  {
+   "id": "starter:jar-of-farts",
+   "text": "Jar of farts"
+  },
+  {
+   "id": "starter:juicing-a-stolen-placenta",
+   "text": "Juicing a stolen placenta"
+  },
+  {
+   "id": "starter:jury-duty-on-ice",
+   "text": "Jury duty on Ice"
+  },
+  {
+   "id": "starter:just-spit-on-it",
+   "text": "Just spit on it"
+  },
+  {
+   "id": "starter:killed-by-toilet-paper-bears",
+   "text": "Killed by toilet paper bears"
+  },
+  {
+   "id": "starter:kneading-dough-with-your-feet",
+   "text": "Kneading dough with your feet"
+  },
+  {
+   "id": "starter:knights-of-the-turntable",
+   "text": "Knights of the turntable"
+  },
+  {
+   "id": "starter:koalas-with-chlamydia",
+   "text": "Koalas with chlamydia"
+  },
+  {
+   "id": "starter:learning-to-knit-in-prison",
+   "text": "Learning to knit in prison"
+  },
+  {
+   "id": "starter:leaving-pubes-for-the-pube-fairy",
+   "text": "Leaving pubes for the Pube Fairy"
+  },
+  {
+   "id": "starter:let-s-laugh-with-salads",
+   "text": "Let's laugh with salads!"
+  },
+  {
+   "id": "starter:long-fingernail-jousting",
+   "text": "Long fingernail jousting"
+  },
+  {
+   "id": "starter:mail-order-grandpa",
+   "text": "Mail-order grandpa"
+  },
+  {
+   "id": "starter:manscaping-grandpa",
+   "text": "Manscaping grandpa"
+  },
+  {
+   "id": "starter:margarita-with-lime-disease",
+   "text": "Margarita with lime disease"
+  },
+  {
+   "id": "starter:maxi-pad-prom-dress",
+   "text": "Maxi pad prom dress"
+  },
+  {
+   "id": "starter:maximum-pad",
+   "text": "Maximum pad"
+  },
+  {
+   "id": "starter:meat-sweats",
+   "text": "Meat sweats"
+  },
+  {
+   "id": "starter:moist-panties",
+   "text": "Moist panties"
+  },
+  {
+   "id": "starter:moose-knuckle-wedgie",
+   "text": "Moose knuckle wedgie"
+  },
+  {
+   "id": "starter:morning-breath-scented-candles",
+   "text": "Morning breath scented candles"
+  },
+  {
+   "id": "starter:moshing-at-the-opera",
+   "text": "Moshing at the opera"
+  },
+  {
+   "id": "starter:mother-in-law-stripping-class",
+   "text": "Mother-in-law stripping class"
+  },
+  {
+   "id": "starter:mr-peanut-s-rock-hard-body",
+   "text": "Mr. Peanut's rock hard body"
+  },
+  {
+   "id": "starter:murdered-by-a-sloth",
+   "text": "Murdered by a sloth"
+  },
+  {
+   "id": "starter:my-cat-fat-shames-me",
+   "text": "My cat fat shames me"
+  },
+  {
+   "id": "starter:dentist-cavity-search",
+   "text": "Dentist cavity search"
+  },
+  {
+   "id": "starter:my-farts-are-tear-gas",
+   "text": "My farts are tear gas"
+  },
+  {
+   "id": "starter:my-life-coach-quit-on-me",
+   "text": "My life coach quit on me"
+  },
+  {
+   "id": "starter:my-pet-corn-dog",
+   "text": "My pet corn dog"
+  },
+  {
+   "id": "starter:my-roomba-is-a-carpet-muncher",
+   "text": "My Roomba is a carpet muncher"
+  },
+  {
+   "id": "starter:old-lady-boob-socks",
+   "text": "Old lady boob socks"
+  },
+  {
+   "id": "starter:onesie-made-of-dog-hair",
+   "text": "Onesie made of dog hair"
+  },
+  {
+   "id": "starter:pairing-wine-with-toe-cheese",
+   "text": "Pairing wine with toe cheese"
+  },
+  {
+   "id": "starter:pap-smear-campaign",
+   "text": "Pap smear campaign"
+  },
+  {
+   "id": "starter:pawning-grandma",
+   "text": "Pawning grandma"
+  },
+  {
+   "id": "starter:paying-a-fart-tax",
+   "text": "Paying a fart tax"
+  },
+  {
+   "id": "starter:peeing-on-the-last-slice",
+   "text": "Peeing on the last slice"
+  },
+  {
+   "id": "starter:penis-sword-fight",
+   "text": "Penis sword fight"
+  },
+  {
+   "id": "starter:pigeon-religions",
+   "text": "Pigeon religions"
+  },
+  {
+   "id": "starter:pi-ata-raining-body-parts",
+   "text": "Piñata raining body parts"
+  },
+  {
+   "id": "starter:placenta-smoothie",
+   "text": "Placenta smoothie"
+  },
+  {
+   "id": "starter:poaching-trolls-for-their-hair",
+   "text": "Poaching trolls for their hair"
+  },
+  {
+   "id": "starter:pole-dancing-at-the-barber-shop",
+   "text": "Pole dancing at the barber shop"
+  },
+  {
+   "id": "starter:pool-boy-calendar",
+   "text": "Pool boy calendar"
+  },
+  {
+   "id": "starter:poop-chutes-and-ladders",
+   "text": "Poop chutes and ladders"
+  },
+  {
+   "id": "starter:confetti-pimple",
+   "text": "Confetti pimple"
+  },
+  {
+   "id": "starter:popping-a-scrotum",
+   "text": "Popping a scrotum"
+  },
+  {
+   "id": "starter:powder-my-butthole",
+   "text": "Powder my butthole"
+  },
+  {
+   "id": "starter:preggo-by-facebook-poking",
+   "text": "Preggo by Facebook poking"
+  },
+  {
+   "id": "starter:president-baby-hands",
+   "text": "President Baby Hands"
+  },
+  {
+   "id": "starter:prize-winning-tumor",
+   "text": "Prize-winning tumor"
+  },
+  {
+   "id": "starter:professional-dick-pic-photographer",
+   "text": "Professional dick pic photographer"
+  },
+  {
+   "id": "starter:proposing-with-an-onion-ring",
+   "text": "Proposing with an onion ring"
+  },
+  {
+   "id": "starter:proud-to-be-a-merkin",
+   "text": "Proud to be a merkin"
+  },
+  {
+   "id": "starter:pubic-perm",
+   "text": "Pubic perm"
+  },
+  {
+   "id": "starter:pug-cartel",
+   "text": "Pug cartel"
+  },
+  {
+   "id": "starter:pulled-human-sandwiches",
+   "text": "Pulled human sandwiches"
+  },
+  {
+   "id": "starter:puppets-with-human-teeth",
+   "text": "Puppets with human teeth"
+  },
+  {
+   "id": "starter:pussy-pied-piper",
+   "text": "Pussy Pied Piper"
+  },
+  {
+   "id": "starter:pussy-pot-pie",
+   "text": "Pussy pot pie"
+  },
+  {
+   "id": "starter:ramen-gladiators",
+   "text": "Ramen gladiators"
+  },
+  {
+   "id": "starter:ramen-noodle-pubes",
+   "text": "Ramen noodle pubes"
+  },
+  {
+   "id": "starter:razor-blade-cat-dick",
+   "text": "Razor blade cat dick"
+  },
+  {
+   "id": "starter:receding-pube-line",
+   "text": "Receding pube line"
+  },
+  {
+   "id": "starter:rectal-botox",
+   "text": "Rectal Botox"
+  },
+  {
+   "id": "starter:rectum-sausage",
+   "text": "Rectum sausage"
+  },
+  {
+   "id": "starter:recycled-tampons",
+   "text": "Recycled tampons"
+  },
+  {
+   "id": "starter:replacing-your-hair-with-feathers",
+   "text": "Replacing your hair with feathers"
+  },
+  {
+   "id": "starter:riding-a-turtle-into-battle",
+   "text": "Riding a turtle into battle"
+  },
+  {
+   "id": "starter:riding-your-pet-bear-until-it-eats-you",
+   "text": "Riding your pet bear until it eats you"
+  },
+  {
+   "id": "starter:rolling-off-the-flat-earth",
+   "text": "Rolling off the flat earth"
+  },
+  {
+   "id": "starter:saddling-grandma",
+   "text": "Saddling grandma"
+  },
+  {
+   "id": "starter:sassy-dads-in-short-shorts",
+   "text": "Sassy dads in short shorts"
+  },
+  {
+   "id": "starter:schools-of-fish-being-catty",
+   "text": "Schools of fish being catty"
+  },
+  {
+   "id": "starter:scratch-and-sniff-butthole-stickers",
+   "text": "Scratch and sniff butthole stickers"
+  },
+  {
+   "id": "starter:sealed-with-a-shit",
+   "text": "Sealed with a shit"
+  },
+  {
+   "id": "starter:sexually-transmitted-diarrhea",
+   "text": "Sexually transmitted diarrhea"
+  },
+  {
+   "id": "starter:sexy-chicken-breasts",
+   "text": "Sexy chicken breasts"
+  },
+  {
+   "id": "starter:shaping-your-pubic-hair",
+   "text": "Shaping your pubic hair"
+  },
+  {
+   "id": "starter:shedding-your-teeth-daily",
+   "text": "Shedding your teeth daily"
+  },
+  {
+   "id": "starter:condom-on-a-bad-banana",
+   "text": "Condom on a bad banana"
+  },
+  {
+   "id": "starter:showing-off-my-colostomy-bag",
+   "text": "Showing off my colostomy bag"
+  },
+  {
+   "id": "starter:skin-trenchcoat",
+   "text": "Skin trenchcoat"
+  },
+  {
+   "id": "starter:skirt-steak-striptease",
+   "text": "Skirt steak striptease"
+  },
+  {
+   "id": "starter:slipping-coupons-in-her-g-string",
+   "text": "Slipping coupons in her G-string"
+  },
+  {
+   "id": "starter:snort-my-ashes-like-cocaine",
+   "text": "Snort my ashes like cocaine"
+  },
+  {
+   "id": "starter:soft-serve-like-my-poops",
+   "text": "Soft serve, like my poops"
+  },
+  {
+   "id": "starter:sperm-bank-withdrawal",
+   "text": "Sperm bank withdrawal"
+  },
+  {
+   "id": "starter:sperm-whales-hate-their-name",
+   "text": "Sperm whales hate their name"
+  },
+  {
+   "id": "starter:sporking-the-lunch-lady",
+   "text": "Sporking the lunch lady"
+  },
+  {
+   "id": "starter:spray-tan-man",
+   "text": "Spray tan man"
+  },
+  {
+   "id": "starter:squeezing-breast-milk-into-your-coffee",
+   "text": "Squeezing breast milk into your coffee"
+  },
+  {
+   "id": "starter:sriracha-enemas",
+   "text": "Sriracha enemas"
+  },
+  {
+   "id": "starter:stacking-donuts-on-my-boner",
+   "text": "Stacking donuts on my boner"
+  },
+  {
+   "id": "starter:strip-club-groupon",
+   "text": "Strip club Groupon"
+  },
+  {
+   "id": "starter:stuffed-olives-for-eyes",
+   "text": "Stuffed olives for eyes"
+  },
+  {
+   "id": "starter:stuffing-your-bra-with-pine-cones",
+   "text": "Stuffing your bra with pine cones"
+  },
+  {
+   "id": "starter:stuffing-your-bra-with-play-doh",
+   "text": "Stuffing your bra with Play-Doh"
+  },
+  {
+   "id": "starter:sucking-a-fart-back-in",
+   "text": "Sucking a fart back in"
+  },
+  {
+   "id": "starter:sugar-free-daddy",
+   "text": "Sugar-free daddy"
+  },
+  {
+   "id": "starter:sulfur-scented-candles",
+   "text": "Sulfur scented candles"
+  },
+  {
+   "id": "starter:super-fupa",
+   "text": "Super FUPA"
+  },
+  {
+   "id": "starter:sweaty-fupa",
+   "text": "Sweaty FUPA"
+  },
+  {
+   "id": "starter:sympathy-boner",
+   "text": "Sympathy boner"
+  },
+  {
+   "id": "starter:carpool-lane-hostage",
+   "text": "Carpool lane hostage"
+  },
+  {
+   "id": "starter:tarring-a-butthole-closed",
+   "text": "Tarring a butthole closed"
+  },
+  {
+   "id": "starter:tasteful-nudes-of-my-dog",
+   "text": "Tasteful nudes of my dog"
+  },
+  {
+   "id": "starter:telemarketer-execution",
+   "text": "Telemarketer execution"
+  },
+  {
+   "id": "starter:tentacle-testicles",
+   "text": "Tentacle testicles"
+  },
+  {
+   "id": "starter:the-easter-bunny-stole-my-foreskin",
+   "text": "The Easter Bunny stole my foreskin!"
+  },
+  {
+   "id": "starter:the-fbi-tapped-my-ass",
+   "text": "The FBI tapped my ass"
+  },
+  {
+   "id": "starter:the-mayan-fireman-calendar",
+   "text": "The Mayan fireman calendar"
+  },
+  {
+   "id": "starter:the-queef-heard-round-the-world",
+   "text": "The queef heard round the world"
+  },
+  {
+   "id": "starter:the-tooth-fairy-stole-my-foreskin",
+   "text": "The tooth fairy stole my foreskin!"
+  },
+  {
+   "id": "starter:tiny-dick-sweaters",
+   "text": "Tiny dick sweaters"
+  },
+  {
+   "id": "starter:tracing-your-moles-with-my-fingers",
+   "text": "Tracing your moles with my fingers"
+  },
+  {
+   "id": "starter:trespassing-on-a-minefield",
+   "text": "Trespassing on a minefield"
+  },
+  {
+   "id": "starter:trust-fall-at-a-nursing-home",
+   "text": "Trust fall at a nursing home"
+  },
+  {
+   "id": "starter:trust-fall-with-grandma",
+   "text": "Trust fall with grandma"
+  },
+  {
+   "id": "starter:tuna-salad-shampoo",
+   "text": "Tuna salad shampoo"
+  },
+  {
+   "id": "starter:turd-burglar",
+   "text": "Turd burglar"
+  },
+  {
+   "id": "starter:turkeys-stuffing-people-for-thanksgiving",
+   "text": "Turkeys stuffing people for Thanksgiving"
+  },
+  {
+   "id": "starter:two-dicks-in-a-finger-trap",
+   "text": "Two dicks in a finger trap"
+  },
+  {
+   "id": "starter:fabric-and-stool-softener",
+   "text": "Fabric and stool softener"
+  },
+  {
+   "id": "starter:tyrannosaurus-pecs",
+   "text": "Tyrannosaurus-PECS"
+  },
+  {
+   "id": "starter:uncomfortable-urinal-stares",
+   "text": "Uncomfortable urinal stares"
+  },
+  {
+   "id": "starter:using-cats-for-currency",
+   "text": "Using cats for currency"
+  },
+  {
+   "id": "starter:vag-etarian",
+   "text": "Vag-etarian"
+  },
+  {
+   "id": "starter:vagina-lipstick",
+   "text": "Vagina lipstick"
+  },
+  {
+   "id": "starter:vajazzling-your-cat",
+   "text": "Vajazzling your cat"
+  },
+  {
+   "id": "starter:valet-for-power-wheels",
+   "text": "Valet for Power Wheels"
+  },
+  {
+   "id": "starter:blood-bath-beyond",
+   "text": "Blood Bath & Beyond"
+  },
+  {
+   "id": "starter:vaping-with-my-douche-flute",
+   "text": "Vaping with my douche flute"
+  },
+  {
+   "id": "starter:veggie-peeler-scalping",
+   "text": "Veggie peeler scalping"
+  },
+  {
+   "id": "starter:veloci-rap-star",
+   "text": "Veloci-rap-star"
+  },
+  {
+   "id": "starter:viagra-for-dogs",
+   "text": "Viagra for dogs"
+  },
+  {
+   "id": "starter:waiter-there-s-a-guy-in-my-soup",
+   "text": "Waiter, there's a guy in my soup"
+  },
+  {
+   "id": "starter:walking-on-a-bed-of-legos",
+   "text": "Walking on a bed of Legos"
+  },
+  {
+   "id": "starter:water-balloons-as-condoms",
+   "text": "Water balloons as condoms"
+  },
+  {
+   "id": "starter:weapons-of-mass-seduction",
+   "text": "Weapons of mass seduction"
+  },
+  {
+   "id": "starter:where-s-my-merkin",
+   "text": "Where's my merkin?"
+  },
+  {
+   "id": "starter:whippets-with-muppets",
+   "text": "Whippets with Muppets"
+  },
+  {
+   "id": "starter:whistle-while-you-work-it",
+   "text": "Whistle while you work it"
+  },
+  {
+   "id": "starter:wishing-grandpa-was-on-the-titanic",
+   "text": "Wishing grandpa was on the Titanic"
+  },
+  {
+   "id": "starter:yeti-confetti",
+   "text": "Yeti confetti"
+  },
+  {
+   "id": "starter:yoga-farts",
+   "text": "Yoga farts"
+  },
+  {
+   "id": "starter:zombie-makeovers",
+   "text": "Zombie makeovers!"
+  },
+  {
+   "id": "starter:zumba-for-cats",
+   "text": "Zumba for cats"
+  }
+ ],
+ "groups": [
+  [
+   "starter:the-easter-bunny-stole-my-foreskin",
+   "starter:the-tooth-fairy-stole-my-foreskin"
+  ],
+  [
+   "starter:super-fupa",
+   "starter:sweaty-fupa"
+  ],
+  [
+   "starter:stuffing-your-bra-with-pine-cones",
+   "starter:stuffing-your-bra-with-play-doh"
+  ],
+  [
+   "starter:condoms-for-ghosts",
+   "starter:condoms-for-giraffes"
+  ],
+  [
+   "starter:trust-fall-at-a-nursing-home",
+   "starter:trust-fall-with-grandma"
+  ],
+  [
+   "starter:jar-of-farts",
+   "starter:canning-your-farts",
+   "starter:farting-into-tupperware"
+  ],
+  [
+   "starter:preggo-by-facebook-poking",
+   "starter:herpes-from-a-facebook-poke"
+  ],
+  [
+   "starter:grandma-s-stripping-recital",
+   "starter:mother-in-law-stripping-class"
+  ],
+  [
+   "starter:where-s-my-merkin",
+   "starter:proud-to-be-a-merkin",
+   "starter:bad-merkin-perm"
+  ],
+  [
+   "starter:pussy-pot-pie",
+   "starter:pussy-pied-piper"
+  ],
+  [
+   "starter:churning-butter-with-a-fake-leg",
+   "starter:churning-butter-with-my-vagina"
+  ],
+  [
+   "starter:maxi-pad-prom-dress",
+   "starter:maximum-pad"
+  ]
+ ]
+}

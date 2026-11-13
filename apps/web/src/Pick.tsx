@@ -47,6 +47,7 @@ export function PickScreen({ view, conn }: { view: PlayerView; conn: Connection 
     <>
       <Panel>
         <h2>{me?.name}, pick {need} for the bowl</h2>
+        {view.settings.decks.includes("afterdark") && <p class="pill18">After Dark is in this game · 18+</p>}
         <p class="sub">{sel.length} of {need} selected{sel.length === need ? " · lock in when you're happy" : ""}</p>
         <div class="hand">
           {view.myHand.map((c, i) => (

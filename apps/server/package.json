@@ -8,7 +8,8 @@
     "deploy": "wrangler deploy"
   },
   "dependencies": {
-    "@vulgar-acts/engine": "*"
+    "@vulgar-acts/engine": "*",
+    "@vulgar-acts/decks": "*"
   },
   "devDependencies": {
     "wrangler": "^3.90.0",

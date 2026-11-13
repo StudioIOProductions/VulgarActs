@@ -133,3 +133,8 @@ button.tiny{padding:2px 8px;font-size:16px;box-shadow:2px 2px 0 var(--ink);backg
 .chip .x{border:0;box-shadow:none;padding:0 4px;font-size:18px;line-height:1;background:none;color:var(--mute);margin-left:2px}
 .chip .x:hover{color:var(--red)}
 .chip.late{border-style:dotted}
+/* Beat 10 */
+.gate18{background:#1a1a1a;color:var(--paper);border:4px solid var(--red);box-shadow:6px 6px 0 var(--red);padding:16px;display:flex;flex-direction:column;gap:10px}
+.gate18 h3{font-family:var(--display);font-weight:400;font-size:28px;margin:0;text-transform:uppercase;color:var(--red)}
+.gate18 .primary{background:var(--red)}
+.pill18{align-self:flex-start;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;background:#1a1a1a;color:#fff;border:2px solid var(--red);padding:4px 10px}
