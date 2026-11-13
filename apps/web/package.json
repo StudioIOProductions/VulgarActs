@@ -8,6 +8,15 @@
     "build": "vite build",
     "preview": "vite preview --host"
   },
-  "dependencies": { "preact": "^10.24.3", "@vulgar-acts/engine": "*" },
-  "devDependencies": { "vite": "^5.4.11", "@preact/preset-vite": "^2.9.1", "typescript": "^5.6.3" }
+  "dependencies": {
+    "@vulgar-acts/engine": "*",
+    "preact": "^10.24.3",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "@preact/preset-vite": "^2.9.1",
+    "@types/qrcode": "^1.5.5",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11"
+  }
 }
