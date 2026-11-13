@@ -16,6 +16,10 @@ export interface Deck {
   price: number;
   language: string;
   version: number;
+  /** Cover image path and the tile colours the deck picker uses. */
+  art: string;
+  color: string;
+  ink: string;
   cards: { id: string; text: string }[];
   groups: string[][];
 }
@@ -28,4 +32,4 @@ export const ALL_CARDS: DeckCard[] = DECKS.flatMap((d) => d.cards.map((c) => ({ 
 export const ALL_GROUPS: string[][] = DECKS.flatMap((d) => d.groups);
 
 /** What the lobby shows: id, title, size, rating. Never the cards. */
-export const DECK_SUMMARIES = DECKS.map((d) => ({ id: d.id, title: d.title, description: d.description, rating: d.rating, count: d.cards.length, price: d.price }));
+export const DECK_SUMMARIES = DECKS.map((d) => ({ id: d.id, title: d.title, description: d.description, rating: d.rating, count: d.cards.length, price: d.price, art: d.art, color: d.color, ink: d.ink }));

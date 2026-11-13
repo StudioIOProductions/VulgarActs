@@ -187,3 +187,13 @@ button.tiny{padding:2px 8px;font-size:16px;box-shadow:2px 2px 0 var(--ink);backg
 .closer .h2{text-align:center}
 .joke{font-size:14px;font-style:italic;font-weight:500;color:var(--ink);text-align:right}
 .joke b{color:var(--paper);font-style:normal;text-shadow:1px 1px 0 var(--ink)}
+/* deck tiles */
+.deckgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.decktile{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 10px 8px;border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);text-align:center;opacity:.55;filter:grayscale(.6)}
+.decktile.on{opacity:1;filter:none;outline:4px solid var(--yellow);outline-offset:-4px}
+.decktile img{width:64px;height:76px;object-fit:contain;transform:rotate(-3deg)}
+.decktile .dt{display:flex;flex-direction:column;gap:2px;font-size:12px;line-height:1.2}
+.decktile .dt b{font-family:var(--display);font-weight:400;font-size:18px;text-transform:uppercase;letter-spacing:.03em}
+.decktile .dcheck{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;background:rgba(255,255,255,.9);color:var(--ink);padding:2px 8px;border:2px solid var(--ink)}
+.decktile.on .dcheck{background:var(--yellow)}
+.tv .deckgrid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}

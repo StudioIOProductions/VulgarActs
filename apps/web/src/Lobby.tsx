@@ -1,10 +1,9 @@
 import type { PlayerView, Settings } from "../../server/src/protocol";
 import type { Connection } from "./net";
-import { Avatar, Seg, Toggle, Panel } from "./ui";
+import { Avatar, Seg, Panel } from "./ui";
 import { DECK_SUMMARIES } from "@vulgar-acts/decks";
 import { useState } from "preact/hooks";
 
-const DECKS = DECK_SUMMARIES.map((d) => ({ v: d.id, label: `${d.title} · ${d.count}${d.rating === "18+" ? " · 18+" : ""}` }));
 const minFor = (mode: Settings["mode"]) => (mode === "ffa" ? 3 : 4);
 
 export function PlayerChips({ view, showLock = false, conn }: { view: PlayerView; showLock?: boolean; conn?: Connection }) {
@@ -49,7 +48,19 @@ export function SettingsPanel({ view, conn }: { view: PlayerView; conn: Connecti
       <label>Cards each puts in the bowl</label>
       <Seg id="per" value={st.cardsPerPlayer} options={[3, 4, 5].map((v) => ({ v, label: String(v) }))} onChange={(v) => set({ cardsPerPlayer: v })} />
       <label>Decks in play</label>
-      <Toggle id="decks" values={st.decks} options={DECKS} onChange={setDecks} />
+      <div class="deckgrid" id="decks">
+        {DECK_SUMMARIES.map((d) => {
+          const on = st.decks.includes(d.id);
+          return (
+            <button key={d.id} type="button" class={"decktile" + (on ? " on" : "")} aria-pressed={on} style={{ background: d.color, color: d.ink }}
+              onClick={() => { const next = on ? st.decks.filter((x) => x !== d.id) : [...st.decks, d.id]; setDecks(next.length ? next : [d.id]); }}>
+              <img src={d.art} alt="" />
+              <span class="dt"><b>{d.title}</b><span>{d.count} cards{d.rating === "18+" ? " · 18+" : ""}</span></span>
+              <span class="dcheck">{on ? "✓ In play" : "Off"}</span>
+            </button>
+          );
+        })}
+      </div>
       {st.decks.includes("afterdark") && <p class="small ink">After Dark is in play: every phone will show the 18+ mark before cards are dealt.</p>}
       <label>When someone buzzes a card word</label>
       <Seg id="buzz" value={st.buzzPenalty} options={[{ v: "card", label: "Lose the card" }, { v: "point", label: "Lose a point" }, { v: "none", label: "Nothing" }]} onChange={(v) => set({ buzzPenalty: v })} />

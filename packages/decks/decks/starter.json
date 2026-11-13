@@ -6,6 +6,9 @@
  "price": 0,
  "language": "en",
  "version": 1,
+ "art": "/img/box.png",
+ "color": "#1BA3D6",
+ "ink": "#121212",
  "cards": [
   {
    "id": "starter:grammar-nazi-memorabilia",

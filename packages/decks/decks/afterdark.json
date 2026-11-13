@@ -6,6 +6,9 @@
  "price": 2.99,
  "language": "en",
  "version": 1,
+ "art": "/img/box-dark.png",
+ "color": "#121212",
+ "ink": "#FFFDF5",
  "cards": [
   {
    "id": "afterdark:i-played-skin-flute-in-college",
