@@ -43,10 +43,11 @@ button[disabled]{opacity:.45;cursor:not-allowed;box-shadow:none}
 .seg button{flex:1;border:0;box-shadow:none;border-right:3px solid var(--ink);padding:10px 6px;font-size:14px;background:#fff}
 .seg button:last-child{border-right:0}.seg button[aria-pressed=true]{background:var(--yellow)}
 .seg button:active{transform:none}
-.avatars{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.avatars{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .avbtn{padding:4px;box-shadow:none;border-color:transparent;background:transparent}
 .avbtn[aria-pressed=true]{border-color:var(--ink);background:var(--yellow);box-shadow:3px 3px 0 var(--ink)}
-.avatar{display:inline-flex;align-items:center;justify-content:center;border:2px solid var(--ink);border-radius:50%;line-height:1;flex:0 0 auto}
+.avatar{display:inline-flex;align-items:center;justify-content:center;border:2px solid var(--ink);border-radius:50%;line-height:1;flex:0 0 auto;overflow:hidden;padding:2px}
+.avatar svg{display:block;width:100%;height:100%}
 .chip.av{display:inline-flex;align-items:center;gap:8px}
 .chip.ok{background:var(--yellow)}
 .chips.big .chip{font-size:18px;padding:8px 14px}

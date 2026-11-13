@@ -5,16 +5,14 @@ export const Wordmark = ({ small = false }: { small?: boolean }) => (
   <div class={"wordmark" + (small ? " small" : "")}><span>Vul</span><span>gar</span> <span>Acts</span></div>
 );
 
-/** Twelve pop-art avatars: a colour and a shape, no faces to license. */
-const AV_COLORS = ["#E3261D", "#F7E020", "#1BA3D6", "#121212", "#FFFDF5", "#FF7AB6", "#7BE07B", "#FF9A2E", "#9B6BFF", "#00C2A8", "#FF4F81", "#5AC8FA"];
-const AV_SHAPES = ["●", "■", "▲", "◆", "★", "✚", "⬟", "⬢", "♥", "☗", "✶", "⬤"];
+import { AvatarArt, AVATAR_NAMES } from "./avatars";
+/** Twelve goofy characters; a tinted circle behind each so they read at chip size. */
+const AV_BG = ["#F7E020", "#FFFDF5", "#1BA3D6", "#F7E020", "#1BA3D6", "#FFFDF5", "#1BA3D6", "#F7E020", "#FFFDF5", "#1BA3D6", "#F7E020", "#FFFDF5"];
 export function Avatar({ n, size = 36, selected = false }: { n: number; size?: number; selected?: boolean }) {
   const i = ((n % 12) + 12) % 12;
-  const bg = AV_COLORS[i];
-  const dark = ["#121212", "#E3261D", "#9B6BFF", "#FF4F81", "#1BA3D6", "#00C2A8"].includes(bg);
   return (
-    <span class={"avatar" + (selected ? " on" : "")} style={{ width: size, height: size, background: bg, color: dark ? "#FFFDF5" : "#121212", fontSize: size * 0.55 }} aria-label={`Avatar ${i + 1}`}>
-      {AV_SHAPES[i]}
+    <span class={"avatar" + (selected ? " on" : "")} style={{ width: size, height: size, background: AV_BG[i] }} role="img" aria-label={AVATAR_NAMES[i]}>
+      <AvatarArt n={i} />
     </span>
   );
 }

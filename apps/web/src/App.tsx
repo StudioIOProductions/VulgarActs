@@ -103,7 +103,7 @@ function Room({ code }: { code: string }) {
           <label>Pick a face</label>
           <div class="avatars">
             {Array.from({ length: 12 }, (_, i) => (
-              <button key={i} type="button" class="avbtn" aria-pressed={i === avatar} onClick={() => setAvatar(i)}><Avatar n={i} size={44} selected={i === avatar} /></button>
+              <button key={i} type="button" class="avbtn" aria-pressed={i === avatar} onClick={() => setAvatar(i)}><Avatar n={i} size={64} selected={i === avatar} /></button>
             ))}
           </div>
           <button class="primary" disabled={!name.trim()} onClick={submit}>Join</button>
