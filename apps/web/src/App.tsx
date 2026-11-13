@@ -6,6 +6,7 @@ import { HostScreen } from "./HostScreen";
 import { Lobby, PickPhase } from "./Lobby";
 import { PickScreen, LockedScreen } from "./Pick";
 import { TurnPhone, TurnEndPhone, RoundIntroPhone } from "./Turn";
+import { FinalScreen } from "./Final";
 
 /** Routes: ""  home · "#KXRT" play on this phone · "#KXRT/screen" host screen (TV/laptop) */
 function route() {
@@ -119,7 +120,7 @@ function Live({ code, name, avatar }: { code: string; name: string; avatar: numb
       {view.phase === "round" && <RoundIntroPhone view={view} conn={conn} />}
       {view.phase === "turn" && <TurnPhone view={view} conn={conn} />}
       {view.phase === "turnend" && <TurnEndPhone view={view} conn={conn} />}
-      {view.phase === "final" && <Panel title="Game over"><p class="sub">Beat 7 builds the awards screen.</p></Panel>}
+      {view.phase === "final" && <FinalScreen view={view} conn={conn} />}
       {err && <div class="panel error" onClick={() => setErr("")}>{err}</div>}
     </>
   );

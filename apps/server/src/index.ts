@@ -176,6 +176,7 @@ export class Room {
       case "renameTeam": host(); return E.renameTeam(g, a.team, a.name);
       case "moveTeam": host(); return E.movePlayerToTeam(g, a.pid, a.team);
       case "shuffleTeams": host(); return E.shuffleTeams(g, c);
+      case "suddenDeath": host(); return E.declareSuddenDeath(g, a.team);
       case "leave": return E.removePlayer(g, pid);
       default: throw new E.RuleError("unknown_action", String(name));
     }

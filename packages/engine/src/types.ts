@@ -107,6 +107,8 @@ export interface GameState {
   pts: Record<string, number>; // ffa points
   given: Record<string, number>; // cards got through per giver, all modes
   turn: Turn | null;
+  /** Set by the host after a sudden-death tie-break. */
+  suddenDeathWinner: 0 | 1 | null;
 }
 
 export interface Ctx {

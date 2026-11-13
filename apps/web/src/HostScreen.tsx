@@ -9,6 +9,7 @@ import type { PlayerView } from "../../server/src/protocol";
 import { Wordmark, Avatar, Panel } from "./ui";
 import { SettingsPanel, TeamsPanel } from "./Lobby";
 import { Scoreboard, useSecondsLeft, useBuzzShake, ROUND_NAMES } from "./Turn";
+import { FinalScreen } from "./Final";
 
 export function HostScreen({ code }: { code: string }) {
   const [conn] = useState(() => new Connection(code, myPid(), "", 0, true));
@@ -80,7 +81,7 @@ export function HostScreen({ code }: { code: string }) {
         {view.phase === "round" && <RoundIntroTV view={view} conn={conn} />}
         {view.phase === "turn" && <TurnTV view={view} conn={conn} />}
         {view.phase === "turnend" && <TurnEndTV view={view} conn={conn} />}
-        {view.phase === "final" && <Panel title="Game over"><p class="sub">Beat 7 builds the awards screen.</p></Panel>}
+        {view.phase === "final" && <FinalScreen view={view} conn={conn} tv />}
       </div>
     </div>
   );

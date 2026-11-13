@@ -33,6 +33,7 @@ export type ActionName =
   | "renameTeam"    // host: { team: 0|1, name }
   | "moveTeam"      // host: { pid, team: 0|1 }
   | "shuffleTeams"  // host
+  | "suddenDeath"   // host: { team: 0|1 }
   | "leave";
 
 export type ServerMsg =

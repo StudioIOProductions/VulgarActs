@@ -83,6 +83,7 @@ export function createGame(code: string, hostId: string, settings: Partial<Setti
     pts: {},
     given: {},
     turn: null,
+    suddenDeathWinner: null,
   };
 }
 
@@ -563,6 +564,8 @@ export interface Awards {
   bestGiver: { id: string; count: number } | null;
   mostSkipped: { index: number; text: string; skips: number } | null;
   hardestCustom: { index: number; text: string; by: string; skips: number } | null;
+  /** Every custom card with its author, revealed at the end. */
+  customs: { text: string; by: string; skips: number }[];
 }
 
 export function awards(s: GameState): Awards {
@@ -571,8 +574,8 @@ export function awards(s: GameState): Awards {
   let tie = false;
   if (s.settings.mode === "teams") {
     const [a, b] = s.teams!;
-    tie = a.pts === b.pts;
-    winner = tie ? "tie" : a.pts > b.pts ? a.name : b.name;
+    tie = a.pts === b.pts && s.suddenDeathWinner === null;
+    winner = tie ? "tie" : s.suddenDeathWinner !== null ? s.teams![s.suddenDeathWinner].name : a.pts > b.pts ? a.name : b.name;
   } else {
     const ranked = activePlayers(s).sort((x, y) => (s.pts[y.id] ?? 0) - (s.pts[x.id] ?? 0));
     const top = ranked.filter((p) => s.pts[p.id] === s.pts[ranked[0].id]);
@@ -585,7 +588,17 @@ export function awards(s: GameState): Awards {
   const mostSkipped = bySkips.length ? { index: bySkips[0].index, text: bySkips[0].text, skips: bySkips[0].skips } : null;
   const customs = bySkips.filter((c) => c.custom);
   const hardestCustom = customs.length ? { index: customs[0].index, text: customs[0].text, by: customs[0].by, skips: customs[0].skips } : null;
-  return { winner, tie, bestGiver, mostSkipped, hardestCustom };
+  return { winner, tie, bestGiver, mostSkipped, hardestCustom, customs: customs.map((c) => ({ text: c.text, by: c.by, skips: c.skips })) };
+}
+
+/** Tie-break: the host records which team won the sudden-death card. */
+export function declareSuddenDeath(s: GameState, team: 0 | 1): GameState {
+  requirePhase(s, "final");
+  if (!s.teams) throw new RuleError("no_teams");
+  if (s.teams[0].pts !== s.teams[1].pts) throw new RuleError("not_a_tie");
+  const next = clone(s);
+  next.suddenDeathWinner = team;
+  return next;
 }
 
 /** Same room, same players, fresh bowl: back to the lobby keeping names and settings. */
@@ -598,7 +611,7 @@ export function playAgain(s: GameState): GameState {
   }
   next.cards = []; next.spare = []; next.bowl = []; next.pool = []; next.round = 0;
   next.teams = null; next.turn = null; next.pts = {}; next.given = {}; next.order = []; next.orderIdx = 0;
-  next.turnsGiven = [0, 0];
+  next.turnsGiven = [0, 0]; next.suddenDeathWinner = null;
   return next;
 }
 

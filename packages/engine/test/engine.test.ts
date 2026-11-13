@@ -497,6 +497,16 @@ describe("awards", () => {
     expect(a.hardestCustom!.text).toBe("Jordan's secret");
     expect(a.hardestCustom!.by).toBe("p1");
   });
+  it("a tied team game is settled by a sudden-death call from the host", () => {
+    let s = started();
+    for (let r = 0; r < 3; r++) { s = playRoundOut(s); s = E.continueGame(s, ctx()); }
+    s = { ...s, teams: [{ ...s.teams![0], pts: 9 }, { ...s.teams![1], pts: 9 }] };
+    expect(E.awards(s).tie).toBe(true);
+    s = E.declareSuddenDeath(s, 1);
+    expect(E.awards(s).tie).toBe(false);
+    expect(E.awards(s).winner).toBe(s.teams![1].name);
+    expect(() => E.declareSuddenDeath({ ...s, teams: [{ ...s.teams![0], pts: 1 }, s.teams![1]] }, 0)).toThrow("not_a_tie");
+  });
   it("Free-for-All ties share the win", () => {
     let s = started(4, { mode: "ffa" });
     for (let r = 0; r < 3; r++) { s = playRoundOut(s); s = E.continueGame(s, ctx()); }
