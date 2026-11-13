@@ -53,8 +53,10 @@ export function Landing() {
 
       <section class="band cyan">
         <div class="inner center">
-          <h2 class="h2">Got four friends with phones?</h2>
-          <p class="joke">(If not, that might be a <b>you</b> problem…)</p>
+          <div class="closer">
+            <h2 class="h2">Got four friends with phones?</h2>
+            <p class="joke">(If not, that might be a <b>YOU</b> problem…)</p>
+          </div>
           <a class="btn primary big" href="#play" onClick={play}>Start a room</a>
           <p class="fine ink">Host it on a TV or laptop for the full show, or straight from your phone.</p>
         </div>
