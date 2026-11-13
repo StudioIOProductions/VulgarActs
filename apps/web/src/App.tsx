@@ -7,11 +7,15 @@ import { Lobby, PickPhase } from "./Lobby";
 import { PickScreen, LockedScreen } from "./Pick";
 import { TurnPhone, TurnEndPhone, RoundIntroPhone } from "./Turn";
 import { FinalScreen } from "./Final";
+import { Landing } from "./Landing";
 
-/** Routes: ""  home · "#KXRT" play on this phone · "#KXRT/screen" host screen (TV/laptop) */
-function route() {
-  const m = location.hash.replace("#", "").toUpperCase().match(/^([A-Z]{4})(\/SCREEN)?$/);
-  return m ? { code: m[1], screen: !!m[2] } : null;
+/** Routes: "" landing · "#play" join or host · "#KXRT" play on this phone · "#KXRT/screen" host screen (TV/laptop) */
+function route(): { kind: "landing" } | { kind: "play" } | { kind: "room"; code: string; screen: boolean } {
+  const h = location.hash.replace("#", "");
+  if (h.toLowerCase() === "play") return { kind: "play" };
+  const m = h.toUpperCase().match(/^([A-Z]{4})(\/SCREEN)?$/);
+  if (m) return { kind: "room", code: m[1], screen: !!m[2] };
+  return { kind: "landing" };
 }
 
 export function App() {
@@ -21,7 +25,8 @@ export function App() {
     addEventListener("hashchange", f);
     return () => removeEventListener("hashchange", f);
   }, []);
-  if (!r) return <div class="stage"><div class="phone"><Home /></div></div>;
+  if (r.kind === "landing") return <Landing />;
+  if (r.kind === "play") return <div class="stage"><div class="phone"><Home /></div></div>;
   if (r.screen) return <HostScreen code={r.code} />;
   return <div class="stage"><div class="phone"><Room code={r.code} /></div></div>;
 }
@@ -62,6 +67,7 @@ function Home() {
         <button onClick={() => host(false)} disabled={busy}>Host from this phone</button>
       </Panel>
       {err && <div class="panel error">{err}</div>}
+      <p class="small"><a href="#" onClick={(e) => { e.preventDefault(); location.hash = ""; }}>← Back to the front page</a></p>
     </>
   );
 }
@@ -102,7 +108,7 @@ function Room({ code }: { code: string }) {
           </div>
           <button class="primary" disabled={!name.trim()} onClick={submit}>Join</button>
         </Panel>
-        <p class="small"><a href="#" onClick={(e) => { e.preventDefault(); location.hash = ""; }}>← Different room</a></p>
+        <p class="small"><a href="#" onClick={(e) => { e.preventDefault(); location.hash = "play"; }}>← Different room</a></p>
       </>
     );
   }
@@ -145,7 +151,7 @@ function LeaveLink({ conn }: { conn: Connection }) {
   return (
     <div class="panel">
       <p>Leave the room? Your cards stay in the bowl.</p>
-      <div class="row"><button class="primary" onClick={() => { conn.action("leave"); setTimeout(() => { location.hash = ""; }, 150); }}>Leave</button><button onClick={() => setArm(false)}>Stay</button></div>
+      <div class="row"><button class="primary" onClick={() => { conn.action("leave"); setTimeout(() => { location.hash = "play"; }, 150); }}>Leave</button><button onClick={() => setArm(false)}>Stay</button></div>
     </div>
   );
 }
