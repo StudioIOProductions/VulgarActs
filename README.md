@@ -24,5 +24,6 @@ The first time, Wrangler (Cloudflare's local server) may ask whether it can coll
 
 - `npm test` – run the rules-engine tests
 - `npm run build` – production build of the web app
+- `npm run deploy` – publish to Cloudflare (see DEPLOY.md)
 - `npm run server` – run only the game server
 - `npm run web` – run only the web app

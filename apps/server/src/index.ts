@@ -13,7 +13,7 @@ import type { GameState } from "@vulgar-acts/engine";
 import type { ClientMsg, ServerMsg, ActionName } from "./protocol";
 import { ALL_CARDS, ALL_GROUPS, DECK_SUMMARIES } from "@vulgar-acts/decks";
 
-export interface Env { ROOMS: DurableObjectNamespace }
+export interface Env { ROOMS: DurableObjectNamespace; ASSETS?: Fetcher; POSTHOG_KEY?: string; POSTHOG_HOST?: string }
 
 const json = (data: unknown, status = 200) =>
   new Response(JSON.stringify(data), { status, headers: { "content-type": "application/json", "access-control-allow-origin": "*" } });
@@ -46,6 +46,7 @@ export default {
       if (req.headers.get("upgrade") !== "websocket") return json({ error: "expected websocket" }, 426);
       return env.ROOMS.get(env.ROOMS.idFromName(m[1].toUpperCase())).fetch(req);
     }
+    if (env.ASSETS) return env.ASSETS.fetch(req);
     return new Response("Vulgar Acts server", { status: 200 });
   },
 };
@@ -70,6 +71,7 @@ export class Room {
       const { code, host } = (await req.json()) as { code: string; host: string };
       this.game = E.createGame(code, host);
       await this.save();
+      this.track("room_created");
       return json({ ok: true, code });
     }
     if (url.pathname === "/info") {
@@ -118,6 +120,7 @@ export class Room {
         const before = this.game;
         this.game = this.apply(this.game, att.pid, msg.name, msg.args ?? {});
         if (msg.name === "buzz" && this.game !== before) this.broadcastRaw({ t: "buzz", by: att.pid, at: Date.now() });
+        this.trackTransition(before, this.game, msg.name);
       } catch (e) { return this.sendErr(ws, e); }
       await this.commit();
     }
@@ -138,7 +141,7 @@ export class Room {
   async alarm() {
     if (!this.game) return;
     const next = E.tick(this.game, this.ctxNow());
-    if (next !== this.game) { this.game = next; await this.commit(); }
+    if (next !== this.game) { this.trackTransition(this.game, next, "tick"); this.game = next; await this.commit(); }
     else await this.scheduleAlarm();
   }
 
@@ -180,6 +183,29 @@ export class Room {
       case "suddenDeath": host(); return E.declareSuddenDeath(g, a.team);
       case "leave": return E.removePlayer(g, pid);
       default: throw new E.RuleError("unknown_action", String(name));
+    }
+  }
+
+  /* ---------- analytics (optional; no-op without POSTHOG_KEY) ---------- */
+
+  private track(event: string, props: Record<string, unknown> = {}) {
+    const key = this.env.POSTHOG_KEY;
+    if (!key || !this.game) return;
+    const host = this.env.POSTHOG_HOST ?? "https://us.i.posthog.com";
+    const body = JSON.stringify({ api_key: key, event, distinct_id: "room:" + this.game.code, properties: { code: this.game.code, mode: this.game.settings.mode, rounds: this.game.settings.rounds, timer: this.game.settings.timerSec, decks: this.game.settings.decks, players: Object.keys(this.game.players).length, ...props } });
+    this.ctx.waitUntil(fetch(host + "/i/v0/e/", { method: "POST", headers: { "content-type": "application/json" }, body }).catch(() => {}));
+  }
+
+  private trackTransition(before: GameState, after: GameState, action: string) {
+    if (before.phase !== "round" && after.phase === "round" && before.phase === "pick") this.track("game_started", { bowl: after.bowl.length });
+    if (action === "settings" && JSON.stringify(before.settings.decks) !== JSON.stringify(after.settings.decks)) this.track("decks_changed");
+    if (before.phase === "turn" && after.phase === "turnend" && after.turn) {
+      const t = after.turn;
+      this.track("turn_ended", { why: t.why, got: t.got.length, skips: t.skips, buzzes: t.buzzes, round: after.round + 1,
+        skipped_cards: after.bowl.filter((c, i) => !c.custom && c.skips > 0 && !t.got.includes(i)).map((c) => c.text).slice(0, 20) });
+    }
+    if (before.phase !== "final" && after.phase === "final") {
+      this.track("game_finished", { skipped: after.bowl.filter((c) => !c.custom && c.skips > 0).map((c) => ({ text: c.text, skips: c.skips, deck: c.deck })) });
     }
   }
 

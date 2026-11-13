@@ -1,6 +1,13 @@
-name = "vulgar-acts-server"
+name = "vulgar-acts"
 main = "src/index.ts"
-compatibility_date = "2024-11-01"
+compatibility_date = "2025-06-01"
+
+# The web app's production build is served as static assets from the same
+# Worker, so phones talk to one address and there is no CORS.
+[assets]
+directory = "../web/dist"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
 
 [[durable_objects.bindings]]
 name = "ROOMS"
@@ -9,3 +16,13 @@ class_name = "Room"
 [[migrations]]
 tag = "v1"
 new_classes = ["Room"]
+
+[observability]
+enabled = true
+
+# Uncomment once vulgaracts.com is on Cloudflare (DEPLOY.md step 4):
+# routes = [{ pattern = "play.vulgaracts.com", custom_domain = true }]
+
+# Optional analytics (DEPLOY.md step 5): set with `npx wrangler secret put POSTHOG_KEY`
+# [vars]
+# POSTHOG_HOST = "https://us.i.posthog.com"
