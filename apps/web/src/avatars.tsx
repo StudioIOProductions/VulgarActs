@@ -23,7 +23,7 @@ const teeth = (x: number, y: number, w: number, n = 4) => {
 };
 const drool = (x: number, y: number, h = 6) => <path d={`M${x} ${y}q-1 ${h / 2} 0 ${h}`} fill="none" stroke="#5AC8FA" stroke-width="2.2" stroke-linecap="round" />;
 
-export const AVATAR_NAMES = ["Bear", "Blob", "Squid", "Potato", "Toilet", "Hot Dog", "Ghost", "Cyclops", "Cat", "Onion", "Pickle", "Disco Ball", "Brain", "Worm", "Sock", "Banana"];
+export const AVATAR_NAMES = ["Bear", "Blob", "Squid", "Potato", "Toilet", "Pizza", "Ghost", "Cyclops", "Cat", "Onion", "Pickle", "Disco Ball", "Brain", "Worm", "Sock", "Banana"];
 export const AVATAR_COUNT = AVATAR_NAMES.length;
 
 const draw: (() => JSX.Element)[] = [
@@ -72,13 +72,15 @@ const draw: (() => JSX.Element)[] = [
     <path d="M27 22q6 3 12 -1" {...thin} />
     <path d="M20 40c6-4 18-4 24 0-2 8-22 8-24 0z" fill="#1BA3D6" {...S} />{drool(38, 48, 6)}
   </>,
-  // 5 Hot dog: squashed bun, sausage with a face, mustard eyebrows
+  // 5 Pizza: a slice, point up, crust at the bottom, cheese sliding off
   () => <>
-    <path d="M6 36c0-12 12-16 26-16s26 4 26 16-12 16-26 16S6 48 6 36z" fill="#E8B96A" {...S} />
-    <path d="M10 28c6-8 38-8 44 0 0 10-44 10-44 0z" fill="#E3261D" {...S} />
-    {eye(24, 30, 5, 5.5, 1, 1)}{eye(41, 29, 4, 4.5, -1, 1)}
-    <path d="M18 24q6-5 12 0M36 23q6-5 12 0" fill="none" stroke="#F7E020" stroke-width="3" stroke-linecap="round" />
-    <path d="M26 38q6 6 12 0" {...thin} />{teeth(27, 38, 10, 4)}{drool(40, 41, 8)}
+    <path d="M32 4L10 50h44z" fill="#F2B544" {...S} />
+    <path d="M8 50h48c0 6-4 9-8 9H16c-4 0-8-3-8-9z" fill="#C8792B" {...S} />
+    <path d="M14 48c6-4 10 2 16-2s10 2 16-1" fill="none" stroke="#F7E020" stroke-width="3" stroke-linecap="round" />
+    <circle cx="26" cy="36" r="4" fill="#E3261D" {...S} /><circle cx="40" cy="40" r="3.5" fill="#E3261D" {...S} /><circle cx="33" cy="20" r="3" fill="#E3261D" {...S} />
+    {eye(27, 26, 4, 4.5, 1, 1)}{eye(38, 29, 5.5, 6, -1, 2)}
+    <path d="M28 42q5 4 10 -1" {...thin} />{teeth(29, 41, 9, 3)}{drool(40, 45, 6)}
+    <path d="M44 52q1 6-1 9" fill="none" stroke="#F7E020" stroke-width="3" stroke-linecap="round" />
   </>,
   // 6 Ghost: screaming, wobbly hem, one eye huge
   () => <>
@@ -95,14 +97,18 @@ const draw: (() => JSX.Element)[] = [
     <path d="M18 20q14-8 28 0" {...thin} />
     <path d="M22 50h20" {...S} />{teeth(22, 50, 20, 6)}<path d="M22 50l0 3M42 50l0 3" {...thin} />
   </>,
-  // 8 Cat: unimpressed, moustache, one eye half shut
+  // 8 Picasso cat: the face in two colours seen from two angles at once, one ear bent, nose off-centre
   () => <>
-    <path d="M13 22l1-16 11 9h14l11-9 1 16v16c0 11-8 20-19 20S13 49 13 38z" fill="#F7E020" {...S} />
-    {eye(24, 31, 5, 5.5, 1, 2)}<path d="M36 28q6-2 12 0q-6 6-12 0z" fill="#fff" {...S} /><circle cx="43" cy="30" r="1.5" fill={K} />
-    <path d="M18 26l9-2" {...thin} />
-    <path d="M30 40l2 2 2-2z" fill={K} />
-    <path d="M20 44q6-7 12-2 6-5 12 2" fill={K} {...S} />
-    <path d="M6 38h9M49 38h9M7 44h8M49 44h8" {...thin} />
+    <path d="M12 22l2-15 10 8 8-2 6 4 8-11 6 16-2 18c-1 10-7 18-18 18S12 50 12 40z" fill="#F7E020" {...S} />
+    <path d="M33 10l8-6 5 16-2 18c-1 10-7 18-15 18z" fill="#1BA3D6" {...S} />
+    <path d="M33 10v46" {...thin} />
+    {eye(23, 30, 5, 4, 1, 1)}
+    <path d="M38 24l12 2-2 10-10-1z" fill="#fff" {...S} /><circle cx="45" cy="30" r="1.8" fill={K} />
+    <path d="M16 25l9-3M50 20l-9 4" {...S} />
+    <path d="M26 40l5 6-9 1z" fill="#E3261D" {...S} />
+    <path d="M18 50q8-4 14 0M36 46l10 4" {...thin} />
+    <path d="M6 36h9M5 42h9M48 40h10M47 46h10" {...thin} />
+    <path d="M42 2l8 6-6 4" fill="#1BA3D6" {...S} />
   </>,
   // 9 Onion: layered, sobbing, pointy top
   () => <>
