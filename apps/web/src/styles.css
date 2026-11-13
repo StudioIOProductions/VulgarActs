@@ -129,3 +129,7 @@ button.tiny{padding:2px 8px;font-size:16px;box-shadow:2px 2px 0 var(--ink);backg
 .countdown{font-family:var(--display);font-size:72px;line-height:1;margin-top:12px;color:var(--red)}
 .pausedbox{background:var(--paper)}
 @media (prefers-reduced-motion:reduce){.chip.pop{animation:none}}
+/* Beat 9 */
+.chip .x{border:0;box-shadow:none;padding:0 4px;font-size:18px;line-height:1;background:none;color:var(--mute);margin-left:2px}
+.chip .x:hover{color:var(--red)}
+.chip.late{border-style:dotted}

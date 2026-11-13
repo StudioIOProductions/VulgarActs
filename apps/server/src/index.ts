@@ -73,7 +73,7 @@ export class Room {
     }
     if (url.pathname === "/info") {
       if (!this.game) return json({ ok: false }, 404);
-      return json({ ok: true, code: this.game.code, phase: this.game.phase, players: E.playerList(this.game).map((p) => p.name) });
+      return json({ ok: true, code: this.game.code, phase: this.game.phase, players: E.playerList(this.game).map((p) => ({ id: p.id, name: p.name })) });
     }
     if (req.headers.get("upgrade") === "websocket") {
       if (!this.game) return json({ error: "no such room" }, 404);

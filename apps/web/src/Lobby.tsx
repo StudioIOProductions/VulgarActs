@@ -5,12 +5,14 @@ import { Avatar, Seg, Toggle, Panel } from "./ui";
 const DECKS = [{ v: "starter", label: "Starter" }, { v: "afterdark", label: "After Dark 18+" }];
 const minFor = (mode: Settings["mode"]) => (mode === "ffa" ? 3 : 4);
 
-export function PlayerChips({ view, showLock = false }: { view: PlayerView; showLock?: boolean }) {
+export function PlayerChips({ view, showLock = false, conn }: { view: PlayerView; showLock?: boolean; conn?: Connection }) {
+  const canRemove = !!conn && view.isHost;
   return (
     <div class="chips">
       {view.players.map((p) => (
-        <span key={p.id} class={"chip av" + (p.connected ? "" : " off") + (showLock && p.locked ? " ok" : "")}>
-          <Avatar n={p.avatar} size={22} />{p.name}{p.id === view.me ? " (you)" : ""}{p.connected ? "" : " · away"}{showLock ? (p.locked ? " ✓" : " …") : ""}
+        <span key={p.id} class={"chip av" + (p.connected ? "" : " off") + (showLock && p.locked ? " ok" : "") + (p.lateJoiner ? " late" : "")}>
+          <Avatar n={p.avatar} size={22} />{p.name}{p.id === view.me ? " (you)" : ""}{p.connected ? "" : " · away"}{p.lateJoiner ? " · late" : ""}{showLock ? (p.locked ? " ✓" : " …") : ""}
+          {canRemove && p.id !== view.me && <button class="x" aria-label={`Remove ${p.name}`} onClick={() => conn!.action("remove", { pid: p.id })}>×</button>}
         </span>
       ))}
     </div>
@@ -50,7 +52,7 @@ export function Lobby({ view, conn }: { view: PlayerView; conn: Connection }) {
         <h1>{view.isHost ? "You're the host" : "Waiting for the host"}</h1>
         <p class="sub">{view.players.length} in the room{!view.isHost && view.hostName ? ` · ${view.hostName} is hosting` : ""}</p>
       </div>
-      <Panel title="Who's here"><PlayerChips view={view} /></Panel>
+      <Panel title="Who's here"><PlayerChips view={view} conn={conn} /></Panel>
       {view.isHost && (
         <>
           <Panel title="Share the code"><div class="code">{view.code}</div><p class="sub">Friends open this same address and type the code.</p></Panel>

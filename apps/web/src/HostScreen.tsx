@@ -64,7 +64,7 @@ export function HostScreen({ code }: { code: string }) {
               <Panel title={`${view.players.length} in the room`}>
                 <div class="chips big">
                   {view.players.length === 0 && <span class="sub">Waiting for players…</span>}
-                  {view.players.map((p) => <span key={p.id} class={"chip av pop" + (p.connected ? "" : " off")}><Avatar n={p.avatar} size={28} />{p.name}</span>)}
+                  {view.players.map((p) => <span key={p.id} class={"chip av pop" + (p.connected ? "" : " off")}><Avatar n={p.avatar} size={28} />{p.name}{p.connected ? "" : " · away"}{view.isHost && <button class="x" aria-label={`Remove ${p.name}`} onClick={() => conn.action("remove", { pid: p.id })}>×</button>}</span>)}
                 </div>
               </Panel>
             </div>
@@ -84,7 +84,7 @@ export function HostScreen({ code }: { code: string }) {
               <Panel title="Building the bowl">
                 <p class="sub">Everyone picks {view.settings.cardsPerPlayer} cards on their phone, or writes their own.</p>
                 <div class="chips big">
-                  {view.players.map((p) => <span key={p.id} class={"chip av" + (p.locked ? " ok" : "")}><Avatar n={p.avatar} size={28} />{p.name} {p.locked ? "✓" : "…"}</span>)}
+                  {view.players.map((p) => <span key={p.id} class={"chip av" + (p.locked ? " ok" : "") + (p.connected ? "" : " off")}><Avatar n={p.avatar} size={28} />{p.name} {p.locked ? "✓" : "…"}{view.isHost && <button class="x" aria-label={`Remove ${p.name}`} onClick={() => conn.action("remove", { pid: p.id })}>×</button>}</span>)}
                 </div>
                 <div class="bowlbar"><div class="fill" style={{ width: `${(100 * view.players.filter((p) => p.locked).length) / Math.max(1, view.players.length)}%` }} /></div>
                 <p><b>{view.players.filter((p) => p.locked).length} of {view.players.length}</b> locked in</p>

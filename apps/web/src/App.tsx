@@ -1,5 +1,5 @@
 import { useEffect, useState } from "preact/hooks";
-import { Connection, createRoom, roomExists, myPid, savedName, saveName, savedAvatar, saveAvatar } from "./net";
+import { Connection, createRoom, roomExists, roomInfo, myPid, savedName, saveName, savedAvatar, saveAvatar } from "./net";
 import type { PlayerView } from "../../server/src/protocol";
 import { Wordmark, Avatar, Seg, Toggle, Panel } from "./ui";
 import { HostScreen } from "./HostScreen";
@@ -72,13 +72,25 @@ function Room({ code }: { code: string }) {
   const [name, setName] = useState(savedName());
   const [avatar, setAvatar] = useState(savedAvatar());
   const [joined, setJoined] = useState(false);
+  const [checked, setChecked] = useState(false);
+  const [phase, setPhase] = useState<string | null>(null);
+  // A refresh mid-game lands you straight back in your seat.
+  useEffect(() => {
+    roomInfo(code).then((info) => {
+      setPhase(info.phase ?? null);
+      if (info.ok && savedName() && info.players?.some((p) => p.id === myPid())) setJoined(true);
+      setChecked(true);
+    });
+  }, [code]);
   const submit = () => { if (!name.trim()) return; saveName(name.trim()); saveAvatar(avatar); setJoined(true); };
+  if (!checked) return <><Wordmark /><Panel><p>Checking room {code}…</p></Panel></>;
   if (!joined) {
     return (
       <>
         <Wordmark />
         <Panel>
           <h2>Room {code}</h2>
+          {phase && phase !== "lobby" && <p class="sub">This game is already going. You'll join as a guesser this round and get cards next game.</p>}
           <label for="name">Your name</label>
           <input id="name" value={name} maxLength={14} autocomplete="off" placeholder="Name"
             onInput={(e) => setName((e.target as HTMLInputElement).value)} onKeyDown={(e) => e.key === "Enter" && submit()} />
@@ -122,7 +134,19 @@ function Live({ code, name, avatar }: { code: string; name: string; avatar: numb
       {view.phase === "turnend" && <TurnEndPhone view={view} conn={conn} />}
       {view.phase === "final" && <FinalScreen view={view} conn={conn} />}
       {err && <div class="panel error" onClick={() => setErr("")}>{err}</div>}
+      <LeaveLink conn={conn} />
     </>
+  );
+}
+
+function LeaveLink({ conn }: { conn: Connection }) {
+  const [arm, setArm] = useState(false);
+  if (!arm) return <p class="small"><a href="#" onClick={(e) => { e.preventDefault(); setArm(true); }}>Leave this room</a></p>;
+  return (
+    <div class="panel">
+      <p>Leave the room? Your cards stay in the bowl.</p>
+      <div class="row"><button class="primary" onClick={() => { conn.action("leave"); setTimeout(() => { location.hash = ""; }, 150); }}>Leave</button><button onClick={() => setArm(false)}>Stay</button></div>
+    </div>
   );
 }
 

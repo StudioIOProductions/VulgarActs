@@ -38,10 +38,11 @@ export async function createRoom(host: string): Promise<string> {
   return ((await r.json()) as { code: string }).code;
 }
 
-export async function roomExists(code: string): Promise<boolean> {
-  const r = await fetch(base() + `/api/rooms/${code}`);
-  return r.ok;
+export interface RoomInfo { ok: boolean; phase?: string; players?: { id: string; name: string }[] }
+export async function roomInfo(code: string): Promise<RoomInfo> {
+  try { const r = await fetch(base() + `/api/rooms/${code}`); return r.ok ? ((await r.json()) as RoomInfo) : { ok: false }; } catch { return { ok: false }; }
 }
+export async function roomExists(code: string): Promise<boolean> { return (await roomInfo(code)).ok; }
 
 type Listener = (m: ServerMsg) => void;
 
