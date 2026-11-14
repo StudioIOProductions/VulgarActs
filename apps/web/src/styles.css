@@ -8,9 +8,9 @@ html,body{height:100%}
 body{margin:0;background:var(--cyan);background-image:radial-gradient(var(--cyan-dot) 1.4px,transparent 1.6px);background-size:14px 14px;color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.4}
 .stage{min-height:100%;display:flex;flex-direction:column;align-items:center;padding-block:calc(20px + env(safe-area-inset-top,0px)) calc(32px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .phone{width:100%;max-width:440px;display:flex;flex-direction:column;gap:14px;min-width:0}
-.wordmark{font-family:var(--display);font-size:clamp(34px,9vw,44px);line-height:1;background:var(--red);color:var(--ink);padding:10px 16px 8px;border:3px solid var(--ink);transform:rotate(-2deg);display:inline-block;box-shadow:4px 4px 0 var(--ink);text-transform:uppercase;align-self:flex-start}
-.wordmark span{color:var(--paper);background:var(--ink);padding:0 6px 2px;display:inline-block;transform:rotate(3deg)}
-.wordmark span:nth-child(even){transform:rotate(-3deg)}
+.wordmark{font-family:var(--display);font-size:clamp(26px,7vw,36px);line-height:1;background:var(--red);padding:8px 12px;border:3px solid var(--ink);transform:rotate(-2deg);display:inline-flex;align-items:center;gap:3px;box-shadow:4px 4px 0 var(--ink);text-transform:uppercase;align-self:flex-start}
+.wordmark .tile{display:inline-block;background:var(--ink);color:var(--paper);padding:2px 5px 0;min-width:.85em;text-align:center}
+.wordmark .gap{display:inline-block;width:.45em}
 .tag{font-size:13px;color:var(--paper);text-shadow:1px 1px 0 var(--ink);font-weight:700;text-transform:uppercase;letter-spacing:.08em}
 .panel{background:var(--paper);border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);padding:18px 16px;display:flex;flex-direction:column;gap:12px}
 h1,h2{font-family:var(--display);font-weight:400;margin:0;line-height:1.05;text-transform:uppercase}
@@ -37,7 +37,7 @@ input:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
 .small{font-size:12px;color:var(--paper);text-shadow:1px 1px 0 var(--ink);font-weight:700}
 button[disabled]{opacity:.45;cursor:not-allowed;box-shadow:none}
 /* Beat 4 */
-.wordmark.small{font-size:26px;padding:6px 10px 4px}
+.wordmark.small{font-size:20px;padding:5px 8px;gap:2px}
 .pill.warn{background:var(--yellow)}
 .seg{display:flex;border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);background:#fff}
 .seg button{flex:1;border:0;box-shadow:none;border-right:3px solid var(--ink);padding:10px 6px;font-size:14px;background:#fff}
@@ -144,7 +144,7 @@ button.tiny{padding:2px 8px;font-size:16px;box-shadow:2px 2px 0 var(--ink);backg
 .landing .inner{width:100%;max-width:1100px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center;width:100%;max-width:1100px;margin:0 auto;padding-block:calc(28px + env(safe-area-inset-top,0px)) 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .hero-text{display:flex;flex-direction:column;gap:18px;min-width:0}
-.hero-text .wordmark{font-size:clamp(36px,5vw,56px)}
+.hero-text .wordmark{font-size:clamp(30px,4.5vw,48px)}
 .kicker{font-size:14px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;background:var(--yellow);border:3px solid var(--ink);padding:8px 14px;box-shadow:4px 4px 0 var(--ink);transform:rotate(-1.5deg);align-self:flex-start}
 .hero-h{font-family:var(--display);font-weight:400;font-size:clamp(40px,7vw,84px);line-height:1.08;text-transform:uppercase;margin:0;color:var(--paper);text-shadow:4px 4px 0 var(--ink)}
 .hero-p{font-size:clamp(17px,2vw,21px);line-height:1.45;font-weight:500;max-width:34em}
