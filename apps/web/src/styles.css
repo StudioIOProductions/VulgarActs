@@ -203,3 +203,8 @@ button.tiny{padding:2px 8px;font-size:16px;box-shadow:2px 2px 0 var(--ink);backg
 .duo-player .avbtn{flex:0 0 auto;padding:2px}
 .score>div .avatar{vertical-align:middle}
 .bigcard{cursor:default}
+
+.hero-cta{display:flex;flex-direction:column;gap:12px;width:100%;max-width:560px}
+.hero-cta>.btn.primary{width:100%;text-align:center}
+.hero-cta-row{display:flex;gap:12px}
+.hero-cta-row .btn{flex:1 1 0;min-width:0;text-align:center;padding-left:8px;padding-right:8px}

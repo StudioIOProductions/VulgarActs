@@ -11,10 +11,12 @@ export function Landing() {
           <p class="kicker">A party game for adults who should know better</p>
           <h1 class="hero-h">Charades, minus the dignity.</h1>
           <p class="hero-p"><b>Everyone joins from their own phone. One bowl of cards, three rounds, and your friends’ secrets on the cards. No download, no sign-up, no ads.</b></p>
-          <div class="row">
+          <div class="hero-cta">
             <a class="btn primary" href="#play" onClick={play}>Play with friends</a>
+            <div class="hero-cta-row">
             <a class="btn yellow" href="#duo" onClick={(e) => { e.preventDefault(); location.hash = "duo"; }}>Just the two of us</a>
             <a class="btn" href="#cards" onClick={(e) => { e.preventDefault(); location.hash = "cards"; }}>Just read the cards</a>
+            </div>
           </div>
           <p class="fine">Rated 17+ · 4 to 16 players · 35 to 50 minutes</p>
         </div>
