@@ -198,3 +198,8 @@ button.tiny{padding:2px 8px;font-size:16px;box-shadow:2px 2px 0 var(--ink);backg
 .decktile .dcheck{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;background:rgba(255,255,255,.9);color:var(--ink);padding:2px 8px;border:2px solid var(--ink)}
 .decktile.on .dcheck{background:var(--yellow)}
 .tv .deckgrid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+/* Duo */
+.duo-player{display:flex;align-items:center;gap:10px}.duo-player input{flex:1}
+.duo-player .avbtn{flex:0 0 auto;padding:2px}
+.score>div .avatar{vertical-align:middle}
+.bigcard{cursor:default}

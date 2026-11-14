@@ -8,11 +8,15 @@ import { PickScreen, LockedScreen } from "./Pick";
 import { TurnPhone, TurnEndPhone, RoundIntroPhone } from "./Turn";
 import { FinalScreen } from "./Final";
 import { Landing } from "./Landing";
+import { Duo } from "./Duo";
+import { Browse } from "./Browse";
 
 /** Routes: "" landing · "#play" join or host · "#KXRT" play on this phone · "#KXRT/screen" host screen (TV/laptop) */
-function route(): { kind: "landing" } | { kind: "play" } | { kind: "room"; code: string; screen: boolean } {
+function route(): { kind: "landing" } | { kind: "play" } | { kind: "duo" } | { kind: "cards" } | { kind: "room"; code: string; screen: boolean } {
   const h = location.hash.replace("#", "");
   if (h.toLowerCase() === "play") return { kind: "play" };
+  if (h.toLowerCase() === "duo") return { kind: "duo" };
+  if (h.toLowerCase() === "cards") return { kind: "cards" };
   const m = h.toUpperCase().match(/^([A-Z]{4})(\/SCREEN)?$/);
   if (m) return { kind: "room", code: m[1], screen: !!m[2] };
   return { kind: "landing" };
@@ -27,6 +31,8 @@ export function App() {
   }, []);
   if (r.kind === "landing") return <Landing />;
   if (r.kind === "play") return <div class="stage"><div class="phone"><Home /></div></div>;
+  if (r.kind === "duo") return <div class="stage"><div class="phone"><Duo /></div></div>;
+  if (r.kind === "cards") return <div class="stage"><div class="phone"><Browse /></div></div>;
   if (r.screen) return <HostScreen code={r.code} />;
   return <div class="stage"><div class="phone"><Room code={r.code} /></div></div>;
 }
@@ -67,6 +73,10 @@ function Home() {
         <button onClick={() => host(false)} disabled={busy}>Host from this phone</button>
       </Panel>
       {err && <div class="panel error">{err}</div>}
+      <Panel title="Only two of you?">
+        <p class="sub">One phone, no room needed. Same cards, same rounds.</p>
+        <button onClick={() => { location.hash = "duo"; }}>Just the two of us</button>
+      </Panel>
       <p class="small"><a href="#" onClick={(e) => { e.preventDefault(); location.hash = ""; }}>← Back to the front page</a></p>
     </>
   );

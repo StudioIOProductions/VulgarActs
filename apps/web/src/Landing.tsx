@@ -12,8 +12,9 @@ export function Landing() {
           <h1 class="hero-h">Charades, minus the dignity.</h1>
           <p class="hero-p"><b>Everyone joins from their own phone. One bowl of cards, three rounds, and your friends’ secrets on the cards. No download, no sign-up, no ads.</b></p>
           <div class="row">
-            <a class="btn primary" href="#play" onClick={play}>Play now</a>
-            <a class="btn" href="#how">How to play</a>
+            <a class="btn primary" href="#play" onClick={play}>Play with friends</a>
+            <a class="btn yellow" href="#duo" onClick={(e) => { e.preventDefault(); location.hash = "duo"; }}>Just the two of us</a>
+            <a class="btn" href="#cards" onClick={(e) => { e.preventDefault(); location.hash = "cards"; }}>Just read the cards</a>
           </div>
           <p class="fine">Rated 17+ · 4 to 16 players · 35 to 50 minutes</p>
         </div>
@@ -59,6 +60,7 @@ export function Landing() {
           </div>
           <a class="btn primary big" href="#play" onClick={play}>Start a room</a>
           <p class="fine ink">Host it on a TV or laptop for the full show, or straight from your phone.</p>
+          <p class="fine ink">Only two of you tonight? <a href="#duo" onClick={(e) => { e.preventDefault(); location.hash = "duo"; }} style="color:inherit">Play Duo on one phone.</a></p>
         </div>
       </section>
 
