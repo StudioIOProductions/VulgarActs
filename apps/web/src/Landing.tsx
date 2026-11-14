@@ -47,7 +47,7 @@ export function Landing() {
           <div class="deck-text">
             <p class="eyebrow yellow">The decks</p>
             <h2 class="h2 paper">Free to play. Paid to get filthier.</h2>
-            <p class="lead paper">The <b>Starter</b> deck comes with the game: 268 cards of sex, shit and grandma. <b>After Dark</b> is the 60 cards we couldn’t put in the Starter: lights off, phones out, 18+ only. More decks are coming.</p>
+            <p class="lead paper">The <b>Starter</b> deck comes with the game: 286 cards of sex, shit and grandma. <b>After Dark</b> is the 67 cards we couldn’t put in the Starter: lights off, phones out, 18+ only. More decks are coming.</p>
             <a class="btn yellow" href="#play" onClick={play}>Play the Starter deck</a>
           </div>
           <img class="deck-box" src="/img/box-dark.png" alt="The After Dark deck box: the same blonde in grey and red on black" width="520" height="622" />
