@@ -2,7 +2,7 @@
  * Sixteen character avatars, supplied as artwork in /public/img/avatars/<n>.png
  * (256x256, transparent). Index = the player's avatar number.
  */
-export const AVATAR_NAMES = ["Pirate Bear", "Alien", "Jellyfish", "Potato", "Toilet", "Pizza", "Ghost", "Leaf", "Punk Cat", "Onion", "Avocado", "Disco Ball", "Brain", "Worm", "Poop", "Banana"];
+export const AVATAR_NAMES = ["Pirate Bear", "Alien", "Jellyfish", "Potato", "Toilet", "Pizza", "Ghost", "Minotaur", "Punk Cat", "Onion", "Avocado", "Disco Ball", "Brain", "Worm", "Poop", "Banana"];
 export const AVATAR_COUNT = AVATAR_NAMES.length;
 
 export function AvatarArt({ n }: { n: number }) {
