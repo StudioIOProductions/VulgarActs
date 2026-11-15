@@ -16,6 +16,10 @@ const CUTS: { r: number; s: number; y: number; px: number }[] = [
   { r: 2, s: 1.1, y: -1, px: 0.1 },    // T
   { r: -3, s: 0.96, y: 3, px: 0.14 },  // S
 ];
+/** Card styling class per deck: After Dark goes black-and-red, Office Party goes slate. */
+export const deckClass = (deck?: string | null) => deck === "afterdark" ? " dark" : deck === "office" ? " office" : "";
+export const deckMark = (deck?: string | null) => deck === "afterdark" ? "After Dark" : deck === "office" ? "Office Party" : "Vulgar Acts";
+
 export const Wordmark = ({ small = false }: { small?: boolean }) => {
   const letters = "VULGAR ACTS".split("");
   return (

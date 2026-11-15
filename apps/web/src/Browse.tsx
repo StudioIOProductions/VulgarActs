@@ -1,7 +1,7 @@
 /** Just read the cards: flip through a deck like the physical box, no timer. */
 import { useState } from "preact/hooks";
 import { DECKS } from "@vulgar-acts/decks";
-import { Wordmark, Panel } from "./ui";
+import { Wordmark, Panel, deckClass } from "./ui";
 
 const shuffle = (n: number) => {
   const a = Array.from({ length: n }, (_, k) => k);
@@ -26,7 +26,7 @@ export function Browse() {
       <div class="row between"><Wordmark small /><span class="pill">Just the cards</span></div>
       <div class="row">{DECKS.map((d) => <button key={d.id} class={deckId === d.id ? "yellow" : ""} onClick={() => pick(d.id)}>{d.title}{d.rating === "18+" ? " · 18+" : ""}</button>)}</div>
       {gate && <div class="gate18"><h3>After Dark is 18+</h3><p>Every card in it is explicit.</p><div class="row"><button onClick={() => setGate(false)}>Not tonight</button><button class="primary" onClick={() => { setAdult(true); try { localStorage.setItem("va_adult", "1"); } catch {} setGate(false); open("afterdark"); }}>I'm 18+</button></div></div>}
-      <div class={"bigcard" + (deck.id === "afterdark" ? " dark" : "")} onClick={() => setI((i + 1) % deck.cards.length)}>{card.text}</div>
+      <div class={"bigcard" + deckClass(deck.id)} onClick={() => setI((i + 1) % deck.cards.length)}>{card.text}</div>
       <p class="small">{i + 1} of {deck.cards.length} · tap the card for the next one</p>
       <div class="row"><button onClick={() => setI((i - 1 + deck.cards.length) % deck.cards.length)}>← Back</button><button class="yellow" onClick={reshuffle}>Shuffle</button><button onClick={() => setI((i + 1) % deck.cards.length)}>Next →</button></div>
       <Panel><p class="sub">Like them? <a href="#" onClick={(e) => { e.preventDefault(); location.hash = "duo"; }}>Play with one other person</a> or <a href="#" onClick={(e) => { e.preventDefault(); location.hash = "play"; }}>start a room</a>.</p></Panel>

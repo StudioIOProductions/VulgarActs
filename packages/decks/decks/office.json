@@ -1,0 +1,287 @@
+{
+  "id": "office",
+  "title": "Office Party",
+  "description": "68 cards for the people you spend forty hours a week pretending to like. Bring it to the holiday party. Get fired.",
+  "rating": "17+",
+  "price": 2.99,
+  "language": "en",
+  "version": 1,
+  "art": "/img/box-office.png",
+  "color": "#566777",
+  "ink": "#FFFDF5",
+  "cards": [
+    {
+      "id": "office:bathroom-stall-crying-break",
+      "text": "Bathroom stall crying break"
+    },
+    {
+      "id": "office:boner-for-changing-the-toner",
+      "text": "Boner for changing the toner"
+    },
+    {
+      "id": "office:break-room-fridge-fungus",
+      "text": "Break room fridge fungus"
+    },
+    {
+      "id": "office:briefcase-beefcake",
+      "text": "Briefcase beefcake"
+    },
+    {
+      "id": "office:bring-a-raccoon-to-work-day",
+      "text": "Bring a Raccoon to Work Day"
+    },
+    {
+      "id": "office:calling-your-boss-mommy",
+      "text": "Calling your boss “Mommy”"
+    },
+    {
+      "id": "office:clipping-your-toenails-at-your-desk",
+      "text": "Clipping your toenails at your desk"
+    },
+    {
+      "id": "office:clock-out-with-your-cock-out",
+      "text": "Clock out with your cock out"
+    },
+    {
+      "id": "office:conference-call-brawl",
+      "text": "Conference call brawl"
+    },
+    {
+      "id": "office:conference-room-smoke-break",
+      "text": "Conference room smoke break"
+    },
+    {
+      "id": "office:cubicle-crop-duster",
+      "text": "Cubicle crop duster"
+    },
+    {
+      "id": "office:direct-deposit-from-deez-nuts",
+      "text": "Direct deposit from deez nuts"
+    },
+    {
+      "id": "office:doing-foot-stuff-for-overtime",
+      "text": "Doing foot stuff for overtime"
+    },
+    {
+      "id": "office:doing-shrooms-at-the-office-retreat",
+      "text": "Doing shrooms at the office retreat"
+    },
+    {
+      "id": "office:dry-heaving-in-an-interview",
+      "text": "Dry heaving in an interview"
+    },
+    {
+      "id": "office:enjoy-your-fish-lunch-fuckwad",
+      "text": "Enjoy your fish lunch, fuckwad!"
+    },
+    {
+      "id": "office:exceeds-expectations-in-bed",
+      "text": "Exceeds expectations, in bed"
+    },
+    {
+      "id": "office:executive-coroner-s-office",
+      "text": "Executive coroner’s office"
+    },
+    {
+      "id": "office:eye-contact-through-the-stall-gap",
+      "text": "Eye contact through the stall gap"
+    },
+    {
+      "id": "office:face-punch-card",
+      "text": "Face punch card"
+    },
+    {
+      "id": "office:farting-while-stuck-in-the-elevator",
+      "text": "Farting while stuck in the elevator"
+    },
+    {
+      "id": "office:file-these-under-aroused",
+      "text": "File these under “aroused”"
+    },
+    {
+      "id": "office:flash-mob-firing",
+      "text": "Flash mob firing"
+    },
+    {
+      "id": "office:following-your-boss-on-pornhub",
+      "text": "Following your boss on Pornhub"
+    },
+    {
+      "id": "office:fudge-it-on-the-budget",
+      "text": "Fudge it on the budget"
+    },
+    {
+      "id": "office:fun-fact-i-m-on-probation",
+      "text": "Fun fact: I’m on probation"
+    },
+    {
+      "id": "office:getting-paid-every-bicentennial",
+      "text": "Getting paid every bicentennial"
+    },
+    {
+      "id": "office:getting-under-the-spreadsheets",
+      "text": "Getting under the spreadsheets"
+    },
+    {
+      "id": "office:give-her-the-three-hole-punch",
+      "text": "Give her the three-hole punch"
+    },
+    {
+      "id": "office:happy-hour-sad-salary",
+      "text": "Happy hour, sad salary"
+    },
+    {
+      "id": "office:is-that-a-highlighter-in-your-pants",
+      "text": "Is that a highlighter in your pants?"
+    },
+    {
+      "id": "office:janitor-s-manicures",
+      "text": "Janitor’s manicures"
+    },
+    {
+      "id": "office:jorts-on-casual-friday",
+      "text": "Jorts on Casual Friday"
+    },
+    {
+      "id": "office:layoff-playoffs",
+      "text": "Layoff playoffs"
+    },
+    {
+      "id": "office:licking-your-silverware-clean",
+      "text": "Licking your silverware clean"
+    },
+    {
+      "id": "office:loud-quiet-quitting",
+      "text": "Loud quiet quitting"
+    },
+    {
+      "id": "office:making-a-fort-out-of-interns",
+      "text": "Making a fort out of interns"
+    },
+    {
+      "id": "office:murmurs-of-a-merger-murder",
+      "text": "Murmurs of a merger murder"
+    },
+    {
+      "id": "office:naked-client-presentation",
+      "text": "Naked client presentation"
+    },
+    {
+      "id": "office:new-hire-same-old-herpes",
+      "text": "New hire, same old herpes"
+    },
+    {
+      "id": "office:password-is-password",
+      "text": "Password is “password”"
+    },
+    {
+      "id": "office:password-must-contain-a-fictional-shape",
+      "text": "Password must contain a fictional shape"
+    },
+    {
+      "id": "office:paternity-leave-for-my-goldfish",
+      "text": "Paternity leave for my goldfish"
+    },
+    {
+      "id": "office:per-my-last-email-bitch",
+      "text": "Per my last email, bitch!"
+    },
+    {
+      "id": "office:performance-anxiety-review",
+      "text": "Performance anxiety review"
+    },
+    {
+      "id": "office:pizza-party-bonus",
+      "text": "Pizza party bonus"
+    },
+    {
+      "id": "office:pulling-the-fire-alarm-to-leave-early",
+      "text": "Pulling the fire alarm to leave early"
+    },
+    {
+      "id": "office:retirement-party-knife-fight",
+      "text": "Retirement party knife fight"
+    },
+    {
+      "id": "office:run-this-up-your-flagpole",
+      "text": "Run this up your flagpole"
+    },
+    {
+      "id": "office:salad-lunch-gang",
+      "text": "Salad lunch gang"
+    },
+    {
+      "id": "office:sending-dick-pics-to-hr",
+      "text": "Sending dick pics to HR"
+    },
+    {
+      "id": "office:sexing-the-valet-for-free-parking",
+      "text": "Sexing the valet for free parking"
+    },
+    {
+      "id": "office:sexing-your-way-to-the-top",
+      "text": "Sexing your way to the top"
+    },
+    {
+      "id": "office:shy-urinal-glances",
+      "text": "Shy urinal glances"
+    },
+    {
+      "id": "office:signing-your-own-birthday-card",
+      "text": "Signing your own birthday card"
+    },
+    {
+      "id": "office:spiking-the-water-cooler",
+      "text": "Spiking the water cooler"
+    },
+    {
+      "id": "office:swivel-chair-jousting",
+      "text": "Swivel chair jousting"
+    },
+    {
+      "id": "office:synergy-gives-me-the-squirts",
+      "text": "Synergy gives me the squirts"
+    },
+    {
+      "id": "office:third-nap-of-the-day",
+      "text": "Third nap of the day"
+    },
+    {
+      "id": "office:trust-falls-from-the-rooftop",
+      "text": "Trust falls from the rooftop"
+    },
+    {
+      "id": "office:two-weeks-notice-by-interpretive-dance",
+      "text": "Two weeks’ notice by interpretive dance"
+    },
+    {
+      "id": "office:waterboarding-the-it-guy",
+      "text": "Waterboarding the IT guy"
+    },
+    {
+      "id": "office:wax-me-before-you-fax-me",
+      "text": "Wax me before you fax me"
+    },
+    {
+      "id": "office:who-the-fuck-is-fica",
+      "text": "Who the fuck is FICA?"
+    },
+    {
+      "id": "office:wig-caught-in-a-shredder",
+      "text": "Wig caught in a shredder"
+    },
+    {
+      "id": "office:work-wife-alimony",
+      "text": "Work wife alimony"
+    },
+    {
+      "id": "office:working-hard-or-am-i-hard-i-m-hard",
+      "text": "Working hard or am I hard? I’m hard."
+    },
+    {
+      "id": "office:zoom-call-on-the-toilet",
+      "text": "Zoom call on the toilet"
+    }
+  ],
+  "groups": []
+}

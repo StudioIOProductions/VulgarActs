@@ -6,7 +6,7 @@
 import { useEffect, useState } from "preact/hooks";
 import { ALL_CARDS, ALL_GROUPS, DECK_SUMMARIES } from "@vulgar-acts/decks";
 import { shuffle, ROUNDS } from "@vulgar-acts/engine";
-import { Wordmark, Avatar, Seg, Panel, AVATAR_COUNT } from "./ui";
+import { Wordmark, Avatar, Seg, Panel, AVATAR_COUNT, deckClass } from "./ui";
 import { Scoreboard } from "./Turn";
 
 const BOWL = 20;
@@ -143,7 +143,7 @@ function DuoPlay({ game, setGame, onQuit }: { game: Game; setGame: (g: Game) => 
     return (
       <>
         <div class="strip"><span><Avatar n={g.avatars[t.giver]} size={22} /> {name(t.giver)}</span><span class={"timer" + (secs <= 10 ? " hot" : "")}>{secs}</span><span>{g.pool.length} left</span></div>
-        <div class={"bigcard" + (card.custom ? " custom" : "") + (card.deck === "afterdark" ? " dark" : "")} data-by={card.custom ? "you two" : ""}>{card.text}</div>
+        <div class={"bigcard" + (card.custom ? " custom" : "") + deckClass(card.deck)} data-by={card.custom ? "you two" : ""}>{card.text}</div>
         <div class="strip white"><span>{roundLabel}</span><span>Skips <span class="pips">{Array.from({ length: SKIPS }, (_, i) => <i key={i} class={i < t.skips ? "used" : ""} />)}</span></span></div>
         <div class="row"><button onClick={skip} disabled={t.skips >= SKIPS}>Skip</button></div>
         <button class="primary" onClick={gotIt}>Got it!</button>

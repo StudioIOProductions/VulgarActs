@@ -102,6 +102,9 @@ button.tiny{padding:2px 8px;font-size:16px;box-shadow:2px 2px 0 var(--ink);backg
 .bigcard::after{content:"Vulgar Acts";position:absolute;bottom:10px;right:14px;font:400 18px var(--display);text-transform:uppercase;letter-spacing:1px;background:var(--ink);color:#fff;padding:2px 8px;transform:rotate(-3deg)}
 .bigcard.dark{background:#1a1a1a;color:var(--paper);border-color:var(--red);box-shadow:6px 6px 0 var(--red)}
 .bigcard.dark::after{content:"After Dark";background:var(--red)}
+.bigcard.office{background:#FFFDF5;border-color:#566777;box-shadow:6px 6px 0 #566777}
+.bigcard.office::after{content:"Office Party";background:#566777}
+.card.office{border-color:#566777;box-shadow:3px 3px 0 #566777}.card.office.on{background:#566777;color:#fff}.card.office .cmark{background:#566777}
 .bigcard.custom{border-style:dashed}
 .bigcard.custom::before{content:"by " attr(data-by);position:absolute;bottom:12px;left:14px;font:700 11px var(--body);color:var(--mute);text-transform:uppercase;letter-spacing:.08em}
 .bigcard.paused{background:var(--yellow);font-family:var(--display);font-weight:400;text-transform:uppercase}

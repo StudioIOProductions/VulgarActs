@@ -2,10 +2,11 @@ import { describe, it, expect } from "vitest";
 import { DECKS, ALL_CARDS, ALL_GROUPS, deckById } from "../src/index";
 
 describe("decks", () => {
-  it("ships Starter and After Dark with the expected sizes", () => {
+  it("ships Starter, After Dark and Office Party with the expected sizes", () => {
     expect(deckById("starter")!.cards.length).toBe(286);
     expect(deckById("afterdark")!.cards.length).toBe(67);
     expect(deckById("afterdark")!.rating).toBe("18+");
+    expect(deckById("office")!.cards.length).toBe(68);
   });
   it("has a unique id and non-empty text on every card", () => {
     const ids = new Set(ALL_CARDS.map((c) => c.id));

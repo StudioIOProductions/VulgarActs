@@ -6,7 +6,7 @@
 import { useEffect, useState } from "preact/hooks";
 import type { PlayerView } from "../../server/src/protocol";
 import type { Connection } from "./net";
-import { Avatar, Panel } from "./ui";
+import { Avatar, Panel, deckClass } from "./ui";
 
 export const ROUND_NAMES = ["Say Anything", "One Word", "Act Only"];
 
@@ -106,7 +106,7 @@ function GiverLive({ view, conn, secs }: { view: PlayerView; conn: Connection; s
     return (
       <>
         <div class="strip"><span>Who got it?</span><span class="timer">{secs}</span><span></span></div>
-        <div class={"bigcard" + (card.custom ? " custom" : "") + (card.deck === "afterdark" ? " dark" : "")} data-by={card.by ? view.players.find((p) => p.id === card.by)?.name : ""} style="min-height:120px;font-size:22px">{card.text}</div>
+        <div class={"bigcard" + (card.custom ? " custom" : "") + deckClass(card.deck)} data-by={card.by ? view.players.find((p) => p.id === card.by)?.name : ""} style="min-height:120px;font-size:22px">{card.text}</div>
         <Panel>
           <div class="chips">{others.map((p) => <button key={p.id} class="yellow" onClick={() => { setCrediting(false); conn.action("gotIt", { guesser: p.id }); }}><Avatar n={p.avatar} size={20} /> {p.name}</button>)}</div>
           <button onClick={() => setCrediting(false)}>Nobody, go back</button>
@@ -117,7 +117,7 @@ function GiverLive({ view, conn, secs }: { view: PlayerView; conn: Connection; s
   return (
     <>
       <div class="strip"><span>You</span><span class={"timer" + (secs <= 10 && !paused ? " hot" : "")}>{secs}</span><span>{view.poolSize} left</span></div>
-      <div class={"bigcard shakeable" + (card?.custom ? " custom" : "") + (card?.deck === "afterdark" ? " dark" : "") + (paused ? " paused" : "")} data-by={card?.by ? view.players.find((p) => p.id === card.by)?.name : ""}>
+      <div class={"bigcard shakeable" + (card?.custom ? " custom" : "") + deckClass(card?.deck) + (paused ? " paused" : "")} data-by={card?.by ? view.players.find((p) => p.id === card.by)?.name : ""}>
         {paused ? "Paused" : card?.text}
       </div>
       <div class="strip white"><span>Round {view.round + 1}: {ROUND_NAMES[view.round]}</span><span>Skips <span class="pips">{Array.from({ length: view.settings.skipsPerTurn }, (_, i) => <i key={i} class={i < t.skips ? "used" : ""} />)}</span></span></div>

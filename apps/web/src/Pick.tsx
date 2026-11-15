@@ -6,7 +6,7 @@
 import { useState } from "preact/hooks";
 import type { PlayerView, Pick } from "../../server/src/protocol";
 import type { Connection } from "./net";
-import { Panel } from "./ui";
+import { Panel, deckClass, deckMark } from "./ui";
 import { PlayerChips } from "./Lobby";
 
 const CUSTOM_MAX = 40;
@@ -41,7 +41,6 @@ export function PickScreen({ view, conn }: { view: PlayerView; conn: Connection 
   const redraw = () => { setSel(sel.filter((s) => s.kind === "custom")); conn.action("redraw"); };
 
   const isOn = (s: Sel) => sel.some((x) => same(x, s));
-  const isAfterDark = (deck: string) => deck === "afterdark";
 
   return (
     <>
@@ -51,9 +50,9 @@ export function PickScreen({ view, conn }: { view: PlayerView; conn: Connection 
         <p class="sub">{sel.length} of {need} selected{sel.length === need ? " · lock in when you're happy" : ""}</p>
         <div class="hand">
           {view.myHand.map((c, i) => (
-            <button key={"h" + i} type="button" class={"card" + (isOn({ kind: "hand", i }) ? " on" : "") + (isAfterDark(c.deck) ? " dark" : "")} aria-pressed={isOn({ kind: "hand", i })} onClick={() => toggle({ kind: "hand", i })}>
+            <button key={"h" + i} type="button" class={"card" + (isOn({ kind: "hand", i }) ? " on" : "") + deckClass(c.deck)} aria-pressed={isOn({ kind: "hand", i })} onClick={() => toggle({ kind: "hand", i })}>
               <span class="ctext">{c.text}</span>
-              <span class="cmark">{isAfterDark(c.deck) ? "After Dark" : "Vulgar Acts"}</span>
+              <span class="cmark">{deckMark(c.deck)}</span>
             </button>
           ))}
           {customs.map((c, i) => (
