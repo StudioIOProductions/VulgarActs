@@ -20,8 +20,11 @@ new_sqlite_classes = ["Room"]
 [observability]
 enabled = true
 
-# Uncomment once vulgaracts.com is on Cloudflare (DEPLOY.md step 4):
-# routes = [{ pattern = "play.vulgaracts.com", custom_domain = true }]
+# The game lives at the bare domain; www works too. Cloudflare makes the DNS records and certs itself.
+routes = [
+  { pattern = "vulgaracts.com", custom_domain = true },
+  { pattern = "www.vulgaracts.com", custom_domain = true },
+]
 
 # Optional analytics (DEPLOY.md step 5): set with `npx wrangler secret put POSTHOG_KEY`
 # [vars]

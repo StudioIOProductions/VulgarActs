@@ -30,12 +30,12 @@ If it asks "Would you like to enable the Durable Objects migration?" or similar,
 
 Turn Wi-Fi off on your phone and open the workers.dev URL over mobile data. Host a room, join from a second phone. If it works here, it works at a bar.
 
-## 4. Your own address: play.vulgaracts.com (15 min, optional until launch)
+## 4. Your own address: vulgaracts.com (15 min) — done
 
 1. In the Cloudflare dashboard click **Add a domain**, enter `vulgaracts.com`, choose the **Free** plan.
-2. Cloudflare shows two nameservers (like `ada.ns.cloudflare.com`). Log in to wherever you bought vulgaracts.com, find **Nameservers**, replace the existing ones with those two, save. This takes from minutes to a day to go through; Cloudflare emails you when it's active.
-3. Open `apps/server/wrangler.toml` and remove the `#` from the `routes = ...` line.
-4. `npm run deploy` again. Cloudflare creates `play.vulgaracts.com` and its certificate by itself.
+2. Cloudflare shows two nameservers (like `ada.ns.cloudflare.com`). At GoDaddy: My Products → Domains → DNS → Nameservers → Change → "I'll use my own nameservers", paste both, save. Cloudflare emails you when the domain is active.
+3. `apps/server/wrangler.toml` routes the Worker to `vulgaracts.com` and `www.vulgaracts.com` (custom domains).
+4. `npm run deploy`. Cloudflare creates the DNS records and certificates by itself; both addresses load the game within a few minutes. The workers.dev URL keeps working.
 
 ## 5. Analytics (10 min, optional)
 
