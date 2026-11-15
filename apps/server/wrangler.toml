@@ -1,6 +1,7 @@
 name = "vulgar-acts"
 main = "src/index.ts"
 compatibility_date = "2025-06-01"
+workers_dev = true
 
 # The game lives at the bare domain; www works too. Cloudflare makes the DNS records and certs itself.
 routes = [
