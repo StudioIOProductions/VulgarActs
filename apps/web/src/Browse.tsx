@@ -9,26 +9,39 @@ const shuffle = (n: number) => {
   return a;
 };
 
+/** The cards a visitor may read: everything for a free deck, only the sample for a paid one. */
+const readable = (d: (typeof DECKS)[number]) =>
+  d.price > 0 && d.sample && d.sample.length ? d.cards.filter((c) => d.sample!.includes(c.id)) : d.cards;
+
 export function Browse() {
   const [deckId, setDeckId] = useState("starter");
   const [adult, setAdult] = useState(() => { try { return localStorage.getItem("va_adult") === "1"; } catch { return false; } });
   const [gate, setGate] = useState(false);
   // Every visit deals the deck in a fresh random order: nobody reads it A to Z.
-  const [order, setOrder] = useState(() => shuffle(DECKS.find((d) => d.id === "starter")!.cards.length));
+  // Paid decks only show their sample here; the Starter is free to read end to end.
+  const [order, setOrder] = useState(() => shuffle(readable(DECKS.find((d) => d.id === "starter")!).length));
   const [i, setI] = useState(0);
   const deck = DECKS.find((d) => d.id === deckId)!;
-  const card = deck.cards[order[i % order.length]];
-  const open = (id: string) => { const d = DECKS.find((x) => x.id === id)!; setDeckId(id); setOrder(shuffle(d.cards.length)); setI(0); };
+  const cards = readable(deck);
+  const locked = deck.cards.length - cards.length;
+  const n = cards.length + (locked > 0 ? 1 : 0); // the last "card" of a sampled deck is the lock
+  const atLock = locked > 0 && i % n === cards.length;
+  const card = atLock ? null : cards[order[i % n]];
+  const open = (id: string) => { const d = DECKS.find((x) => x.id === id)!; setDeckId(id); setOrder(shuffle(readable(d).length)); setI(0); };
   const pick = (id: string) => { const d = DECKS.find((x) => x.id === id)!; if (d.rating === "18+" && !adult) { setGate(true); return; } open(id); };
-  const reshuffle = () => { setOrder(shuffle(deck.cards.length)); setI(0); };
+  const reshuffle = () => { setOrder(shuffle(cards.length)); setI(0); };
+  const next = () => setI((i + 1) % n);
+  const back = () => setI((i - 1 + n) % n);
   return (
     <>
       <div class="row between"><Wordmark small /><span class="pill">Just the cards</span></div>
       <div class="row">{DECKS.map((d) => <button key={d.id} class={deckId === d.id ? "yellow" : ""} onClick={() => pick(d.id)}>{d.title}{d.rating === "18+" ? " · 18+" : ""}</button>)}</div>
       {gate && <div class="gate18"><h3>After Dark is 18+</h3><p>Every card in it is explicit.</p><div class="row"><button onClick={() => setGate(false)}>Not tonight</button><button class="primary" onClick={() => { setAdult(true); try { localStorage.setItem("va_adult", "1"); } catch {} setGate(false); open("afterdark"); }}>I'm 18+</button></div></div>}
-      <div class={"bigcard" + deckClass(deck.id)} onClick={() => setI((i + 1) % deck.cards.length)}>{card.text}</div>
-      <p class="small">{i + 1} of {deck.cards.length} · tap the card for the next one</p>
-      <div class="row"><button onClick={() => setI((i - 1 + deck.cards.length) % deck.cards.length)}>← Back</button><button class="yellow" onClick={reshuffle}>Shuffle</button><button onClick={() => setI((i + 1) % deck.cards.length)}>Next →</button></div>
+      {card
+        ? <div class={"bigcard" + deckClass(deck.id)} onClick={next}>{card.text}</div>
+        : <div class={"bigcard locked" + deckClass(deck.id)} onClick={next}><span class="lockbig">{locked} more</span><span class="locksub">That's the free peek. The rest come with the deck.</span></div>}
+      <p class="small">{atLock ? `${cards.length} of ${deck.cards.length} shown` : `${(i % n) + 1} of ${cards.length}${locked > 0 ? ` free to read · ${deck.cards.length} in the deck` : ""}`} · tap the card for the next one</p>
+      <div class="row"><button onClick={back}>← Back</button><button class="yellow" onClick={reshuffle}>Shuffle</button><button onClick={next}>Next →</button></div>
       <Panel><p class="sub">Like them? <a href="#" onClick={(e) => { e.preventDefault(); location.hash = "duo"; }}>Play with one other person</a> or <a href="#" onClick={(e) => { e.preventDefault(); location.hash = "play"; }}>start a room</a>.</p></Panel>
       <p class="small"><a href="#" onClick={(e) => { e.preventDefault(); location.hash = ""; }}>← Front page</a></p>
     </>

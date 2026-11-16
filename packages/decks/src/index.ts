@@ -16,6 +16,8 @@ export interface Deck {
   description: string;
   rating: "17+" | "18+";
   price: number;
+  /** Card ids anyone may read before buying; absent or empty means the whole deck is free to read. */
+  sample?: string[];
   language: string;
   version: number;
   /** Cover image path and the tile colours the deck picker uses. */
