@@ -4,8 +4,6 @@
  *   POST /api/rooms            -> { code }   mint a room; body { host: pid }
  *   GET  /api/rooms/:code      -> { ok, phase, players }  does it exist?
  *   WS   /ws/:code             -> the room's socket; first message must be { t: "join" }
- *   POST /api/feedback         -> { ok }  store a playtest feedback form
- *   GET  /api/feedback?key=K   -> CSV of every form (K = FEEDBACK_KEY secret)
  *
  * The Room object owns the GameState, applies engine actions, runs the clock
  * with an alarm, and pushes each player's own view after every change.
@@ -15,7 +13,7 @@ import type { GameState } from "@vulgar-acts/engine";
 import type { ClientMsg, ServerMsg, ActionName } from "./protocol";
 import { ALL_CARDS, ALL_GROUPS, DECK_SUMMARIES } from "@vulgar-acts/decks";
 
-export interface Env { ROOMS: DurableObjectNamespace; FEEDBACK: DurableObjectNamespace; ASSETS?: Fetcher; POSTHOG_KEY?: string; POSTHOG_HOST?: string; FEEDBACK_KEY?: string }
+export interface Env { ROOMS: DurableObjectNamespace; ASSETS?: Fetcher; POSTHOG_KEY?: string; POSTHOG_HOST?: string }
 
 const json = (data: unknown, status = 200) =>
   new Response(JSON.stringify(data), { status, headers: { "content-type": "application/json", "access-control-allow-origin": "*" } });
@@ -26,17 +24,6 @@ export default {
     if (req.method === "OPTIONS") return new Response(null, { headers: { "access-control-allow-origin": "*", "access-control-allow-methods": "GET,POST", "access-control-allow-headers": "content-type" } });
     if (url.pathname === "/health") return json({ ok: true });
     if (url.pathname === "/api/decks") return json(DECK_SUMMARIES);
-
-    if (url.pathname === "/api/feedback") {
-      const box = env.FEEDBACK.get(env.FEEDBACK.idFromName("all"));
-      if (req.method === "POST") {
-        const text = await req.text();
-        if (text.length > 6000) return json({ error: "too long" }, 413);
-        return box.fetch("https://feedback/add", { method: "POST", body: text });
-      }
-      if (!env.FEEDBACK_KEY || url.searchParams.get("key") !== env.FEEDBACK_KEY) return json({ error: "nope" }, 403);
-      return box.fetch("https://feedback/csv");
-    }
 
     if (url.pathname === "/api/rooms" && req.method === "POST") {
       const body = (await req.json().catch(() => ({}))) as { host?: string };
@@ -63,35 +50,6 @@ export default {
     return new Response("Vulgar Acts server", { status: 200 });
   },
 };
-
-/** One object for every feedback form ever sent. Tiny, append-only, read back as CSV. */
-export class Feedback {
-  constructor(private ctx: DurableObjectState) {
-    ctx.blockConcurrencyWhile(async () => {
-      ctx.storage.sql.exec("CREATE TABLE IF NOT EXISTS forms (id INTEGER PRIMARY KEY AUTOINCREMENT, ts TEXT NOT NULL, body TEXT NOT NULL)");
-    });
-  }
-  async fetch(req: Request): Promise<Response> {
-    const url = new URL(req.url);
-    if (url.pathname === "/add" && req.method === "POST") {
-      const body = (await req.json().catch(() => null)) as Record<string, unknown> | null;
-      if (!body || typeof body !== "object") return json({ error: "bad form" }, 400);
-      const clean: Record<string, string> = {};
-      for (const [k, v] of Object.entries(body)) if (/^[a-z_]{1,24}$/.test(k)) clean[k] = String(v ?? "").slice(0, 1000);
-      this.ctx.storage.sql.exec("INSERT INTO forms (ts, body) VALUES (?, ?)", new Date().toISOString(), JSON.stringify(clean));
-      return json({ ok: true });
-    }
-    if (url.pathname === "/csv") {
-      const rows = this.ctx.storage.sql.exec<{ id: number; ts: string; body: string }>("SELECT id, ts, body FROM forms ORDER BY id").toArray();
-      const cols = ["id", "ts", "fun", "round", "confusing", "duds", "best", "again", "pay", "name", "room"];
-      const esc = (v: unknown) => '"' + String(v ?? "").replace(/"/g, '""') + '"';
-      const lines = [cols.join(",")];
-      for (const r of rows) { const b = JSON.parse(r.body) as Record<string, string>; lines.push(cols.map((c) => esc(c === "id" ? r.id : c === "ts" ? r.ts : b[c])).join(",")); }
-      return new Response(lines.join("\n"), { headers: { "content-type": "text/csv; charset=utf-8", "content-disposition": "attachment; filename=vulgar-acts-feedback.csv" } });
-    }
-    return json({ error: "not found" }, 404);
-  }
-}
 
 interface Attachment { pid: string | null }
 
