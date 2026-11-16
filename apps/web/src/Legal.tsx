@@ -5,7 +5,7 @@ import { Wordmark, Panel } from "./ui";
 
 const UPDATED = "November 16, 2026";
 const COMPANY = "Studio IO";
-const CONTACT = "hello@vulgaracts.com";
+const CONTACT = "theimpossibleobjects@gmail.com";
 const GOVERNING_LAW = "the State of California, United States"; // change if Studio IO is based elsewhere
 
 const Back = () => <p class="small"><a href="#" onClick={(e) => { e.preventDefault(); location.hash = ""; }}>← Front page</a> · <a href="#" onClick={(e) => { e.preventDefault(); location.hash = "terms"; }}>Terms</a> · <a href="#" onClick={(e) => { e.preventDefault(); location.hash = "privacy"; }}>Privacy</a></p>;
