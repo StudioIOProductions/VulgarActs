@@ -8,6 +8,7 @@ import type { DeckCard } from "@vulgar-acts/engine";
 import starter from "../decks/starter.json";
 import afterdark from "../decks/afterdark.json";
 import office from "../decks/office.json";
+import pop from "../decks/pop.json";
 
 export interface Deck {
   id: string;
@@ -25,7 +26,7 @@ export interface Deck {
   groups: string[][];
 }
 
-export const DECKS: Deck[] = [starter as Deck, afterdark as Deck, office as Deck];
+export const DECKS: Deck[] = [starter as Deck, afterdark as Deck, office as Deck, pop as Deck];
 export const deckById = (id: string) => DECKS.find((d) => d.id === id);
 
 /** Every card from every deck, tagged with its deck, in the engine's shape. */

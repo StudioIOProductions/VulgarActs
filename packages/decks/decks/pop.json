@@ -1,0 +1,311 @@
+{
+  "id": "pop",
+  "title": "Pop Culture Trash",
+  "description": "74 cards of reality TV, dead memes, brand mascots and the internet’s worst week. If you had to be there, you were.",
+  "rating": "17+",
+  "price": 2.99,
+  "language": "en",
+  "version": 1,
+  "art": "/img/box-pop.png",
+  "color": "#6D1FE3",
+  "ink": "#C6FF1B",
+  "cards": [
+    {
+      "id": "pop:alpha-male-podcast-sponsored-by-mommy",
+      "text": "Alpha-male podcast sponsored by Mommy"
+    },
+    {
+      "id": "pop:barbie-dreamhouse-foreclosure",
+      "text": "Barbie Dreamhouse foreclosure"
+    },
+    {
+      "id": "pop:batman-crying-about-his-parents",
+      "text": "Batman crying about his parents"
+    },
+    {
+      "id": "pop:baywatch-slow-mo-wedgie-pick",
+      "text": "Baywatch slow-mo wedgie pick"
+    },
+    {
+      "id": "pop:beanie-baby-bail-bond",
+      "text": "Beanie Baby bail bond"
+    },
+    {
+      "id": "pop:beer-pong-for-dogs",
+      "text": "Beer pong for dogs"
+    },
+    {
+      "id": "pop:big-bird-preparing-thanksgiving-dinner",
+      "text": "Big Bird preparing Thanksgiving dinner"
+    },
+    {
+      "id": "pop:big-chungus-in-a-thong",
+      "text": "Big Chungus in a thong"
+    },
+    {
+      "id": "pop:blue-s-clues-special-victims-unit",
+      "text": "Blue’s Clues: Special Victims Unit"
+    },
+    {
+      "id": "pop:breastfeeding-a-labubu",
+      "text": "Breastfeeding a Labubu"
+    },
+    {
+      "id": "pop:cameo-eulogy",
+      "text": "Cameo eulogy"
+    },
+    {
+      "id": "pop:captain-hook-s-torn-taint-scratch",
+      "text": "Captain Hook’s torn taint scratch"
+    },
+    {
+      "id": "pop:catfished-by-your-stepdad",
+      "text": "Catfished by your stepdad"
+    },
+    {
+      "id": "pop:ceo-afraid-to-eat-a-burger",
+      "text": "CEO afraid to eat a burger"
+    },
+    {
+      "id": "pop:chewbacca-s-chewing-tobacco-debacle",
+      "text": "Chewbacca’s chewing tobacco debacle"
+    },
+    {
+      "id": "pop:colonoscopy-thirst-trap",
+      "text": "Colonoscopy thirst trap"
+    },
+    {
+      "id": "pop:darth-vader-s-asthma-prescription",
+      "text": "Darth Vader’s asthma prescription"
+    },
+    {
+      "id": "pop:dating-a-dune-popcorn-bucket",
+      "text": "Dating a Dune popcorn bucket"
+    },
+    {
+      "id": "pop:downton-abbey-brown",
+      "text": "Downton Abbey Brown"
+    },
+    {
+      "id": "pop:ducking-from-a-coldplay-kiss-cam",
+      "text": "Ducking from a Coldplay kiss cam"
+    },
+    {
+      "id": "pop:e-t-phone-sex",
+      "text": "E.T. phone sex"
+    },
+    {
+      "id": "pop:fear-factor-colonoscopy-prep",
+      "text": "Fear Factor: colonoscopy prep"
+    },
+    {
+      "id": "pop:french-kissing-a-demogorgon",
+      "text": "French-kissing a Demogorgon"
+    },
+    {
+      "id": "pop:furby-exorcism",
+      "text": "Furby exorcism"
+    },
+    {
+      "id": "pop:gandalf-s-staff-infection",
+      "text": "Gandalf’s staff infection"
+    },
+    {
+      "id": "pop:gaston-s-cholesterol-problem",
+      "text": "Gaston’s cholesterol problem"
+    },
+    {
+      "id": "pop:ghost-hunters-finding-your-vibrator",
+      "text": "Ghost Hunters finding your vibrator"
+    },
+    {
+      "id": "pop:godzilla-stepping-on-a-house-like-a-lego",
+      "text": "Godzilla stepping on a house like a Lego"
+    },
+    {
+      "id": "pop:gofundme-for-my-lip-injections",
+      "text": "GoFundMe for my lip injections"
+    },
+    {
+      "id": "pop:he-man-s-heat-rash",
+      "text": "He-Man’s heat rash"
+    },
+    {
+      "id": "pop:homer-simpson-backing-into-a-hedge",
+      "text": "Homer Simpson backing into a hedge"
+    },
+    {
+      "id": "pop:horny-for-more-dragon-books",
+      "text": "Horny for more dragon books"
+    },
+    {
+      "id": "pop:hot-ones-hot-sauce-peephole-contest",
+      "text": "Hot Ones: hot sauce peephole contest"
+    },
+    {
+      "id": "pop:hungry-hungry-hippos-on-ozempic",
+      "text": "Hungry Hungry Hippos on Ozempic"
+    },
+    {
+      "id": "pop:jaws-theme-for-foreplay",
+      "text": "Jaws theme for foreplay"
+    },
+    {
+      "id": "pop:jolly-green-giant-s-prostate-exam",
+      "text": "Jolly Green Giant’s prostate exam"
+    },
+    {
+      "id": "pop:lady-and-the-tramp-ing-a-hot-dog",
+      "text": "Lady and the Tramp-ing a hot dog"
+    },
+    {
+      "id": "pop:lightsaber-circumcision",
+      "text": "Lightsaber circumcision"
+    },
+    {
+      "id": "pop:live-streaming-your-root-canal",
+      "text": "Live-streaming your root canal"
+    },
+    {
+      "id": "pop:making-out-with-a-cybertruck",
+      "text": "Making out with a Cybertruck"
+    },
+    {
+      "id": "pop:middle-aged-mutant-unemployed-turtles",
+      "text": "Middle-Aged Mutant Unemployed Turtles"
+    },
+    {
+      "id": "pop:mr-clean-s-shiny-hairless-balls",
+      "text": "Mr. Clean’s shiny hairless balls"
+    },
+    {
+      "id": "pop:mtv-cribs-sex-dungeons",
+      "text": "MTV Cribs: Sex Dungeons"
+    },
+    {
+      "id": "pop:my-husband-s-dateline-episode",
+      "text": "My husband’s Dateline episode"
+    },
+    {
+      "id": "pop:new-pringles-flavor-blasted-butthole",
+      "text": "New Pringles: Flavor-Blasted Butthole"
+    },
+    {
+      "id": "pop:pennywise-unclogged-my-drain",
+      "text": "Pennywise unclogged my drain"
+    },
+    {
+      "id": "pop:planking-on-the-highway",
+      "text": "Planking on the highway"
+    },
+    {
+      "id": "pop:plinko-with-genetic-diseases",
+      "text": "Plinko with genetic diseases"
+    },
+    {
+      "id": "pop:poking-the-doughboy-from-behind",
+      "text": "Poking the Doughboy from behind"
+    },
+    {
+      "id": "pop:pok-ball-for-your-mother-in-law",
+      "text": "Poké Ball for your mother-in-law"
+    },
+    {
+      "id": "pop:pumpkin-spice-suppositories",
+      "text": "Pumpkin spice suppositories"
+    },
+    {
+      "id": "pop:punching-punch-the-monkey",
+      "text": "Punching Punch the Monkey"
+    },
+    {
+      "id": "pop:ring-doorbell-porn",
+      "text": "Ring doorbell porn"
+    },
+    {
+      "id": "pop:screaming-yes-chef-at-the-microwave",
+      "text": "Screaming “Yes, Chef!” at the microwave"
+    },
+    {
+      "id": "pop:seinfeld-bass-riff-after-farting",
+      "text": "Seinfeld bass riff after farting"
+    },
+    {
+      "id": "pop:selling-celebrity-bath-water",
+      "text": "Selling celebrity bath water"
+    },
+    {
+      "id": "pop:shaggy-failing-his-drug-test",
+      "text": "Shaggy failing his drug test"
+    },
+    {
+      "id": "pop:six-sevening-at-a-funeral",
+      "text": "Six-sevening at a funeral"
+    },
+    {
+      "id": "pop:snap-crackle-and-pop-throuple",
+      "text": "Snap, Crackle and Pop throuple"
+    },
+    {
+      "id": "pop:squid-game-themed-baby-shower",
+      "text": "Squid Game-themed baby shower"
+    },
+    {
+      "id": "pop:stabbing-everything-to-see-if-it-s-cake",
+      "text": "Stabbing everything to see if it’s cake"
+    },
+    {
+      "id": "pop:starting-an-onlyfans-for-your-grandpa",
+      "text": "Starting an OnlyFans for your grandpa"
+    },
+    {
+      "id": "pop:stuck-as-a-waymo-hostage",
+      "text": "Stuck as a Waymo hostage"
+    },
+    {
+      "id": "pop:swallowing-your-airpods-in-a-robbery",
+      "text": "Swallowing your AirPods in a robbery"
+    },
+    {
+      "id": "pop:terminator-using-self-checkout",
+      "text": "Terminator using self-checkout"
+    },
+    {
+      "id": "pop:the-sorting-hat-riddled-with-lice",
+      "text": "The Sorting Hat riddled with lice"
+    },
+    {
+      "id": "pop:the-waddling-dead",
+      "text": "The Waddling Dead"
+    },
+    {
+      "id": "pop:tiktok-live-birthing",
+      "text": "TikTok live-birthing"
+    },
+    {
+      "id": "pop:top-gun-post-volleyball-orgy",
+      "text": "Top Gun post-volleyball orgy"
+    },
+    {
+      "id": "pop:trader-joe-s-parking-lot-fistfight",
+      "text": "Trader Joe’s parking lot fistfight"
+    },
+    {
+      "id": "pop:tragic-mike",
+      "text": "Tragic Mike"
+    },
+    {
+      "id": "pop:twister-night-at-the-nursing-home",
+      "text": "Twister night at the nursing home"
+    },
+    {
+      "id": "pop:venmo-requesting-your-one-night-stand",
+      "text": "Venmo requesting your one-night stand"
+    },
+    {
+      "id": "pop:victoria-s-secretion",
+      "text": "Victoria’s Secretion"
+    }
+  ],
+  "groups": []
+}
