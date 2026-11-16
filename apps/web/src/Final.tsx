@@ -42,6 +42,7 @@ export function FinalScreen({ view, conn, tv = false }: { view: PlayerView; conn
       {view.isHost
         ? <div class="row"><button class="yellow" onClick={() => conn.action("playAgain")}>Play again, same room</button></div>
         : <p class="small">The host can start another game.</p>}
+      {!tv && <p class="small">Playtesting? <a href="#" onClick={(e) => { e.preventDefault(); location.hash = "feedback"; }}>Tell us what sucked</a> — two minutes.</p>}
     </>
   );
   if (tv) return <div class="cols"><div class="col">{main}</div><div class="col">{awards}</div></div>;

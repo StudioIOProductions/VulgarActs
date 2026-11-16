@@ -37,6 +37,16 @@ Turn Wi-Fi off on your phone and open the workers.dev URL over mobile data. Host
 3. `apps/server/wrangler.toml` routes the Worker to `vulgaracts.com` and `www.vulgaracts.com` (custom domains).
 4. `npm run deploy`. Cloudflare creates the DNS records and certificates by itself; both addresses load the game within a few minutes. The workers.dev URL keeps working.
 
+## 4b. Playtest feedback (2 min)
+
+Players fill in `vulgaracts.com/#feedback` (linked from the final scoreboard). To read the answers, set a secret once:
+
+```
+cd apps/server && npx wrangler secret put FEEDBACK_KEY
+```
+
+Type any password you like. Then open `https://vulgaracts.com/api/feedback?key=THATPASSWORD` to download every form as a CSV (opens in Numbers/Excel/Google Sheets).
+
 ## 5. Analytics (10 min, optional)
 
 Sign up at posthog.com (free tier). Copy the **Project API key** (starts with `phc_`). In Terminal:

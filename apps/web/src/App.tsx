@@ -10,13 +10,15 @@ import { FinalScreen } from "./Final";
 import { Landing } from "./Landing";
 import { Duo } from "./Duo";
 import { Browse } from "./Browse";
+import { Feedback } from "./Feedback";
 
 /** Routes: "" landing · "#play" join or host · "#KXRT" play on this phone · "#KXRT/screen" host screen (TV/laptop) */
-function route(): { kind: "landing" } | { kind: "play" } | { kind: "duo" } | { kind: "cards" } | { kind: "room"; code: string; screen: boolean } {
+function route(): { kind: "landing" } | { kind: "play" } | { kind: "duo" } | { kind: "cards" } | { kind: "feedback" } | { kind: "room"; code: string; screen: boolean } {
   const h = location.hash.replace("#", "");
   if (h.toLowerCase() === "play") return { kind: "play" };
   if (h.toLowerCase() === "duo") return { kind: "duo" };
   if (h.toLowerCase() === "cards") return { kind: "cards" };
+  if (h.toLowerCase() === "feedback") return { kind: "feedback" };
   const m = h.toUpperCase().match(/^([A-Z]{4})(\/SCREEN)?$/);
   if (m) return { kind: "room", code: m[1], screen: !!m[2] };
   return { kind: "landing" };
@@ -33,6 +35,7 @@ export function App() {
   if (r.kind === "play") return <div class="stage"><div class="phone"><Home /></div></div>;
   if (r.kind === "duo") return <div class="stage"><div class="phone"><Duo /></div></div>;
   if (r.kind === "cards") return <div class="stage"><div class="phone"><Browse /></div></div>;
+  if (r.kind === "feedback") return <div class="stage"><div class="phone"><Feedback /></div></div>;
   if (r.screen) return <HostScreen code={r.code} />;
   return <div class="stage"><div class="phone"><Room code={r.code} /></div></div>;
 }
