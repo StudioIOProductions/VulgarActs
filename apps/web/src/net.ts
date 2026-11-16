@@ -87,3 +87,21 @@ export class Connection {
   now() { return Date.now() + this.skew; }
   close() { this.closed = true; this.status = "closed"; this.ws?.close(); }
 }
+
+/* ---------- accounts ---------- */
+
+export type Me = { signedIn: false } | { signedIn: true; email: string; decks: string[] };
+
+export async function me(): Promise<Me> {
+  try { const r = await fetch(base() + "/api/me", { credentials: "include" }); return r.ok ? r.json() : { signedIn: false }; } catch { return { signedIn: false }; }
+}
+export async function startSignIn(email: string): Promise<{ ok: true; devLink?: string; cooldown?: boolean } | { ok: false; error: string }> {
+  try {
+    const r = await fetch(base() + "/api/auth/start", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ email }) });
+    const j = await r.json();
+    return r.ok ? { ok: true, ...j } : { ok: false, error: j.error ?? "Something went wrong." };
+  } catch { return { ok: false, error: "No connection." }; }
+}
+export async function signOut(): Promise<void> {
+  try { await fetch(base() + "/api/auth/logout", { method: "POST", credentials: "include" }); } catch {}
+}

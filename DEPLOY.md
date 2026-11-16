@@ -37,6 +37,21 @@ Turn Wi-Fi off on your phone and open the workers.dev URL over mobile data. Host
 3. `apps/server/wrangler.toml` routes the Worker to `vulgaracts.com` and `www.vulgaracts.com` (custom domains).
 4. `npm run deploy`. Cloudflare creates the DNS records and certificates by itself; both addresses load the game within a few minutes. The workers.dev URL keeps working.
 
+## 7. Accounts: database and sign-in email (15 min)
+
+Accounts are email-only magic links. They need a D1 database and a way to send email.
+
+1. **Database** — once: `cd apps/server && npx wrangler d1 create vulgar-acts`, paste the printed `database_id` into `wrangler.toml` under `[[d1_databases]]`. Then apply the schema (and again whenever a new file appears in `apps/server/migrations/`):
+   ```
+   npm run db:migrate --workspace apps/server
+   ```
+2. **Email** — sign up at resend.com (free tier). Domains → add `vulgaracts.com`, put the DNS records it gives you into Cloudflare → DNS, click Verify. API Keys → create one, then:
+   ```
+   cd apps/server && npx wrangler secret put RESEND_KEY
+   ```
+   Links are sent from `login@vulgaracts.com`; change `MAIL_FROM` under `[vars]` in `wrangler.toml` if you want another address.
+3. `npm run deploy`. Test at vulgaracts.com/#account. Without `RESEND_KEY` the sign-in page shows the link directly (local dev only); in production it emails it.
+
 ## 5. Analytics (10 min, optional)
 
 Sign up at posthog.com (free tier). Copy the **Project API key** (starts with `phc_`). In Terminal:

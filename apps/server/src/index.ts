@@ -4,6 +4,7 @@
  *   POST /api/rooms            -> { code }   mint a room; body { host: pid }
  *   GET  /api/rooms/:code      -> { ok, phase, players }  does it exist?
  *   WS   /ws/:code             -> the room's socket; first message must be { t: "join" }
+ *   /api/auth/*, /api/me       -> accounts, see auth.ts
  *
  * The Room object owns the GameState, applies engine actions, runs the clock
  * with an alarm, and pushes each player's own view after every change.
@@ -12,8 +13,9 @@ import * as E from "@vulgar-acts/engine";
 import type { GameState } from "@vulgar-acts/engine";
 import type { ClientMsg, ServerMsg, ActionName } from "./protocol";
 import { ALL_CARDS, ALL_GROUPS, DECK_SUMMARIES } from "@vulgar-acts/decks";
+import { handleAuth } from "./auth";
 
-export interface Env { ROOMS: DurableObjectNamespace; ASSETS?: Fetcher; POSTHOG_KEY?: string; POSTHOG_HOST?: string }
+export interface Env { ROOMS: DurableObjectNamespace; DB: D1Database; ASSETS?: Fetcher; POSTHOG_KEY?: string; POSTHOG_HOST?: string; RESEND_KEY?: string; MAIL_FROM?: string }
 
 const json = (data: unknown, status = 200) =>
   new Response(JSON.stringify(data), { status, headers: { "content-type": "application/json", "access-control-allow-origin": "*" } });
@@ -24,6 +26,11 @@ export default {
     if (req.method === "OPTIONS") return new Response(null, { headers: { "access-control-allow-origin": "*", "access-control-allow-methods": "GET,POST", "access-control-allow-headers": "content-type" } });
     if (url.pathname === "/health") return json({ ok: true });
     if (url.pathname === "/api/decks") return json(DECK_SUMMARIES);
+
+    if (url.pathname.startsWith("/api/auth/") || url.pathname === "/api/me") {
+      const r = await handleAuth(req, env, url);
+      if (r) return r;
+    }
 
     if (url.pathname === "/api/rooms" && req.method === "POST") {
       const body = (await req.json().catch(() => ({}))) as { host?: string };

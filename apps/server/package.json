@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "wrangler dev --port 8787",
     "deploy": "wrangler deploy",
-    "preview": "wrangler dev --port 8788"
+    "preview": "wrangler dev --port 8788",
+    "db:migrate": "wrangler d1 migrations apply vulgar-acts --remote",
+    "db:migrate:local": "wrangler d1 migrations apply vulgar-acts --local"
   },
   "dependencies": {
     "@vulgar-acts/decks": "*",
