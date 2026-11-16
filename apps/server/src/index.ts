@@ -51,6 +51,9 @@ export default {
   },
 };
 
+/** An empty room is wiped after this long with no one connected. The privacy page quotes it. */
+const IDLE_WIPE_MS = 6 * 60 * 60 * 1000;
+
 interface Attachment { pid: string | null }
 
 export class Room {
@@ -131,8 +134,9 @@ export class Room {
     if (att.pid && this.game) {
       // Only mark disconnected if no other socket for this pid remains (same player on two tabs).
       const still = this.ctx.getWebSockets().some((o) => o !== ws && (o.deserializeAttachment() as Attachment).pid === att.pid);
-      if (!still) { this.game = E.setConnected(this.game, att.pid, false); await this.commit(); }
+      if (!still) { this.game = E.setConnected(this.game, att.pid, false); await this.commit(); return; }
     }
+    await this.scheduleAlarm(); // a spectator leaving can also be the last one out
   }
   async webSocketError(ws: WebSocket) { return this.webSocketClose(ws); }
 
@@ -140,6 +144,11 @@ export class Room {
 
   async alarm() {
     if (!this.game) return;
+    // Nobody connected for a long while: forget the room entirely (names, avatars, custom cards).
+    if (this.ctx.getWebSockets().length === 0) {
+      const idleSince = (await this.ctx.storage.get<number>("idleSince")) ?? 0;
+      if (idleSince && Date.now() - idleSince >= IDLE_WIPE_MS) { this.game = null; await this.ctx.storage.deleteAll(); return; }
+    }
     const next = E.tick(this.game, this.ctxNow());
     if (next !== this.game) { this.trackTransition(this.game, next, "tick"); this.game = next; await this.commit(); }
     else await this.scheduleAlarm();
@@ -151,6 +160,12 @@ export class Room {
       if (t.status === "live") return this.ctx.storage.setAlarm(t.endsAt + 50);
       if (t.status === "paused" && t.pausedBy === "giver") return this.ctx.storage.setAlarm(t.pausedAt + E.GIVER_PAUSE_MS + 50);
     }
+    // No turn clock to run. If the room is empty, come back later and wipe it; otherwise forget the idle mark.
+    if (this.ctx.getWebSockets().length === 0) {
+      if (!(await this.ctx.storage.get<number>("idleSince"))) await this.ctx.storage.put("idleSince", Date.now());
+      return this.ctx.storage.setAlarm(Date.now() + IDLE_WIPE_MS + 1000);
+    }
+    await this.ctx.storage.delete("idleSince");
     await this.ctx.storage.deleteAlarm();
   }
 
