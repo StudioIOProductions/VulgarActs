@@ -7,8 +7,8 @@
   "language": "en",
   "version": 1,
   "art": "/img/box-office.png",
-  "color": "#566777",
-  "ink": "#FFFDF5",
+  "color": "#1F3F7A",
+  "ink": "#F7E020",
   "cards": [
     {
       "id": "office:bathroom-stall-crying-break",

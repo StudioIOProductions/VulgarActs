@@ -102,9 +102,9 @@ button.tiny{padding:2px 8px;font-size:16px;box-shadow:2px 2px 0 var(--ink);backg
 .bigcard::after{content:"Vulgar Acts";position:absolute;bottom:10px;right:14px;font:400 18px var(--display);text-transform:uppercase;letter-spacing:1px;background:var(--ink);color:#fff;padding:2px 8px;transform:rotate(-3deg)}
 .bigcard.dark{background:#1a1a1a;color:var(--paper);border-color:var(--red);box-shadow:6px 6px 0 var(--red)}
 .bigcard.dark::after{content:"After Dark";background:var(--red)}
-.bigcard.office{background:#FFFDF5;border-color:#566777;box-shadow:6px 6px 0 #566777}
-.bigcard.office::after{content:"Office Party";background:#566777}
-.card.office{border-color:#566777;box-shadow:3px 3px 0 #566777}.card.office.on{background:#566777;color:#fff}.card.office .cmark{background:#566777}
+.bigcard.office{background:#FFFDF5;border-color:#1F3F7A;box-shadow:6px 6px 0 #F7E020}
+.bigcard.office::after{content:"Office Party";background:#1F3F7A;color:#F7E020}
+.card.office{border-color:#1F3F7A;box-shadow:3px 3px 0 #F7E020}.card.office.on{background:#1F3F7A;color:#F7E020}.card.office .cmark{background:#1F3F7A;color:#F7E020}
 .bigcard.pop{background:#FFFDF5;border-color:#6D1FE3;box-shadow:6px 6px 0 #C6FF1B}
 .bigcard.pop::after{content:"Pop Culture Trash";background:#6D1FE3;color:#C6FF1B}
 .card.pop{border-color:#6D1FE3;box-shadow:3px 3px 0 #C6FF1B}.card.pop.on{background:#6D1FE3;color:#C6FF1B}.card.pop .cmark{background:#6D1FE3;color:#C6FF1B}
