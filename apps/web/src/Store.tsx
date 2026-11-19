@@ -2,7 +2,7 @@
 import { useEffect, useState } from "preact/hooks";
 import { DECK_SUMMARIES } from "@vulgar-acts/decks";
 import { Wordmark, Panel } from "./ui";
-import { me, catalog, checkout, claimFounders, type Me, type Catalog } from "./net";
+import { me, catalog, checkout, type Me, type Catalog } from "./net";
 
 const LAUNCH = ["starter_full", "afterdark", "office", "pop", "patent"];
 const money = (c: number) => `$${(c / 100).toFixed(2)}`;
@@ -36,14 +36,6 @@ export function Store() {
     if (!r.ok) { setNote(r.status === 401 ? "Sign in first." : r.error); return; }
     location.href = r.data.url;
   };
-  const founders = async () => {
-    if (!signedIn) return toSignIn();
-    setBusy("founders"); setNote("");
-    const r = await claimFounders();
-    setBusy("");
-    if (!r.ok) { setNote(r.status === 410 ? "The 500 are gone. Sorry." : r.error); return; }
-    setWho(await me()); setCat(await catalog()); setNote("After Dark is yours. Forever.");
-  };
 
   const Btn = ({ sku, label }: { sku: string; label: string }) => owns(sku)
     ? <button class="owned" disabled>Owned</button>
@@ -56,13 +48,6 @@ export function Store() {
       {done && <Panel><h3>{owns(done) ? "It's yours." : "Thanks — finishing up…"}</h3><p class="sub">{owns(done) ? "The deck is on your account and comes with you into any room." : "Payment went through. Your decks appear here within a few seconds."}</p></Panel>}
       {note && <p class="small ink"><b>{note}</b></p>}
       {cat && !cat.live && <p class="small ink">The store is in preview — nothing can be bought yet.</p>}
-
-      {cat && cat.founders.left > 0 && !skus.includes(cat.founders.sku) && (
-        <div class="founders">
-          <div><b>Founders deal.</b> The first {cat.founders.limit} accounts get After Dark free, forever. <span class="count">{cat.founders.left} left</span></div>
-          <button class="primary" disabled={busy === "founders"} onClick={founders}>{signedIn ? "Claim it" : "Sign in to claim"}</button>
-        </div>
-      )}
 
       <Panel title="Launch Collection" tone="paper">
         <img class="offerart" src="/img/everything.jpg" alt="" />
