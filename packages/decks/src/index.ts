@@ -18,6 +18,8 @@ export interface Deck {
   price: number;
   /** Card ids anyone may read before buying; absent or empty means the whole deck is free to read. */
   sample?: string[];
+  /** For a deck with a paid "full" unlock: the card ids everyone gets for free. Absent means every card is free. */
+  free?: string[];
   language: string;
   version: number;
   /** Cover image path and the tile colours the deck picker uses. */
