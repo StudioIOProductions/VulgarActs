@@ -2,7 +2,7 @@
 import { useEffect, useState } from "preact/hooks";
 import { DECK_SUMMARIES } from "@vulgar-acts/decks";
 import { Wordmark, Panel } from "./ui";
-import { me, startSignIn, signOut, type Me } from "./net";
+import { me, startSignIn, signOut, portal, type Me } from "./net";
 
 const ERRORS: Record<string, string> = {
   used: "That link was already used. Ask for a fresh one.",
@@ -16,7 +16,9 @@ export function Account() {
   const [state, setState] = useState<"idle" | "busy" | "sent">("idle");
   const [err, setErr] = useState(() => { const m = location.hash.match(/err=(\w+)/); return m ? ERRORS[m[1]] ?? ERRORS.bad : ""; });
   const [devLink, setDevLink] = useState("");
-  useEffect(() => { me().then(setWho); }, []);
+  // Someone sent here from the store goes straight back once they're in.
+  const landed = (m: Me) => { setWho(m); if (m.signedIn && sessionStorage.getItem("va_after_signin") === "store") { sessionStorage.removeItem("va_after_signin"); location.hash = "store"; } };
+  useEffect(() => { me().then(landed); }, []);
 
   const go = async () => {
     const e = email.trim();
@@ -43,12 +45,12 @@ export function Account() {
           <p class="sub">Signed in as <b>{who.email}</b>. Anything you buy follows this email to any phone, web or app.</p>
         </Panel>
         <Panel title="Your decks">
-          {passDate && <p class="sub"><b>Vulgar Acts Pass</b> active until {passDate}. Every deck, including new ones.</p>}
+          {passDate && <p class="sub"><b>Vulgar Acts Pass</b> active until {passDate}. Every deck, including new ones. <a href="#" onClick={async (e) => { e.preventDefault(); const r = await portal(); if (r.ok) location.href = r.data.url; }}>Manage or cancel</a></p>}
           <div class="list">{owned.map((d) => <div key={d.id}><span>{d.title}</span><span class="small">{d.id === "starter" ? (who.starterFull ? `${d.count} cards · full` : `${starter.freeCount} of ${d.count} cards · free`) : `${d.count} cards`}</span></div>)}</div>
-          {who.decks.length === 0 && !who.starterFull && <p class="small">Just the free Starter so far. The store is coming; this is where bought decks will show up.</p>}
+          {who.decks.length === 0 && !who.starterFull && <p class="small">Just the free Starter so far. <a href="#store">Browse the store</a>.</p>}
           <p class="small">Decks you own come with you into any room: host or join from this phone and the lobby unlocks them for everyone there.</p>
         </Panel>
-        <div class="row"><button onClick={out}>Sign out</button><button class="primary" onClick={() => { location.hash = "play"; }}>Play</button></div>
+        <div class="row"><button onClick={out}>Sign out</button><button class="yellow" onClick={() => { location.hash = "store"; }}>Store</button><button class="primary" onClick={() => { location.hash = "play"; }}>Play</button></div>
         <p class="small"><a href="#" onClick={back}>← Front page</a></p>
       </>
     );
@@ -59,7 +61,7 @@ export function Account() {
       <div class="row between"><Wordmark small /><span class="pill">Account</span></div>
       <Panel title="Check your email">
         <p class="sub">We sent a sign-in link to <b>{email.trim()}</b>. Tap it on this phone and you're in. It works once and lasts 15 minutes.</p>
-        {devLink && <p class="small">Dev build, no mail set up — <a href={devLink} onClick={async (e) => { e.preventDefault(); await fetch(devLink, { credentials: "include", redirect: "manual" }); setDevLink(""); setWho(await me()); }}>use the link directly</a>.</p>}
+        {devLink && <p class="small">Dev build, no mail set up — <a href={devLink} onClick={async (e) => { e.preventDefault(); await fetch(devLink, { credentials: "include", redirect: "manual" }); setDevLink(""); landed(await me()); }}>use the link directly</a>.</p>}
         <p class="small">Nothing arrived? Check spam, or <a href="#" onClick={(e) => { e.preventDefault(); setState("idle"); }}>try a different email</a>.</p>
       </Panel>
       <p class="small"><a href="#" onClick={back}>← Front page</a></p>

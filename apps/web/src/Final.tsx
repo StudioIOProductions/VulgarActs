@@ -23,6 +23,11 @@ export function FinalScreen({ view, conn, tv = false }: { view: PlayerView; conn
         </div>
       )}
       <Scoreboard view={view} />
+      {!view.access.starterFull && (
+        <div class="nudge">
+          <b>That was the free Starter — 120 of 286 cards.</b> {tv ? <span>Unlock the rest at <b>vulgaracts.com/#store</b> · $4.99, one time.</span> : <span><a href="#store">Unlock all 286</a> · $4.99, one time. Or grab the <a href="#store">Launch Collection</a>: five decks, $14.99.</span>}
+        </div>
+      )}
     </>
   );
   const awards = (

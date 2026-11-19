@@ -71,7 +71,7 @@ export function Landing() {
           <img src="/img/studio-io.png" alt="Studio IO" width="72" height="35" />
           <span>© {new Date().getFullYear()} Studio IO. Vulgar Acts and the Vulgar Acts box art are trademarks of Studio IO. All rights reserved.</span>
         </div>
-        <span>vulgaracts.com · For adults. Custom cards never leave your room. · <a href="#account">Account</a> · <a href="#terms">Terms</a> · <a href="#privacy">Privacy</a></span>
+        <span>vulgaracts.com · For adults. Custom cards never leave your room. · <a href="#store">Store</a> · <a href="#account">Account</a> · <a href="#terms">Terms</a> · <a href="#privacy">Privacy</a></span>
       </footer>
     </div>
   );

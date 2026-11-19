@@ -105,3 +105,20 @@ export async function startSignIn(email: string): Promise<{ ok: true; devLink?: 
 export async function signOut(): Promise<void> {
   try { await fetch(base() + "/api/auth/logout", { method: "POST", credentials: "include" }); } catch {}
 }
+
+/* ---------- store ---------- */
+
+export type Catalog = { prices: Record<string, { cents: number; recurring: "year" | null }>; founders: { limit: number; left: number; sku: string }; live: boolean };
+export async function catalog(): Promise<Catalog | null> {
+  try { const r = await fetch(base() + "/api/store/catalog"); return r.ok ? r.json() : null; } catch { return null; }
+}
+async function postJson<T>(path: string, body?: unknown): Promise<{ ok: true; data: T } | { ok: false; error: string; status: number }> {
+  try {
+    const r = await fetch(base() + path, { method: "POST", credentials: "include", headers: { "content-type": "application/json" }, body: body ? JSON.stringify(body) : undefined });
+    const j = await r.json().catch(() => ({}));
+    return r.ok ? { ok: true, data: j as T } : { ok: false, error: (j as { error?: string }).error ?? "Something went wrong.", status: r.status };
+  } catch { return { ok: false, error: "No connection.", status: 0 }; }
+}
+export const checkout = (sku: string) => postJson<{ url: string }>("/api/store/checkout", { sku });
+export const portal = () => postJson<{ url: string }>("/api/store/portal");
+export const claimFounders = () => postJson<{ ok: true; already?: boolean }>("/api/store/founders");

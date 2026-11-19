@@ -72,6 +72,24 @@ SKUs: `starter_full`, `afterdark`, `office`, `pop`, `patent`, `launch` (the Laun
 
 See who has what: `curl -H "x-admin-key: KEY" https://vulgaracts.com/api/admin/accounts`
 
+## 9. The store: Stripe (20 min)
+
+1. stripe.com → create an account (business: Studio IO). Stay in **Test mode** (toggle top right) until you're ready to take real money.
+2. **Developers → API keys** → copy the **Secret key** (`sk_test_…`), then:
+   ```
+   cd apps/server && npx wrangler secret put STRIPE_SECRET_KEY
+   ```
+3. **Developers → Webhooks → Add endpoint.** URL: `https://vulgaracts.com/api/stripe/webhook`. Events to send: `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.paid`. Save, then click **Reveal** under *Signing secret* (`whsec_…`) and:
+   ```
+   npx wrangler secret put STRIPE_WEBHOOK_SECRET
+   ```
+4. **Settings → Billing → Customer portal** → turn it on (lets Pass holders cancel themselves). Enable "Cancel subscriptions".
+5. `npm run db:migrate` (new tables), then `npm run deploy`.
+6. Test at vulgaracts.com/#store with card `4242 4242 4242 4242`, any future date, any CVC. The deck should appear on the account within seconds.
+7. Going live: flip Stripe to **Live mode**, repeat steps 2–3 with the live keys (`sk_live_…`, a new live webhook) and redeploy. Complete the business/bank details in Stripe first.
+
+Prices live in `apps/server/src/store.ts` (`CATALOG`). The founders deal (first 500 accounts get After Dark) is enforced server-side; `FOUNDERS_LIMIT` is in the same file.
+
 ## 5. Analytics (10 min, optional)
 
 Sign up at posthog.com (free tier). Copy the **Project API key** (starts with `phc_`). In Terminal:

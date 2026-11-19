@@ -87,6 +87,6 @@ export function Toggle<T extends string>({ values, options, onChange, id }: { va
   );
 }
 
-export const Panel = ({ title, children, cls = "" }: { title?: string; children: ComponentChildren; cls?: string }) => (
-  <div class={"panel " + cls}>{title && <h2>{title}</h2>}{children}</div>
+export const Panel = ({ title, children, cls = "", tone }: { title?: string; children: ComponentChildren; cls?: string; tone?: "paper" | "dark" }) => (
+  <div class={"panel " + cls + (tone === "dark" ? " dark" : "")}>{title && <h2>{title}</h2>}{children}</div>
 );

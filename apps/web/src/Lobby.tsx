@@ -58,7 +58,7 @@ export function SettingsPanel({ view, conn }: { view: PlayerView; conn: Connecti
             onLocked={() => setLockedNote(d.title)} />;
         })}
       </div>
-      {lockedNote && <p class="small ink"><b>{lockedNote}</b> is locked. Anyone in the room who owns it can bring it: they sign in at <b>vulgaracts.com/#account</b> on their phone and rejoin. <a href="#" onClick={(e) => { e.preventDefault(); setLockedNote(""); }}>OK</a></p>}
+      {lockedNote && <p class="small ink"><b>{lockedNote}</b> is locked. Anyone in the room who owns it can bring it: they sign in at <b>vulgaracts.com/#account</b> on their phone and rejoin. Or get it in the <b>store</b> at vulgaracts.com/#store. <a href="#" onClick={(e) => { e.preventDefault(); setLockedNote(""); }}>OK</a></p>}
       {!view.access.starterFull && <p class="small ink">Starter: the free {DECK_SUMMARIES.find((d) => d.id === "starter")!.freeCount} cards are in play. The full deck unlocks when anyone here owns it.</p>}
       {st.decks.includes("afterdark") && <p class="small ink">After Dark is in play: every phone will show the 18+ mark before cards are dealt.</p>}
       <label>When someone buzzes a card word</label>

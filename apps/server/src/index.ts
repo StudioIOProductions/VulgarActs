@@ -5,6 +5,7 @@
  *   GET  /api/rooms/:code      -> { ok, phase, players }  does it exist?
  *   WS   /ws/:code             -> the room's socket; first message must be { t: "join" }
  *   /api/auth/*, /api/me       -> accounts, see auth.ts
+ *   /api/store/*, /api/stripe/webhook -> the store, see store.ts
  *
  * The Room object owns the GameState, applies engine actions, runs the clock
  * with an alarm, and pushes each player's own view after every change.
@@ -14,9 +15,10 @@ import type { GameState } from "@vulgar-acts/engine";
 import type { ClientMsg, ServerMsg, ActionName } from "./protocol";
 import { ALL_CARDS, ALL_GROUPS, DECK_SUMMARIES, STARTER_FREE } from "@vulgar-acts/decks";
 import { handleAuth, currentAccount, accountAccess } from "./auth";
+import { handleStore } from "./store";
 import type { Access } from "@vulgar-acts/engine";
 
-export interface Env { ROOMS: DurableObjectNamespace; DB: D1Database; ASSETS?: Fetcher; POSTHOG_KEY?: string; POSTHOG_HOST?: string; RESEND_KEY?: string; MAIL_FROM?: string; ADMIN_KEY?: string }
+export interface Env { ROOMS: DurableObjectNamespace; DB: D1Database; ASSETS?: Fetcher; POSTHOG_KEY?: string; POSTHOG_HOST?: string; RESEND_KEY?: string; MAIL_FROM?: string; ADMIN_KEY?: string; STRIPE_SECRET_KEY?: string; STRIPE_WEBHOOK_SECRET?: string }
 
 const json = (data: unknown, status = 200) =>
   new Response(JSON.stringify(data), { status, headers: { "content-type": "application/json", "access-control-allow-origin": "*" } });
@@ -30,6 +32,10 @@ export default {
 
     if (url.pathname.startsWith("/api/auth/") || url.pathname === "/api/me" || url.pathname.startsWith("/api/admin/")) {
       const r = await handleAuth(req, env, url);
+      if (r) return r;
+    }
+    if (url.pathname.startsWith("/api/store/") || url.pathname === "/api/stripe/webhook") {
+      const r = await handleStore(req, env, url);
       if (r) return r;
     }
 
