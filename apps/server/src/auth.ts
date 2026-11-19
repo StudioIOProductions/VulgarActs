@@ -82,7 +82,7 @@ export async function findOrCreateAccount(env: Env, email: string): Promise<stri
   return id;
 }
 
-async function sendLink(env: Env, email: string, link: string): Promise<{ sent: boolean; devLink?: string }> {
+async function sendLink(env: Env, email: string, link: string, code: string): Promise<{ sent: boolean; devLink?: string }> {
   if (!env.RESEND_KEY) {
     // No mail provider configured (local dev): hand the link back so the flow can still be tested.
     console.log(`[auth] magic link for ${email}: ${link}`);
@@ -94,13 +94,22 @@ async function sendLink(env: Env, email: string, link: string): Promise<{ sent: 
     body: JSON.stringify({
       from: env.MAIL_FROM ?? "Vulgar Acts <info@vulgaracts.com>",
       to: [email],
-      subject: "Your Vulgar Acts sign-in link",
-      text: `Tap to sign in to Vulgar Acts:\n\n${link}\n\nThe link works once and expires in 15 minutes. If you didn't ask for it, ignore this email; nothing happens.\n\n— Studio IO`,
-      html: `<div style="font-family:system-ui,sans-serif;font-size:16px;line-height:1.5;color:#121212"><p>Tap to sign in to <b>Vulgar Acts</b>:</p><p><a href="${link}" style="display:inline-block;background:#E3261D;color:#fff;text-decoration:none;font-weight:700;padding:12px 20px;border:3px solid #121212">Sign me in</a></p><p style="color:#5A6B74;font-size:14px">The link works once and expires in 15 minutes. If you didn't ask for it, ignore this email; nothing happens.</p><p style="color:#5A6B74;font-size:14px">— Studio IO</p></div>`,
+      subject: `${code} is your Vulgar Acts sign-in code`,
+      text: `Your Vulgar Acts sign-in code is ${code}\n\nType it into the page that asked for it, or tap this link on the same device:\n${link}\n\nBoth work once and expire in 15 minutes. If you didn't ask for this, ignore it; nothing happens.\n\n— Studio IO`,
+      html: `<div style="font-family:system-ui,sans-serif;font-size:16px;line-height:1.5;color:#121212"><p>Your <b>Vulgar Acts</b> sign-in code:</p><p style="font-size:36px;font-weight:800;letter-spacing:.18em;margin:8px 0 16px">${code}</p><p>Type it into the page that asked for it. Or, if you're reading this on the same phone, <a href="${link}" style="color:#E3261D;font-weight:700">tap here to sign in</a>.</p><p style="color:#5A6B74;font-size:14px">Both work once and expire in 15 minutes. If you didn't ask for this, ignore it; nothing happens.</p><p style="color:#5A6B74;font-size:14px">— Studio IO</p></div>`,
     }),
   });
   if (!res.ok) { console.error("[auth] resend failed", res.status, await res.text()); return { sent: false }; }
   return { sent: true };
+}
+
+/** Find or create the account for an email and open a session; returns the raw session token. */
+async function openSession(env: Env, email: string, now: number): Promise<string> {
+  const id = await findOrCreateAccount(env, email);
+  await env.DB.prepare("UPDATE accounts SET last_seen_at = ? WHERE id = ?").bind(new Date().toISOString(), id).run();
+  const session = randomToken();
+  await env.DB.prepare("INSERT INTO sessions (token_hash, account_id, created_at, expires_at) VALUES (?, ?, ?, ?)").bind(await sha256(session), id, now, now + SESSION_TTL_MS).run();
+  return session;
 }
 
 export async function handleAuth(req: Request, env: Env, url: URL): Promise<Response | null> {
@@ -115,11 +124,31 @@ export async function handleAuth(req: Request, env: Env, url: URL): Promise<Resp
     const last = await env.DB.prepare("SELECT created_at FROM magic_links WHERE email = ? ORDER BY created_at DESC LIMIT 1").bind(email).first<{ created_at: number }>();
     if (last && now - last.created_at < RESEND_COOLDOWN_MS) return json({ ok: true, cooldown: true });
     const token = randomToken();
-    await env.DB.prepare("INSERT INTO magic_links (token_hash, email, created_at, expires_at) VALUES (?, ?, ?, ?)").bind(await sha256(token), email, now, now + LINK_TTL_MS).run();
+    const code = String(Math.floor(100000 + Math.random() * 900000));
+    await env.DB.prepare("INSERT INTO magic_links (token_hash, email, created_at, expires_at, code_hash) VALUES (?, ?, ?, ?, ?)").bind(await sha256(token), email, now, now + LINK_TTL_MS, await sha256(email + ":" + code)).run();
     const link = `${origin}/api/auth/verify?t=${token}`;
-    const r = await sendLink(env, email, link);
+    const r = await sendLink(env, email, link, code);
     if (!r.sent && !r.devLink) return json({ error: "Couldn't send the email just now. Try again in a minute." }, 502);
-    return json({ ok: true, ...(r.devLink ? { devLink: `/api/auth/verify?t=${token}` } : {}) });
+    return json({ ok: true, ...(r.devLink ? { devLink: `/api/auth/verify?t=${token}`, devCode: code } : {}) });
+  }
+
+  // Typed code: same as tapping the link, but in the browser that asked. Five tries per code.
+  if (url.pathname === "/api/auth/code" && req.method === "POST") {
+    const body = (await req.json().catch(() => ({}))) as { email?: string; code?: string };
+    const email = normEmail(body.email ?? "");
+    const code = (body.code ?? "").replace(/\D/g, "");
+    if (!validEmail(email) || code.length !== 6) return json({ error: "Enter the six digits from the email." }, 400);
+    const link = await env.DB.prepare("SELECT token_hash, code_hash, expires_at, used_at, attempts FROM magic_links WHERE email = ? ORDER BY created_at DESC LIMIT 1").bind(email).first<{ token_hash: string; code_hash: string | null; expires_at: number; used_at: number | null; attempts: number }>();
+    if (!link || !link.code_hash || link.used_at) return json({ error: "That code was already used or never sent. Ask for a new one." }, 400);
+    if (link.expires_at < now) return json({ error: "That code expired. Ask for a new one." }, 400);
+    if (link.attempts >= 5) return json({ error: "Too many tries. Ask for a new code." }, 429);
+    if (link.code_hash !== await sha256(email + ":" + code)) {
+      await env.DB.prepare("UPDATE magic_links SET attempts = attempts + 1 WHERE token_hash = ?").bind(link.token_hash).run();
+      return json({ error: "That's not it. Check the digits." }, 400);
+    }
+    await env.DB.prepare("UPDATE magic_links SET used_at = ? WHERE token_hash = ?").bind(now, link.token_hash).run();
+    const session = await openSession(env, email, now);
+    return new Response(JSON.stringify({ ok: true }), { headers: { "content-type": "application/json", "set-cookie": setCookie(session, SESSION_TTL_MS / 1000) } });
   }
 
   if (url.pathname === "/api/auth/verify" && req.method === "GET") {
@@ -131,17 +160,7 @@ export async function handleAuth(req: Request, env: Env, url: URL): Promise<Resp
     if (!link || link.used_at) return fail("used");
     if (link.expires_at < now) return fail("expired");
     await env.DB.prepare("UPDATE magic_links SET used_at = ? WHERE token_hash = ?").bind(now, h).run();
-    // Find or create the account.
-    let acct = await env.DB.prepare("SELECT id FROM accounts WHERE email = ?").bind(link.email).first<{ id: string }>();
-    if (!acct) {
-      const id = crypto.randomUUID();
-      await env.DB.prepare("INSERT INTO accounts (id, email, created_at, last_seen_at) VALUES (?, ?, ?, ?)").bind(id, link.email, new Date().toISOString(), new Date().toISOString()).run();
-      acct = { id };
-    } else {
-      await env.DB.prepare("UPDATE accounts SET last_seen_at = ? WHERE id = ?").bind(new Date().toISOString(), acct.id).run();
-    }
-    const session = randomToken();
-    await env.DB.prepare("INSERT INTO sessions (token_hash, account_id, created_at, expires_at) VALUES (?, ?, ?, ?)").bind(await sha256(session), acct.id, now, now + SESSION_TTL_MS).run();
+    const session = await openSession(env, link.email, now);
     return new Response(null, { status: 302, headers: { location: `/#account`, "set-cookie": setCookie(session, SESSION_TTL_MS / 1000) } });
   }
 

@@ -2,7 +2,7 @@
 import { useEffect, useState } from "preact/hooks";
 import { DECK_SUMMARIES } from "@vulgar-acts/decks";
 import { Wordmark, Panel } from "./ui";
-import { me, startSignIn, signOut, portal, type Me } from "./net";
+import { me, startSignIn, signOut, portal, submitCode, type Me } from "./net";
 
 const ERRORS: Record<string, string> = {
   used: "That link was already used. Ask for a fresh one.",
@@ -16,6 +16,8 @@ export function Account() {
   const [state, setState] = useState<"idle" | "busy" | "sent">("idle");
   const [err, setErr] = useState(() => { const m = location.hash.match(/err=(\w+)/); return m ? ERRORS[m[1]] ?? ERRORS.bad : ""; });
   const [devLink, setDevLink] = useState("");
+  const [code, setCode] = useState("");
+  const [codeBusy, setCodeBusy] = useState(false);
   // Someone sent here from the store goes straight back once they're in.
   const landed = (m: Me) => { setWho(m); if (m.signedIn && sessionStorage.getItem("va_after_signin") === "store") { sessionStorage.removeItem("va_after_signin"); location.hash = "store"; } };
   useEffect(() => { me().then(landed); }, []);
@@ -26,8 +28,17 @@ export function Account() {
     setErr(""); setState("busy");
     const r = await startSignIn(e);
     if (!r.ok) { setErr(r.error); setState("idle"); return; }
-    if (r.devLink) setDevLink(r.devLink);
+    if (r.devLink) { setDevLink(r.devLink); if (r.devCode) setCode(r.devCode); }
     setState("sent");
+  };
+  const enterCode = async () => {
+    const c = code.replace(/\D/g, "");
+    if (c.length !== 6) { setErr("Six digits."); return; }
+    setCodeBusy(true); setErr("");
+    const r = await submitCode(email.trim(), c);
+    setCodeBusy(false);
+    if (!r.ok) { setErr(r.error); return; }
+    landed(await me());
   };
   const out = async () => { await signOut(); setWho({ signedIn: false }); setState("idle"); };
   const back = (e: Event) => { e.preventDefault(); location.hash = ""; };
@@ -60,9 +71,13 @@ export function Account() {
     <>
       <div class="row between"><Wordmark small /><span class="pill">Account</span></div>
       <Panel title="Check your email">
-        <p class="sub">We sent a sign-in link to <b>{email.trim()}</b>. Tap it on this phone and you're in. It works once and lasts 15 minutes.</p>
-        {devLink && <p class="small">Dev build, no mail set up — <a href={devLink} onClick={async (e) => { e.preventDefault(); await fetch(devLink, { credentials: "include", redirect: "manual" }); setDevLink(""); landed(await me()); }}>use the link directly</a>.</p>}
-        <p class="small">Nothing arrived? Check spam, or <a href="#" onClick={(e) => { e.preventDefault(); setState("idle"); }}>try a different email</a>.</p>
+        <p class="sub">We sent a six-digit code to <b>{email.trim()}</b>. Type it here and you're in.</p>
+        <input class="code" inputMode="numeric" autocomplete="one-time-code" placeholder="123456" maxLength={6} value={code} onInput={(e) => setCode((e.target as HTMLInputElement).value)} onKeyDown={(e) => { if (e.key === "Enter") enterCode(); }} />
+        {err && <p class="err">{err}</p>}
+        <button class="primary big" disabled={codeBusy || code.replace(/\D/g, "").length !== 6} onClick={enterCode}>{codeBusy ? "Checking…" : "Sign in"}</button>
+        <p class="small">The email also has a link; tapping it works if your mail app opens it in this browser. The code is the sure thing. Both last 15 minutes.</p>
+        {devLink && <p class="small">Dev build, no mail set up — the code is filled in for you.</p>}
+        <p class="small">Nothing arrived? Check spam, or <a href="#" onClick={(e) => { e.preventDefault(); setState("idle"); setCode(""); }}>try a different email</a>.</p>
       </Panel>
       <p class="small"><a href="#" onClick={back}>← Front page</a></p>
     </>
@@ -72,10 +87,10 @@ export function Account() {
     <>
       <div class="row between"><Wordmark small /><span class="pill">Account</span></div>
       <Panel title="Sign in">
-        <p class="sub">No password. Type your email and we'll send a link that signs you in. You only need this to buy decks; playing is free and needs nothing.</p>
+        <p class="sub">No password. Type your email and we'll send a six-digit code. You only need this to buy decks; playing is free and needs nothing.</p>
         <input type="email" inputMode="email" autocomplete="email" placeholder="you@example.com" value={email} onInput={(e) => setEmail((e.target as HTMLInputElement).value)} onKeyDown={(e) => { if (e.key === "Enter") go(); }} />
         {err && <p class="err">{err}</p>}
-        <button class="primary big" disabled={state === "busy"} onClick={go}>{state === "busy" ? "Sending…" : "Email me a link"}</button>
+        <button class="primary big" disabled={state === "busy"} onClick={go}>{state === "busy" ? "Sending…" : "Email me a code"}</button>
         <p class="small">We keep your email and nothing else. <a href="#privacy">Privacy</a>.</p>
       </Panel>
       <p class="small"><a href="#" onClick={back}>← Front page</a></p>
