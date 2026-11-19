@@ -10,6 +10,7 @@
  * so a copy of the database can't be used to sign in as anyone.
  */
 import type { Env } from "./index";
+import { DECK_SUMMARIES } from "@vulgar-acts/decks";
 
 const LINK_TTL_MS = 15 * 60 * 1000;
 const SESSION_TTL_MS = 365 * 24 * 60 * 60 * 1000;
@@ -38,10 +39,47 @@ export async function currentAccount(req: Request, env: Env): Promise<{ id: stri
   return row ?? null;
 }
 
-/** Deck ids an account may use. Starter is everyone's; the rest come from entitlements. */
-export async function ownedDecks(accountId: string, env: Env): Promise<string[]> {
-  const rows = await env.DB.prepare("SELECT sku FROM entitlements WHERE account_id = ? AND (expires_at IS NULL OR expires_at > ?)").bind(accountId, new Date().toISOString()).all<{ sku: string }>();
-  return rows.results.map((r) => r.sku);
+/* ---------- what an account owns ----------
+ * SKUs: one per paid deck (its deck id), "starter_full" for the rest of the Starter,
+ * "launch" = the Launch Collection (expands to the five permanent rows when granted),
+ * "pass" = the yearly Pass (expires; also grants the Launch Collection to keep).
+ */
+export const LAUNCH_SET = ["starter_full", "afterdark", "office", "pop", "patent"];
+export const ALL_DECK_SKUS = () => DECK_SUMMARIES.filter((d) => d.id !== "starter").map((d) => d.id);
+
+export interface AccountAccess { decks: string[]; starterFull: boolean; skus: string[]; passUntil: string | null }
+
+export async function accountAccess(accountId: string, env: Env): Promise<AccountAccess> {
+  const nowIso = new Date().toISOString();
+  const rows = await env.DB.prepare("SELECT sku, expires_at FROM entitlements WHERE account_id = ? AND (expires_at IS NULL OR expires_at > ?)").bind(accountId, nowIso).all<{ sku: string; expires_at: string | null }>();
+  const skus = rows.results.map((r) => r.sku);
+  const pass = rows.results.find((r) => r.sku === "pass");
+  const decks = new Set<string>();
+  let starterFull = false;
+  for (const sku of skus) {
+    if (sku === "starter_full") starterFull = true;
+    else if (sku === "pass") { ALL_DECK_SKUS().forEach((d) => decks.add(d)); starterFull = true; }
+    else if (sku !== "launch") decks.add(sku);
+  }
+  return { decks: [...decks], starterFull, skus, passUntil: pass?.expires_at ?? null };
+}
+
+/** Grant a SKU. The Launch Collection and the Pass also write the five permanent rows the buyer keeps for good. */
+export async function grant(env: Env, accountId: string, sku: string, source: string, expiresAt: string | null = null): Promise<void> {
+  const now = new Date().toISOString();
+  const put = (k: string, exp: string | null) => env.DB.prepare("INSERT INTO entitlements (account_id, sku, source, granted_at, expires_at) VALUES (?, ?, ?, ?, ?) ON CONFLICT(account_id, sku) DO UPDATE SET expires_at = excluded.expires_at, source = excluded.source, granted_at = excluded.granted_at").bind(accountId, k, source, now, exp).run();
+  if (sku === "launch" || sku === "pass") for (const k of LAUNCH_SET) await put(k, null);
+  if (sku === "pass") await put("pass", expiresAt ?? new Date(Date.now() + 365 * 24 * 3600 * 1000).toISOString());
+  else if (sku !== "launch") await put(sku, expiresAt);
+}
+
+export async function findOrCreateAccount(env: Env, email: string): Promise<string> {
+  const e = normEmail(email);
+  const row = await env.DB.prepare("SELECT id FROM accounts WHERE email = ?").bind(e).first<{ id: string }>();
+  if (row) return row.id;
+  const id = crypto.randomUUID();
+  await env.DB.prepare("INSERT INTO accounts (id, email, created_at, last_seen_at) VALUES (?, ?, ?, ?)").bind(id, e, new Date().toISOString(), null).run();
+  return id;
 }
 
 async function sendLink(env: Env, email: string, link: string): Promise<{ sent: boolean; devLink?: string }> {
@@ -116,7 +154,30 @@ export async function handleAuth(req: Request, env: Env, url: URL): Promise<Resp
   if (url.pathname === "/api/me" && req.method === "GET") {
     const acct = await currentAccount(req, env);
     if (!acct) return json({ signedIn: false });
-    return json({ signedIn: true, email: acct.email, decks: await ownedDecks(acct.id, env) });
+    const a = await accountAccess(acct.id, env);
+    return json({ signedIn: true, email: acct.email, decks: a.decks, starterFull: a.starterFull, skus: a.skus, passUntil: a.passUntil });
+  }
+
+  /* ---------- admin: hand out decks before the store exists ----------
+   *   POST /api/admin/grant  header x-admin-key   { email, sku, expiresAt? }
+   *   GET  /api/admin/accounts  header x-admin-key  -> recent accounts and what they own
+   */
+  if (url.pathname.startsWith("/api/admin/")) {
+    if (!env.ADMIN_KEY || req.headers.get("x-admin-key") !== env.ADMIN_KEY) return json({ error: "nope" }, 403);
+    if (url.pathname === "/api/admin/grant" && req.method === "POST") {
+      const b = (await req.json().catch(() => ({}))) as { email?: string; sku?: string; expiresAt?: string };
+      const valid = ["launch", "pass", ...LAUNCH_SET, ...ALL_DECK_SKUS()];
+      if (!b.email || !validEmail(normEmail(b.email))) return json({ error: "email?" }, 400);
+      if (!b.sku || !valid.includes(b.sku)) return json({ error: `sku must be one of ${valid.join(", ")}` }, 400);
+      const id = await findOrCreateAccount(env, b.email);
+      await grant(env, id, b.sku, "admin", b.expiresAt ?? null);
+      return json({ ok: true, email: normEmail(b.email), access: await accountAccess(id, env) });
+    }
+    if (url.pathname === "/api/admin/accounts" && req.method === "GET") {
+      const rows = await env.DB.prepare("SELECT a.email, a.created_at, a.last_seen_at, GROUP_CONCAT(e.sku) AS skus FROM accounts a LEFT JOIN entitlements e ON e.account_id = a.id GROUP BY a.id ORDER BY a.created_at DESC LIMIT 200").all();
+      return json(rows.results);
+    }
+    return json({ error: "not found" }, 404);
   }
 
   return null;

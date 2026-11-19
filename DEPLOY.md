@@ -52,6 +52,26 @@ Accounts are email-only magic links. They need a D1 database and a way to send e
    Links are sent from `info@vulgaracts.com`; change `MAIL_FROM` under `[vars]` in `wrangler.toml` if you want another address.
 3. `npm run deploy`. Test at vulgaracts.com/#account. Without `RESEND_KEY` the sign-in page shows the link directly (local dev only); in production it emails it.
 
+## 8. Granting decks by hand (founders, testers, you)
+
+Until the store exists, decks are granted through an admin route protected by a secret:
+
+```
+cd apps/server && npx wrangler secret put ADMIN_KEY      # once; any long password
+```
+
+Then, from any terminal (replace KEY, the email and the sku):
+
+```
+curl -X POST https://vulgaracts.com/api/admin/grant \
+  -H "x-admin-key: KEY" -H "content-type: application/json" \
+  -d '{"email":"someone@example.com","sku":"launch"}'
+```
+
+SKUs: `starter_full`, `afterdark`, `office`, `pop`, `patent`, `launch` (the Launch Collection: all five, kept forever), `pass` (a year of everything; also grants the Launch Collection to keep). Add `"expiresAt":"2027-12-31T00:00:00Z"` to time-limit a grant. The email needn't have signed in yet; the account is created and the decks are waiting when they do.
+
+See who has what: `curl -H "x-admin-key: KEY" https://vulgaracts.com/api/admin/accounts`
+
 ## 5. Analytics (10 min, optional)
 
 Sign up at posthog.com (free tier). Copy the **Project API key** (starts with `phc_`). In Terminal:

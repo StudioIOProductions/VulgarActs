@@ -16,6 +16,23 @@ const CUTS: { r: number; s: number; y: number; px: number }[] = [
   { r: 2, s: 1.1, y: -1, px: 0.1 },    // T
   { r: -3, s: 0.96, y: 3, px: 0.14 },  // S
 ];
+/** A deck in a picker grid. Locked tiles explain themselves instead of toggling. */
+export function DeckTile({ d, on, locked, starterFull, onToggle, onLocked }: {
+  d: { id: string; title: string; count: number; freeCount: number; rating: string; art: string; color: string; ink: string };
+  on: boolean; locked: boolean; starterFull: boolean; onToggle: () => void; onLocked?: () => void;
+}) {
+  const isStarter = d.id === "starter";
+  const cards = isStarter && !starterFull ? `${d.freeCount} of ${d.count} cards` : `${d.count} cards`;
+  return (
+    <button type="button" class={"decktile" + (on ? " on" : "") + (locked ? " locked" : "")} aria-pressed={on} style={{ background: d.color, color: d.ink }}
+      onClick={locked ? onLocked : onToggle}>
+      <img src={d.art} alt="" />
+      <span class="dt"><b>{d.title}</b><span>{cards}{d.rating === "18+" ? " · 18+" : ""}</span></span>
+      <span class="dcheck">{locked ? "🔒 Locked" : on ? "✓ In play" : "Off"}</span>
+    </button>
+  );
+}
+
 /** Card styling class per deck: After Dark goes black-and-red, Office Party goes slate. */
 export const deckClass = (deck?: string | null) => deck === "afterdark" ? " dark" : deck === "office" ? " office" : deck === "pop" ? " pop" : "";
 export const deckMark = (deck?: string | null) => deck === "afterdark" ? "After Dark" : deck === "office" ? "Office Party" : deck === "pop" ? "Pop Culture" : "Vulgar Acts";

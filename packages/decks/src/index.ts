@@ -37,5 +37,8 @@ export const deckById = (id: string) => DECKS.find((d) => d.id === id);
 export const ALL_CARDS: DeckCard[] = DECKS.flatMap((d) => d.cards.map((c) => ({ id: c.id, text: c.text, deck: d.id })));
 export const ALL_GROUPS: string[][] = DECKS.flatMap((d) => d.groups);
 
+/** Card ids in the Starter that everyone gets without paying. */
+export const STARTER_FREE: string[] = (starter as Deck).free ?? [];
+
 /** What the lobby shows: id, title, size, rating. Never the cards. */
-export const DECK_SUMMARIES = DECKS.map((d) => ({ id: d.id, title: d.title, description: d.description, rating: d.rating, count: d.cards.length, price: d.price, art: d.art, color: d.color, ink: d.ink }));
+export const DECK_SUMMARIES = DECKS.map((d) => ({ id: d.id, title: d.title, description: d.description, rating: d.rating, count: d.cards.length, freeCount: d.free ? d.free.length : d.cards.length, price: d.price, art: d.art, color: d.color, ink: d.ink }));

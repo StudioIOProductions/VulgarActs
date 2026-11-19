@@ -181,6 +181,7 @@ export function friendly(code: string): string {
     host_only: "Only the host can do that.",
     room_full: "This room is full (16 players).",
     deck_too_small: "Not enough cards in the selected decks for this many players.",
+    deck_locked: "Nobody in the room owns that deck.",
     join_first: "Join the room first.",
   };
   return m[code] ?? code.replace(/_/g, " ");

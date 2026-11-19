@@ -40,6 +40,14 @@ export interface Player {
   picks: PickedCard[];
   /** True if the player joined after the bowl was built. Guesser only this game. */
   lateJoiner: boolean;
+  /** What this player's account brings to the room. Absent/empty for guests. */
+  brings?: Access;
+}
+
+/** Decks a player (or a whole room) may use. The Starter is always playable; `starterFull` unlocks its paid cards. */
+export interface Access {
+  decks: string[];
+  starterFull: boolean;
 }
 
 export interface DeckCard {

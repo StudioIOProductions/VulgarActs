@@ -90,7 +90,7 @@ export class Connection {
 
 /* ---------- accounts ---------- */
 
-export type Me = { signedIn: false } | { signedIn: true; email: string; decks: string[] };
+export type Me = { signedIn: false } | { signedIn: true; email: string; decks: string[]; starterFull: boolean; skus: string[]; passUntil: string | null };
 
 export async function me(): Promise<Me> {
   try { const r = await fetch(base() + "/api/me", { credentials: "include" }); return r.ok ? r.json() : { signedIn: false }; } catch { return { signedIn: false }; }

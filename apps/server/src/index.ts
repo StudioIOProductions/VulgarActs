@@ -12,10 +12,11 @@
 import * as E from "@vulgar-acts/engine";
 import type { GameState } from "@vulgar-acts/engine";
 import type { ClientMsg, ServerMsg, ActionName } from "./protocol";
-import { ALL_CARDS, ALL_GROUPS, DECK_SUMMARIES } from "@vulgar-acts/decks";
-import { handleAuth } from "./auth";
+import { ALL_CARDS, ALL_GROUPS, DECK_SUMMARIES, STARTER_FREE } from "@vulgar-acts/decks";
+import { handleAuth, currentAccount, accountAccess } from "./auth";
+import type { Access } from "@vulgar-acts/engine";
 
-export interface Env { ROOMS: DurableObjectNamespace; DB: D1Database; ASSETS?: Fetcher; POSTHOG_KEY?: string; POSTHOG_HOST?: string; RESEND_KEY?: string; MAIL_FROM?: string }
+export interface Env { ROOMS: DurableObjectNamespace; DB: D1Database; ASSETS?: Fetcher; POSTHOG_KEY?: string; POSTHOG_HOST?: string; RESEND_KEY?: string; MAIL_FROM?: string; ADMIN_KEY?: string }
 
 const json = (data: unknown, status = 200) =>
   new Response(JSON.stringify(data), { status, headers: { "content-type": "application/json", "access-control-allow-origin": "*" } });
@@ -27,7 +28,7 @@ export default {
     if (url.pathname === "/health") return json({ ok: true });
     if (url.pathname === "/api/decks") return json(DECK_SUMMARIES);
 
-    if (url.pathname.startsWith("/api/auth/") || url.pathname === "/api/me") {
+    if (url.pathname.startsWith("/api/auth/") || url.pathname === "/api/me" || url.pathname.startsWith("/api/admin/")) {
       const r = await handleAuth(req, env, url);
       if (r) return r;
     }
@@ -51,17 +52,29 @@ export default {
     m = url.pathname.match(/^\/ws\/([A-Za-z]{4})$/);
     if (m) {
       if (req.headers.get("upgrade") !== "websocket") return json({ error: "expected websocket" }, 426);
-      return env.ROOMS.get(env.ROOMS.idFromName(m[1].toUpperCase())).fetch(req);
+      // A signed-in phone brings its decks into the room. Resolved here (the room object has no cookie access).
+      let brings: Access = { decks: [], starterFull: false };
+      try { const acct = env.DB ? await currentAccount(req, env) : null; if (acct) { const a = await accountAccess(acct.id, env); brings = { decks: a.decks, starterFull: a.starterFull }; } } catch {}
+      const fwd = new Request(req, { headers: new Headers(req.headers) });
+      fwd.headers.set("x-va-brings", JSON.stringify(brings));
+      return env.ROOMS.get(env.ROOMS.idFromName(m[1].toUpperCase())).fetch(fwd);
     }
     if (env.ASSETS) return env.ASSETS.fetch(req);
     return new Response("Vulgar Acts server", { status: 200 });
   },
 };
 
+/** The cards this room may deal: everything in its decks, minus the Starter's paid cards unless someone unlocked them. */
+function dealable(g: GameState) {
+  const access = E.roomAccess(g);
+  const free = new Set(STARTER_FREE);
+  return ALL_CARDS.filter((c) => c.deck !== "starter" || access.starterFull || free.has(c.id));
+}
+
 /** An empty room is wiped after this long with no one connected. The privacy page quotes it. */
 const IDLE_WIPE_MS = 6 * 60 * 60 * 1000;
 
-interface Attachment { pid: string | null }
+interface Attachment { pid: string | null; brings?: Access }
 
 export class Room {
   private game: GameState | null = null;
@@ -93,7 +106,9 @@ export class Room {
       const pair = new WebSocketPair();
       const [client, server] = [pair[0], pair[1]];
       this.ctx.acceptWebSocket(server);
-      server.serializeAttachment({ pid: null } satisfies Attachment);
+      let brings: Access | undefined;
+      try { brings = JSON.parse(req.headers.get("x-va-brings") ?? "") as Access; } catch {}
+      server.serializeAttachment({ pid: null, brings } satisfies Attachment);
       return new Response(null, { status: 101, webSocket: client });
     }
     return json({ error: "not found" }, 404);
@@ -111,15 +126,15 @@ export class Room {
 
     if (msg.t === "join") {
       try {
-        this.game = E.join(this.game, msg.pid, msg.name, this.ctxNow(), msg.avatar ?? 0);
+        this.game = E.join(this.game, msg.pid, msg.name, this.ctxNow(), msg.avatar ?? 0, att.brings);
       } catch (e) { return this.sendErr(ws, e); }
-      ws.serializeAttachment({ pid: msg.pid } satisfies Attachment);
+      ws.serializeAttachment({ pid: msg.pid, brings: att.brings } satisfies Attachment);
       await this.commit();
       return;
     }
 
     if (msg.t === "watch") {
-      ws.serializeAttachment({ pid: msg.pid } satisfies Attachment);
+      ws.serializeAttachment({ pid: msg.pid, brings: att.brings } satisfies Attachment);
       this.send(ws, { t: "view", view: E.viewFor(this.game, msg.pid), now: Date.now() });
       return;
     }
@@ -183,7 +198,7 @@ export class Room {
     const host = () => { if (pid !== g.host) throw new E.RuleError("host_only"); };
     switch (name) {
       case "settings": host(); return E.updateSettings(g, a.patch ?? {});
-      case "deal": host(); return E.deal(g, ALL_CARDS, ALL_GROUPS, c);
+      case "deal": host(); return E.deal(g, dealable(g), ALL_GROUPS, c);
       case "redraw": return E.redrawHand(g, pid, c);
       case "lock": return E.lockPicks(g, pid, a.picks ?? []);
       case "start": host(); if (!a.force && !E.allLocked(g)) throw new E.RuleError("not_all_locked"); return E.startGame(g, c);

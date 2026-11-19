@@ -34,6 +34,8 @@ export function Account() {
 
   if (who.signedIn) {
     const owned = DECK_SUMMARIES.filter((d) => d.id === "starter" || who.decks.includes(d.id));
+    const starter = DECK_SUMMARIES.find((d) => d.id === "starter")!;
+    const passDate = who.passUntil ? new Date(who.passUntil).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }) : null;
     return (
       <>
         <div class="row between"><Wordmark small /><span class="pill">Account</span></div>
@@ -41,8 +43,10 @@ export function Account() {
           <p class="sub">Signed in as <b>{who.email}</b>. Anything you buy follows this email to any phone, web or app.</p>
         </Panel>
         <Panel title="Your decks">
-          <div class="list">{owned.map((d) => <div key={d.id}><span>{d.title}</span><span class="small">{d.count} cards{d.id === "starter" ? " · free" : ""}</span></div>)}</div>
-          {who.decks.length === 0 && <p class="small">Just the free Starter so far. The store is coming; this is where bought decks will show up.</p>}
+          {passDate && <p class="sub"><b>Vulgar Acts Pass</b> active until {passDate}. Every deck, including new ones.</p>}
+          <div class="list">{owned.map((d) => <div key={d.id}><span>{d.title}</span><span class="small">{d.id === "starter" ? (who.starterFull ? `${d.count} cards · full` : `${starter.freeCount} of ${d.count} cards · free`) : `${d.count} cards`}</span></div>)}</div>
+          {who.decks.length === 0 && !who.starterFull && <p class="small">Just the free Starter so far. The store is coming; this is where bought decks will show up.</p>}
+          <p class="small">Decks you own come with you into any room: host or join from this phone and the lobby unlocks them for everyone there.</p>
         </Panel>
         <div class="row"><button onClick={out}>Sign out</button><button class="primary" onClick={() => { location.hash = "play"; }}>Play</button></div>
         <p class="small"><a href="#" onClick={back}>← Front page</a></p>

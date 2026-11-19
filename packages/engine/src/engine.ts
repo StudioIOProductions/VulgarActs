@@ -7,7 +7,7 @@
  * Anything time- or chance-dependent takes a Ctx {now, random}.
  */
 import {
-  BowlCard, Ctx, DeckCard, GameState, Player, RuleError, Settings, Team, Turn, DEFAULT_SETTINGS, PickedCard,
+  BowlCard, Ctx, DeckCard, GameState, Player, RuleError, Settings, Team, Turn, DEFAULT_SETTINGS, PickedCard, Access,
 } from "./types";
 
 export const ROUNDS = [
@@ -92,12 +92,33 @@ export function updateSettings(s: GameState, patch: Partial<Settings>): GameStat
   const next = clone(s);
   next.settings = { ...next.settings, ...patch };
   if (next.settings.decks.length === 0) throw new RuleError("no_decks");
+  const ok = roomAccess(next).decks;
+  const locked = next.settings.decks.find((d) => !ok.includes(d));
+  if (locked) throw new RuleError("deck_locked", locked);
   return next;
+}
+
+/** What the room can play: the Starter for everyone, plus whatever anyone present owns ("bring a deck"). */
+export function roomAccess(s: GameState): Access {
+  const decks = new Set<string>(["starter"]);
+  let starterFull = false;
+  for (const p of Object.values(s.players)) {
+    for (const d of p.brings?.decks ?? []) decks.add(d);
+    if (p.brings?.starterFull) starterFull = true;
+  }
+  return { decks: [...decks], starterFull };
+}
+
+/** Drop any chosen deck the room no longer has access to (someone with the deck left, say). */
+function pruneDecks(s: GameState): void {
+  const ok = roomAccess(s).decks;
+  const kept = s.settings.decks.filter((d) => ok.includes(d));
+  s.settings.decks = kept.length ? kept : ["starter"];
 }
 
 export const AVATAR_COUNT = 16;
 
-export function join(s: GameState, pid: string, name: string, ctx: Ctx, avatar = 0): GameState {
+export function join(s: GameState, pid: string, name: string, ctx: Ctx, avatar = 0, brings?: Access): GameState {
   const trimmed = name.trim().slice(0, 14);
   if (!trimmed) throw new RuleError("empty_name");
   const av = Number.isInteger(avatar) && avatar >= 0 && avatar < AVATAR_COUNT ? avatar : 0;
@@ -106,13 +127,15 @@ export function join(s: GameState, pid: string, name: string, ctx: Ctx, avatar =
     next.players[pid].name = trimmed;
     next.players[pid].avatar = av;
     next.players[pid].connected = true;
+    if (brings) next.players[pid].brings = brings;
+    if (next.phase === "lobby") pruneDecks(next);
     return next;
   }
   if (Object.keys(next.players).length >= MAX_PLAYERS) throw new RuleError("room_full");
   const late = s.phase !== "lobby";
   next.players[pid] = {
     id: pid, name: trimmed, avatar: av, joined: ctx.now, connected: true, hand: [], redrawn: false,
-    locked: false, picks: [], lateJoiner: late,
+    locked: false, picks: [], lateJoiner: late, ...(brings ? { brings } : {}),
   };
   if (late && next.teams) {
     // Late joiner: smaller team, guesser only this game.
@@ -139,6 +162,7 @@ export function removePlayer(s: GameState, pid: string): GameState {
   delete next.players[pid];
   if (next.teams) next.teams.forEach((t) => (t.members = t.members.filter((m) => m !== pid)));
   next.order = next.order.filter((m) => m !== pid);
+  if (next.phase === "lobby") pruneDecks(next); // a deck they brought leaves with them
   // Their cards stay in the bowl: the rulebook says so.
   if (next.turn && next.turn.giver === pid && next.phase === "turn") {
     return endTurn(next, "forced", { now: 0, random: Math.random });
@@ -622,6 +646,8 @@ export function playAgain(s: GameState): GameState {
  * ever in the giver's view. This is what the server sends over the wire.
  */
 export interface PlayerView {
+  /** Decks the room may play right now: the union of everyone's accounts. */
+  access: Access;
   code: string;
   phase: GameState["phase"];
   me: string;
@@ -671,6 +697,7 @@ export function viewFor(s: GameState, pid: string): PlayerView {
     isHost: pid === s.host,
     hostName: s.players[s.host]?.name ?? "",
     settings: s.settings,
+    access: roomAccess(s),
     players: playerList(s).map((p) => ({ id: p.id, name: p.name, avatar: p.avatar, connected: p.connected, locked: p.locked, team: teamOf(s, p.id), lateJoiner: p.lateJoiner })),
     myHand: me && s.phase === "pick" ? me.hand.map((i) => ({ text: s.cards[i].text, deck: s.cards[i].deck })) : [],
     myRedrawn: me?.redrawn ?? false,

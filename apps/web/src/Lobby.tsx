@@ -1,6 +1,6 @@
 import type { PlayerView, Settings } from "../../server/src/protocol";
 import type { Connection } from "./net";
-import { Avatar, Seg, Panel } from "./ui";
+import { Avatar, Seg, Panel, DeckTile } from "./ui";
 import { DECK_SUMMARIES } from "@vulgar-acts/decks";
 import { useState } from "preact/hooks";
 
@@ -25,6 +25,7 @@ export function SettingsPanel({ view, conn }: { view: PlayerView; conn: Connecti
   const st = view.settings;
   const set = (patch: Partial<Settings>) => conn.action("settings", { patch });
   const [gate, setGate] = useState<string[] | null>(null);
+  const [lockedNote, setLockedNote] = useState("");
   const setDecks = (v: string[]) => {
     const adding = v.filter((id) => !st.decks.includes(id));
     const adult = adding.filter((id) => DECK_SUMMARIES.find((d) => d.id === id)?.rating === "18+");
@@ -51,16 +52,14 @@ export function SettingsPanel({ view, conn }: { view: PlayerView; conn: Connecti
       <div class="deckgrid" id="decks">
         {DECK_SUMMARIES.map((d) => {
           const on = st.decks.includes(d.id);
-          return (
-            <button key={d.id} type="button" class={"decktile" + (on ? " on" : "")} aria-pressed={on} style={{ background: d.color, color: d.ink }}
-              onClick={() => { const next = on ? st.decks.filter((x) => x !== d.id) : [...st.decks, d.id]; setDecks(next.length ? next : [d.id]); }}>
-              <img src={d.art} alt="" />
-              <span class="dt"><b>{d.title}</b><span>{d.count} cards{d.rating === "18+" ? " · 18+" : ""}</span></span>
-              <span class="dcheck">{on ? "✓ In play" : "Off"}</span>
-            </button>
-          );
+          const locked = !view.access.decks.includes(d.id);
+          return <DeckTile key={d.id} d={d} on={on} locked={locked} starterFull={view.access.starterFull}
+            onToggle={() => { const next = on ? st.decks.filter((x) => x !== d.id) : [...st.decks, d.id]; setDecks(next.length ? next : [d.id]); }}
+            onLocked={() => setLockedNote(d.title)} />;
         })}
       </div>
+      {lockedNote && <p class="small ink"><b>{lockedNote}</b> is locked. Anyone in the room who owns it can bring it: they sign in at <b>vulgaracts.com/#account</b> on their phone and rejoin. <a href="#" onClick={(e) => { e.preventDefault(); setLockedNote(""); }}>OK</a></p>}
+      {!view.access.starterFull && <p class="small ink">Starter: the free {DECK_SUMMARIES.find((d) => d.id === "starter")!.freeCount} cards are in play. The full deck unlocks when anyone here owns it.</p>}
       {st.decks.includes("afterdark") && <p class="small ink">After Dark is in play: every phone will show the 18+ mark before cards are dealt.</p>}
       <label>When someone buzzes a card word</label>
       <Seg id="buzz" value={st.buzzPenalty} options={[{ v: "card", label: "Lose the card" }, { v: "point", label: "Lose a point" }, { v: "none", label: "Nothing" }]} onChange={(v) => set({ buzzPenalty: v })} />

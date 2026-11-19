@@ -610,3 +610,19 @@ describe("player views", () => {
     expect(v.turn!.why).toBe("time");
   });
 });
+
+describe("entitlements", () => {
+  const ctx = { now: 1000, random: () => 0.5 };
+  it("a room can only play decks someone present owns", () => {
+    let g = E.createGame("ABCD", "h");
+    g = E.join(g, "h", "Host", ctx, 0);
+    expect(E.roomAccess(g)).toEqual({ decks: ["starter"], starterFull: false });
+    expect(() => E.updateSettings(g, { decks: ["starter", "afterdark"] })).toThrow(/deck_locked/);
+    g = E.join(g, "p2", "Pat", ctx, 1, { decks: ["afterdark"], starterFull: true });
+    expect(E.roomAccess(g)).toEqual({ decks: ["starter", "afterdark"], starterFull: true });
+    g = E.updateSettings(g, { decks: ["starter", "afterdark"] });
+    g = E.removePlayer(g, "p2");
+    expect(g.settings.decks).toEqual(["starter"]);
+    expect(E.roomAccess(g).starterFull).toBe(false);
+  });
+});

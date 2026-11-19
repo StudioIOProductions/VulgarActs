@@ -4,9 +4,10 @@
  * Same cards, same three rounds, fewer people. Runs entirely on the device.
  */
 import { useEffect, useState } from "preact/hooks";
-import { ALL_CARDS, ALL_GROUPS, DECK_SUMMARIES } from "@vulgar-acts/decks";
+import { ALL_CARDS, ALL_GROUPS, DECK_SUMMARIES, STARTER_FREE } from "@vulgar-acts/decks";
 import { shuffle, ROUNDS } from "@vulgar-acts/engine";
-import { Wordmark, Avatar, Seg, Panel, AVATAR_COUNT, deckClass } from "./ui";
+import { Wordmark, Avatar, Seg, Panel, AVATAR_COUNT, deckClass, DeckTile } from "./ui";
+import { me } from "./net";
 import { Scoreboard } from "./Turn";
 
 const BOWL = 20;
@@ -20,8 +21,9 @@ interface Game {
 }
 const ls = { get: (k: string) => { try { return localStorage.getItem(k); } catch { return null; } }, set: (k: string, v: string) => { try { localStorage.setItem(k, v); } catch {} } };
 
-function dealBowl(decks: string[], customs: string[]): Card[] {
-  const inDecks = ALL_CARDS.filter((c) => decks.includes(c.deck));
+function dealBowl(decks: string[], customs: string[], starterFull: boolean): Card[] {
+  const free = new Set(STARTER_FREE);
+  const inDecks = ALL_CARDS.filter((c) => decks.includes(c.deck) && (c.deck !== "starter" || starterFull || free.has(c.id)));
   const drop = new Set<string>();
   for (const g of ALL_GROUPS) { const present = g.filter((id) => inDecks.some((c) => c.id === id)); if (present.length > 1) { const keep = present[Math.floor(Math.random() * present.length)]; present.forEach((id) => id !== keep && drop.add(id)); } }
   const cards = shuffle(inDecks.filter((c) => !drop.has(c.id)), Math.random).slice(0, Math.max(0, BOWL - customs.length));
@@ -43,6 +45,9 @@ function DuoSetup({ onStart }: { onStart: (g: Game) => void }) {
   const [timer, setTimer] = useState(60);
   const [decks, setDecks] = useState<string[]>(["starter"]);
   const [gate, setGate] = useState<string[] | null>(null);
+  const [access, setAccess] = useState<{ decks: string[]; starterFull: boolean }>({ decks: [], starterFull: false });
+  const [lockedNote, setLockedNote] = useState("");
+  useEffect(() => { me().then((m) => { if (m.signedIn) setAccess({ decks: m.decks, starterFull: m.starterFull }); }); }, []);
   const [customs, setCustoms] = useState<string[]>([]);
   const [draft, setDraft] = useState("");
   const [pick, setPick] = useState<0 | 1 | null>(null);
@@ -54,7 +59,7 @@ function DuoSetup({ onStart }: { onStart: (g: Game) => void }) {
   };
   const start = () => {
     ls.set("va_duo_a", names[0].trim()); ls.set("va_duo_b", names[1].trim()); ls.set("va_duo_aa", String(avatars[0])); ls.set("va_duo_ab", String(avatars[1]));
-    const bowl = dealBowl(decks, customs);
+    const bowl = dealBowl(decks, customs, access.starterFull);
     onStart({ names: [names[0].trim(), names[1].trim()], avatars, rounds, timer, bowl, pool: shuffle(bowl.map((_, i) => i), Math.random), round: 0, phase: "pass", turn: null, next: Math.random() < 0.5 ? 0 : 1, pts: [0, 0], best: null, turns: 0 });
   };
   return (
@@ -79,7 +84,8 @@ function DuoSetup({ onStart }: { onStart: (g: Game) => void }) {
         {gate && (
           <div class="gate18"><h3>After Dark is 18+</h3><p>Every card in it is explicit. Just checking you're both adults.</p><div class="row"><button onClick={() => setGate(null)}>Not tonight</button><button class="primary" onClick={() => { setDecks(gate); setGate(null); }}>We're 18+</button></div></div>
         )}
-        <div class="deckgrid">{DECK_SUMMARIES.map((d) => { const on = decks.includes(d.id); return <button key={d.id} type="button" class={"decktile" + (on ? " on" : "")} aria-pressed={on} style={{ background: d.color, color: d.ink }} onClick={() => toggleDeck(d.id)}><img src={d.art} alt="" /><span class="dt"><b>{d.title}</b><span>{d.count} cards{d.rating === "18+" ? " · 18+" : ""}</span></span><span class="dcheck">{on ? "✓ In play" : "Off"}</span></button>; })}</div>
+        <div class="deckgrid">{DECK_SUMMARIES.map((d) => { const on = decks.includes(d.id); const locked = d.id !== "starter" && !access.decks.includes(d.id); return <DeckTile key={d.id} d={d} on={on} locked={locked} starterFull={access.starterFull} onToggle={() => toggleDeck(d.id)} onLocked={() => setLockedNote(d.title)} />; })}</div>
+        {lockedNote && <p class="small ink"><b>{lockedNote}</b> is locked. <a href="#account">Sign in</a> on this phone if you own it. <a href="#" onClick={(e) => { e.preventDefault(); setLockedNote(""); }}>OK</a></p>}
       </Panel>
       <Panel title="Add your own cards">
         <p class="sub">Optional. The app deals {BOWL} cards; swap some for inside jokes.</p>

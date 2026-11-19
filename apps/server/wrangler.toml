@@ -35,6 +35,7 @@ new_sqlite_classes = ["Room"]
 [observability]
 enabled = true
 
+# Granting decks by hand (founders, testers): `npx wrangler secret put ADMIN_KEY`, see DEPLOY.md step 8
 # Sign-in emails go through Resend (DEPLOY.md step 7): `npx wrangler secret put RESEND_KEY`
 [vars]
 MAIL_FROM = "Vulgar Acts <info@vulgaracts.com>"
