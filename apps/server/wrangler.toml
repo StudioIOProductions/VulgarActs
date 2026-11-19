@@ -36,8 +36,8 @@ new_sqlite_classes = ["Room"]
 enabled = true
 
 # Sign-in emails go through Resend (DEPLOY.md step 7): `npx wrangler secret put RESEND_KEY`
-# [vars]
-# MAIL_FROM = "Vulgar Acts <login@vulgaracts.com>"
+[vars]
+MAIL_FROM = "Vulgar Acts <info@vulgaracts.com>"
 # Optional analytics (DEPLOY.md step 5): set with `npx wrangler secret put POSTHOG_KEY`
 # [vars]
 # POSTHOG_HOST = "https://us.i.posthog.com"

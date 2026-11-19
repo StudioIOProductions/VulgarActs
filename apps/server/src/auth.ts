@@ -54,7 +54,7 @@ async function sendLink(env: Env, email: string, link: string): Promise<{ sent: 
     method: "POST",
     headers: { authorization: `Bearer ${env.RESEND_KEY}`, "content-type": "application/json" },
     body: JSON.stringify({
-      from: env.MAIL_FROM ?? "Vulgar Acts <login@vulgaracts.com>",
+      from: env.MAIL_FROM ?? "Vulgar Acts <info@vulgaracts.com>",
       to: [email],
       subject: "Your Vulgar Acts sign-in link",
       text: `Tap to sign in to Vulgar Acts:\n\n${link}\n\nThe link works once and expires in 15 minutes. If you didn't ask for it, ignore this email; nothing happens.\n\n— Studio IO`,

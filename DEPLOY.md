@@ -49,7 +49,7 @@ Accounts are email-only magic links. They need a D1 database and a way to send e
    ```
    cd apps/server && npx wrangler secret put RESEND_KEY
    ```
-   Links are sent from `login@vulgaracts.com`; change `MAIL_FROM` under `[vars]` in `wrangler.toml` if you want another address.
+   Links are sent from `info@vulgaracts.com`; change `MAIL_FROM` under `[vars]` in `wrangler.toml` if you want another address.
 3. `npm run deploy`. Test at vulgaracts.com/#account. Without `RESEND_KEY` the sign-in page shows the link directly (local dev only); in production it emails it.
 
 ## 5. Analytics (10 min, optional)
