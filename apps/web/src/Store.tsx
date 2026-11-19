@@ -49,15 +49,17 @@ export function Store() {
       {note && <p class="small ink"><b>{note}</b></p>}
       {cat && !cat.live && <p class="small ink">The store is in preview — nothing can be bought yet.</p>}
 
-      <Panel title="Launch Collection" tone="paper">
+      <Panel tone="paper" cls="offer">
         <img class="offerart" src="/img/everything.jpg" alt="" />
+        <h2>Launch Collection</h2>
         <p class="sub"><b>Five decks, 500+ cards, yours forever</b> — the full Starter plus After Dark, Office Party, Pop Culture Trash and Patent Rejected.</p>
         <div class="row between"><span class="price">{price("launch")} <small>one time</small></span><Btn sku="launch" label="Get the collection" /></div>
         <p class="small">Saves $2 on buying the five separately.</p>
       </Panel>
 
-      <Panel title="Vulgar Acts Pass" tone="dark">
+      <Panel tone="dark" cls="offer">
         <img class="offerart" src="/img/pass.jpg" alt="" />
+        <h2>Vulgar Acts Pass</h2>
         <p class="sub"><b>For the obsessed.</b> The Launch Collection to keep, plus every new deck the day it drops for as long as you're a member. Cancel anytime; the collection stays yours.</p>
         <div class="row between"><span class="price">{price("pass")}</span>{passActive ? <button class="owned" disabled>Active</button> : <Btn sku="pass" label="Get the Pass" />}</div>
       </Panel>
